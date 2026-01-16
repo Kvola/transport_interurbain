@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================ -->
+    <!-- MENUS TRANSPORT INTERURBAIN -->
+    <!-- ============================================ -->
+
+    <!-- Menu racine -->
+    <menuitem id="transport_menu_root"
+              name="Transport"
+              sequence="100"
+              web_icon="transport_interurbain,static/description/icon.png"
+              groups="group_transport_user"/>
+
+    <!-- ============================================ -->
+    <!-- MENU TABLEAUX DE BORD -->
+    <!-- ============================================ -->
+
+    <menuitem id="transport_menu_dashboard"
+              name="Tableaux de bord"
+              parent="transport_menu_root"
+              sequence="1"/>
+
+    <menuitem id="transport_menu_dashboard_admin"
+              name="Dashboard Administrateur"
+              parent="transport_menu_dashboard"
+              action="transport_admin_dashboard_action"
+              groups="group_transport_admin"
+              sequence="1"/>
+
+    <menuitem id="transport_menu_dashboard_company"
+              name="Dashboard Compagnie"
+              parent="transport_menu_dashboard"
+              action="transport_company_dashboard_action"
+              groups="group_transport_company_manager"
+              sequence="2"/>
+
+    <menuitem id="transport_menu_stats_bookings"
+              name="Statistiques Réservations"
+              parent="transport_menu_dashboard"
+              action="transport_booking_stats_action"
+              groups="group_transport_company_manager"
+              sequence="3"/>
+
+    <menuitem id="transport_menu_stats_trips"
+              name="Statistiques Voyages"
+              parent="transport_menu_dashboard"
+              action="transport_trip_stats_action"
+              groups="group_transport_company_manager"
+              sequence="4"/>
+
+    <!-- ============================================ -->
+    <!-- MENU OPÉRATIONS -->
+    <!-- ============================================ -->
+
+    <menuitem id="transport_menu_operations"
+              name="Opérations"
+              parent="transport_menu_root"
+              sequence="10"/>
+
+    <menuitem id="transport_menu_trips"
+              name="Voyages"
+              parent="transport_menu_operations"
+              action="transport_trip_action"
+              sequence="1"/>
+
+    <menuitem id="transport_menu_trips_today"
+              name="Voyages du jour"
+              parent="transport_menu_operations"
+              action="transport_trip_today_action"
+              sequence="2"/>
+
+    <menuitem id="transport_menu_schedules"
+              name="Programmes de voyages"
+              parent="transport_menu_operations"
+              action="transport_trip_schedule_action"
+              groups="group_transport_company_manager"
+              sequence="3"/>
+
+    <menuitem id="transport_menu_bookings"
+              name="Réservations"
+              parent="transport_menu_operations"
+              action="transport_booking_action"
+              sequence="5"/>
+
+    <menuitem id="transport_menu_bookings_today"
+              name="Réservations du jour"
+              parent="transport_menu_operations"
+              action="transport_booking_today_action"
+              sequence="4"/>
+
+    <!-- ============================================ -->
+    <!-- MENU COMPAGNIES & FLOTTE -->
+    <!-- ============================================ -->
+
+    <menuitem id="transport_menu_fleet"
+              name="Compagnies &amp; Flotte"
+              parent="transport_menu_root"
+              sequence="20"/>
+
+    <menuitem id="transport_menu_companies"
+              name="Compagnies"
+              parent="transport_menu_fleet"
+              action="transport_company_action"
+              sequence="1"/>
+
+    <menuitem id="transport_menu_my_company"
+              name="Ma compagnie"
+              parent="transport_menu_fleet"
+              action="transport_my_company_action"
+              groups="group_transport_company_manager"
+              sequence="2"/>
+
+    <menuitem id="transport_menu_buses"
+              name="Flotte de bus"
+              parent="transport_menu_fleet"
+              action="transport_bus_action"
+              sequence="3"/>
+
+    <!-- ============================================ -->
+    <!-- MENU CLIENTS -->
+    <!-- ============================================ -->
+
+    <menuitem id="transport_menu_customers"
+              name="Clients"
+              parent="transport_menu_root"
+              sequence="30"/>
+
+    <menuitem id="transport_menu_passengers"
+              name="Passagers"
+              parent="transport_menu_customers"
+              action="transport_passenger_action"
+              sequence="1"/>
+
+    <!-- ============================================ -->
+    <!-- MENU CONFIGURATION -->
+    <!-- ============================================ -->
+
+    <menuitem id="transport_menu_config"
+              name="Configuration"
+              parent="transport_menu_root"
+              groups="group_transport_admin"
+              sequence="100"/>
+
+    <menuitem id="transport_menu_routes"
+              name="Itinéraires"
+              parent="transport_menu_config"
+              action="transport_route_action"
+              sequence="1"/>
+
+    <menuitem id="transport_menu_cities"
+              name="Villes / Arrêts"
+              parent="transport_menu_config"
+              action="transport_city_action"
+              sequence="2"/>
+
+</odoo>

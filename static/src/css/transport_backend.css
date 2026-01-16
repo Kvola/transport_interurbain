@@ -1,0 +1,270 @@
+/* Transport Backend Styles */
+
+/* Dashboard styles */
+.o_transport_admin_dashboard,
+.o_transport_company_dashboard {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.o_transport_admin_dashboard .card,
+.o_transport_company_dashboard .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.o_transport_admin_dashboard .card.cursor-pointer:hover,
+.o_transport_company_dashboard .card.cursor-pointer:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.o_transport_admin_dashboard .card-header,
+.o_transport_company_dashboard .card-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Cursor pointer for clickable elements */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Bus seat grid in form view */
+.o_bus_seat_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.o_bus_seat {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.o_bus_seat.available {
+    background: #28a745;
+    color: white;
+}
+
+.o_bus_seat.booked {
+    background: #dc3545;
+    color: white;
+    cursor: not-allowed;
+}
+
+.o_bus_seat.selected {
+    background: #007bff;
+    color: white;
+    transform: scale(1.1);
+}
+
+.o_bus_seat.vip {
+    border: 2px solid gold;
+}
+
+/* Booking state badges */
+.o_booking_state_draft { background-color: #6c757d; }
+.o_booking_state_reserved { background-color: #ffc107; color: #000; }
+.o_booking_state_confirmed { background-color: #28a745; }
+.o_booking_state_checked_in { background-color: #17a2b8; }
+.o_booking_state_completed { background-color: #007bff; }
+.o_booking_state_cancelled { background-color: #dc3545; }
+.o_booking_state_expired { background-color: #343a40; }
+.o_booking_state_no_show { background-color: #dc3545; }
+
+/* Trip state colors */
+.o_trip_state_draft { color: #6c757d; }
+.o_trip_state_scheduled { color: #007bff; }
+.o_trip_state_boarding { color: #17a2b8; }
+.o_trip_state_departed { color: #28a745; }
+.o_trip_state_completed { color: #28a745; }
+.o_trip_state_cancelled { color: #dc3545; }
+
+/* Company rating stars */
+.o_company_rating {
+    color: #ffc107;
+}
+
+.o_company_rating .fa-star-o {
+    color: #ddd;
+}
+
+/* Bus amenities icons */
+.o_bus_amenities {
+    display: flex;
+    gap: 10px;
+}
+
+.o_bus_amenity {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #6c757d;
+}
+
+.o_bus_amenity.active {
+    background: #28a745;
+    color: white;
+}
+
+/* Route stop timeline */
+.o_route_stops {
+    position: relative;
+    padding-left: 30px;
+}
+
+.o_route_stops::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #007bff;
+}
+
+.o_route_stop {
+    position: relative;
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.o_route_stop::before {
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #007bff;
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px #007bff;
+}
+
+.o_route_stop.first::before,
+.o_route_stop.last::before {
+    width: 16px;
+    height: 16px;
+    left: -27px;
+    top: 3px;
+}
+
+.o_route_stop.first::before {
+    background: #28a745;
+    box-shadow: 0 0 0 2px #28a745;
+}
+
+.o_route_stop.last::before {
+    background: #dc3545;
+    box-shadow: 0 0 0 2px #dc3545;
+}
+
+/* Trip calendar enhancements */
+.o_transport_calendar .fc-event {
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+
+.o_transport_calendar .fc-event.trip-scheduled {
+    background-color: #007bff;
+    border-color: #0056b3;
+}
+
+.o_transport_calendar .fc-event.trip-boarding {
+    background-color: #17a2b8;
+    border-color: #117a8b;
+}
+
+.o_transport_calendar .fc-event.trip-departed {
+    background-color: #28a745;
+    border-color: #1e7e34;
+}
+
+/* Form view enhancements */
+.o_form_view.o_transport_trip_form .o_group {
+    margin-bottom: 20px;
+}
+
+.o_form_view.o_transport_booking_form .o_qr_code img {
+    max-width: 200px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background: white;
+}
+
+/* Kanban card enhancements */
+.o_kanban_view.o_transport_company_kanban .o_kanban_record {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.o_kanban_view.o_transport_trip_kanban .o_kanban_record {
+    border-left: 4px solid #007bff;
+}
+
+.o_kanban_view.o_transport_trip_kanban .o_kanban_record.trip-full {
+    border-left-color: #dc3545;
+}
+
+.o_kanban_view.o_transport_trip_kanban .o_kanban_record.trip-low {
+    border-left-color: #ffc107;
+}
+
+/* Stats widgets */
+.o_transport_stat_widget {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 10px;
+}
+
+.o_transport_stat_widget .stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.o_transport_stat_widget .stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .o_transport_admin_dashboard .card-body h2,
+    .o_transport_company_dashboard .card-body h2 {
+        font-size: 1.5rem;
+    }
+    
+    .o_bus_seat_grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Print styles for ticket */
+@media print {
+    .o_transport_ticket {
+        page-break-inside: avoid;
+    }
+    
+    .o_transport_ticket .no-print {
+        display: none !important;
+    }
+}

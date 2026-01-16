@@ -1,0 +1,844 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    
+    <!-- Dashboard Administrateur Intelligent -->
+    <t t-name="transport_interurbain.AdminDashboard">
+        <div class="o_transport_admin_dashboard">
+            <div class="container-fluid py-4">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="mb-0">
+                            <i class="fa fa-dashboard me-2"/>
+                            Tableau de bord - Transport Interurbain
+                        </h2>
+                        <small class="text-muted" t-if="state.lastUpdate">
+                            <i class="fa fa-clock-o me-1"/>Dernière mise à jour: <t t-esc="state.lastUpdate"/>
+                        </small>
+                    </div>
+                    <button class="btn btn-primary" t-on-click="refresh">
+                        <i class="fa fa-refresh"/> Actualiser
+                    </button>
+                </div>
+                
+                <!-- Loading -->
+                <div t-if="state.loading" class="text-center py-5">
+                    <i class="fa fa-spinner fa-spin fa-3x text-primary"/>
+                    <p class="mt-3 text-muted">Chargement des données...</p>
+                </div>
+                
+                <div t-else="">
+                    <!-- Alertes Intelligentes -->
+                    <div t-if="state.alerts.length > 0" class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-gradient-dark text-white d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-bell me-2"/>
+                                        Alertes et Notifications (<t t-esc="state.alerts.length"/>)
+                                    </h5>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="list-group list-group-flush">
+                                        <t t-foreach="state.alerts" t-as="alert" t-key="alert_index">
+                                            <div t-attf-class="list-group-item list-group-item-{{ alert.type }} d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <i t-attf-class="fa {{ alert.icon }} me-2"/>
+                                                    <strong t-esc="alert.title"/>: 
+                                                    <span t-esc="alert.message"/>
+                                                </div>
+                                                <button t-if="alert.action" class="btn btn-sm btn-outline-dark" 
+                                                        t-on-click="() => this.executeAlertAction(alert.action)">
+                                                    Voir <i class="fa fa-arrow-right ms-1"/>
+                                                </button>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- KPIs principaux avec tendances -->
+                    <div class="row g-3 mb-4">
+                        <!-- Voyages -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card h-100 bg-primary text-white cursor-pointer shadow-sm" t-on-click="openTrips">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-subtitle mb-1 text-white-50">Total Voyages</h6>
+                                            <h2 class="card-title mb-0" t-esc="formatNumber(state.totalTrips)"/>
+                                        </div>
+                                        <i class="fa fa-bus fa-3x opacity-50"/>
+                                    </div>
+                                    <div class="mt-3 small">
+                                        <span class="badge bg-light text-primary me-1">
+                                            <i class="fa fa-calendar-check-o me-1"/><t t-esc="state.scheduledTrips"/> programmés
+                                        </span>
+                                        <span class="badge bg-light text-success">
+                                            <i class="fa fa-check me-1"/><t t-esc="state.completedTrips"/> terminés
+                                        </span>
+                                    </div>
+                                    <div class="mt-2 small" t-if="state.boardingTrips > 0">
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="fa fa-users me-1"/><t t-esc="state.boardingTrips"/> en embarquement
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Réservations -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card h-100 bg-success text-white cursor-pointer shadow-sm" t-on-click="openBookings">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-subtitle mb-1 text-white-50">Total Réservations</h6>
+                                            <h2 class="card-title mb-0" t-esc="formatNumber(state.totalBookings)"/>
+                                        </div>
+                                        <i class="fa fa-ticket fa-3x opacity-50"/>
+                                    </div>
+                                    <div class="mt-3 small">
+                                        <span class="badge bg-light text-success me-1">
+                                            <t t-esc="state.confirmedBookings"/> confirmées
+                                        </span>
+                                        <span class="badge bg-light text-warning">
+                                            <t t-esc="state.reservedBookings"/> en attente
+                                        </span>
+                                    </div>
+                                    <div class="mt-2" t-if="state.bookingsTrend != 0">
+                                        <small t-attf-class="{{ getTrendClass(state.bookingsTrend) }}">
+                                            <i t-attf-class="fa {{ getTrendIcon(state.bookingsTrend) }}"/>
+                                            <t t-esc="Math.abs(state.bookingsTrend)"/>% vs semaine passée
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Revenus -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card h-100 bg-warning text-dark shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-subtitle mb-1 text-dark-50">Revenu du Mois</h6>
+                                            <h2 class="card-title mb-0" t-esc="formatCurrency(state.monthRevenue)"/>
+                                        </div>
+                                        <i class="fa fa-money fa-3x opacity-50"/>
+                                    </div>
+                                    <div class="mt-2" t-if="state.revenueGrowth != 0">
+                                        <span t-attf-class="badge {{ state.revenueGrowth > 0 ? 'bg-success' : 'bg-danger' }}">
+                                            <i t-attf-class="fa {{ getTrendIcon(state.revenueGrowth) }}"/>
+                                            <t t-esc="Math.abs(state.revenueGrowth)"/>% vs mois dernier
+                                        </span>
+                                    </div>
+                                    <div class="mt-2 small">
+                                        <span class="badge bg-dark me-1">
+                                            Semaine: <t t-esc="formatCurrency(state.weekRevenue)"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Compagnies -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card h-100 bg-info text-white cursor-pointer shadow-sm" t-on-click="openCompanies">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-subtitle mb-1 text-white-50">Compagnies</h6>
+                                            <h2 class="card-title mb-0" t-esc="state.totalCompanies"/>
+                                        </div>
+                                        <i class="fa fa-building fa-3x opacity-50"/>
+                                    </div>
+                                    <div class="mt-3 small">
+                                        <span class="badge bg-light text-info">
+                                            <i class="fa fa-check-circle me-1"/><t t-esc="state.activeCompanies"/> actives
+                                        </span>
+                                    </div>
+                                    <div class="mt-2 small" t-if="state.avgRating > 0">
+                                        <span class="text-warning">
+                                            <i class="fa fa-star"/> <t t-esc="state.avgRating"/>/5 note moyenne
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Statistiques secondaires avec indicateurs clés -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-lg-2 col-md-4 col-6">
+                            <div class="card text-center h-100 cursor-pointer shadow-sm" t-on-click="openTodayBookings">
+                                <div class="card-body">
+                                    <h4 class="text-success mb-0" t-esc="state.todayBookings"/>
+                                    <small class="text-muted">Réservations aujourd'hui</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-6">
+                            <div class="card text-center h-100 shadow-sm">
+                                <div class="card-body">
+                                    <h4 class="text-warning mb-0" t-esc="formatCurrency(state.todayRevenue)"/>
+                                    <small class="text-muted">Revenu aujourd'hui</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-6">
+                            <div class="card text-center h-100 shadow-sm cursor-pointer" t-on-click="openUnpaidBookings">
+                                <div class="card-body">
+                                    <h4 t-attf-class="{{ state.unpaidBookings > 0 ? 'text-danger' : 'text-success' }} mb-0" 
+                                        t-esc="state.unpaidBookings"/>
+                                    <small class="text-muted">Impayées</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-6">
+                            <div class="card text-center h-100 shadow-sm">
+                                <div class="card-body">
+                                    <h4 t-attf-class="{{ state.avgOccupancyRate > 70 ? 'text-success' : state.avgOccupancyRate > 40 ? 'text-warning' : 'text-danger' }} mb-0">
+                                        <t t-esc="state.avgOccupancyRate"/>%
+                                    </h4>
+                                    <small class="text-muted">Taux occupation</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-6">
+                            <div class="card text-center h-100 shadow-sm">
+                                <div class="card-body">
+                                    <h4 class="text-info mb-0" t-esc="formatNumber(state.totalPassengers)"/>
+                                    <small class="text-muted">Passagers inscrits</small>
+                                    <div t-if="state.newPassengersThisMonth > 0">
+                                        <span class="badge bg-success small">
+                                            +<t t-esc="state.newPassengersThisMonth"/> ce mois
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-6">
+                            <div class="card text-center h-100 shadow-sm cursor-pointer" t-on-click="openCancelledTrips">
+                                <div class="card-body">
+                                    <h4 t-attf-class="{{ state.cancellationRate > 10 ? 'text-danger' : 'text-muted' }} mb-0">
+                                        <t t-esc="state.cancellationRate"/>%
+                                    </h4>
+                                    <small class="text-muted">Taux annulation</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Prédictions -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-12">
+                            <div class="card bg-gradient shadow-sm border-0">
+                                <div class="card-header bg-dark text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-line-chart me-2"/>
+                                        Prédictions (7 prochains jours)
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-3">
+                                                    <i class="fa fa-money fa-2x text-warning"/>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted">Revenus prévus</small>
+                                                    <h4 class="mb-0" t-esc="formatCurrency(state.predictedRevenue)"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-3">
+                                                    <i class="fa fa-ticket fa-2x text-success"/>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted">Réservations prévues</small>
+                                                    <h4 class="mb-0" t-esc="state.predictedBookings"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tendances de la semaine -->
+                    <div class="row g-3 mb-4" t-if="state.weeklyRevenue.length > 0">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-bar-chart me-2"/>
+                                        Tendances (7 derniers jours)
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <t t-foreach="state.weeklyRevenue" t-as="day" t-key="day_index">
+                                            <div class="col text-center">
+                                                <small class="text-muted d-block" t-esc="day.day"/>
+                                                <div class="progress mt-1" style="height: 80px; transform: rotate(180deg);">
+                                                    <div class="progress-bar bg-success" role="progressbar" 
+                                                         t-attf-style="width: 100%; height: {{ Math.max(5, (day.value / Math.max(...state.weeklyRevenue.map(d => d.value || 1))) * 100) }}%"/>
+                                                </div>
+                                                <small class="d-block mt-1 fw-bold" t-esc="formatCurrency(day.value)"/>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tableaux -->
+                    <div class="row g-4">
+                        <!-- Top compagnies -->
+                        <div class="col-lg-4">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fa fa-star text-warning me-2"/>
+                                        Top Compagnies
+                                    </h5>
+                                </div>
+                                <div class="card-body p-0">
+                                    <table class="table table-hover mb-0">
+                                        <tbody>
+                                            <tr t-foreach="state.topCompanies" t-as="company" t-key="company.id">
+                                                <td>
+                                                    <strong t-esc="company.name"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="text-warning">
+                                                        <t t-foreach="[1,2,3,4,5]" t-as="star" t-key="star">
+                                                            <i t-attf-class="fa fa-star{{ star > company.rating ? '-o' : '' }}"/>
+                                                        </t>
+                                                    </span>
+                                                    <small class="text-muted ms-1">
+                                                        (<t t-esc="company.rating_count"/>)
+                                                    </small>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Réservations récentes -->
+                        <div class="col-lg-8">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fa fa-clock-o text-info me-2"/>
+                                        Réservations Récentes
+                                    </h5>
+                                    <button class="btn btn-sm btn-outline-primary" t-on-click="openBookings">
+                                        Voir tout <i class="fa fa-arrow-right ms-1"/>
+                                    </button>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Référence</th>
+                                                    <th>Passager</th>
+                                                    <th>Voyage</th>
+                                                    <th class="text-end">Montant</th>
+                                                    <th class="text-center">État</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr t-foreach="state.recentBookings" t-as="booking" t-key="booking.id"
+                                                    t-attf-class="{{ booking.amount_due > 0 ? 'table-warning' : '' }}">
+                                                    <td>
+                                                        <code class="text-primary" t-esc="booking.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <strong t-esc="booking.passenger_name"/>
+                                                    </td>
+                                                    <td>
+                                                        <small class="text-muted" t-esc="booking.trip_id ? booking.trip_id[1] : '-'"/>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <span t-esc="formatCurrency(booking.total_amount)"/>
+                                                        <br t-if="booking.amount_due > 0"/>
+                                                        <small class="text-danger" t-if="booking.amount_due > 0">
+                                                            <i class="fa fa-exclamation-circle"/> 
+                                                            Dû: <t t-esc="formatCurrency(booking.amount_due)"/>
+                                                        </small>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-attf-class="badge {{ getStateBadgeClass(booking.state) }}"
+                                                              t-esc="getStateLabel(booking.state)"/>
+                                                    </td>
+                                                </tr>
+                                                <tr t-if="state.recentBookings.length === 0">
+                                                    <td colspan="5" class="text-center text-muted py-4">
+                                                        <i class="fa fa-inbox fa-2x mb-2"/><br/>
+                                                        Aucune réservation récente
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    
+    <!-- Dashboard Compagnie Intelligent -->
+    <t t-name="transport_interurbain.CompanyDashboard">
+        <div class="o_transport_company_dashboard">
+            <div class="container-fluid py-4">
+                <!-- Header avec note de la compagnie -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="mb-0">
+                            <i class="fa fa-building me-2"/>
+                            <span t-esc="state.companyName"/>
+                        </h2>
+                        <div class="d-flex align-items-center mt-1">
+                            <small class="text-muted me-3">
+                                <i class="fa fa-clock-o me-1"/>
+                                Dernière MAJ: <t t-esc="state.lastUpdate || '-'"/>
+                            </small>
+                            <span class="text-warning" t-if="state.companyRating > 0">
+                                <t t-foreach="[1,2,3,4,5]" t-as="star" t-key="star">
+                                    <i t-attf-class="fa fa-star{{ star > state.companyRating ? '-o' : '' }}"/>
+                                </t>
+                                <small class="text-muted ms-1">
+                                    (<t t-esc="state.companyRatingCount"/> avis)
+                                </small>
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-success me-2" t-on-click="createTrip">
+                            <i class="fa fa-plus"/> Nouveau voyage
+                        </button>
+                        <button class="btn btn-outline-primary" t-on-click="refresh">
+                            <i class="fa fa-refresh"/> Actualiser
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Loading -->
+                <div t-if="state.loading" class="text-center py-5">
+                    <i class="fa fa-spinner fa-spin fa-3x text-primary"/>
+                    <p class="mt-3 text-muted">Chargement des données...</p>
+                </div>
+                
+                <!-- Pas de compagnie -->
+                <div t-elif="!state.companyId" class="alert alert-warning">
+                    <i class="fa fa-exclamation-triangle me-2"/>
+                    Vous n'êtes pas associé à une compagnie de transport.
+                    <br/>
+                    Contactez l'administrateur pour être rattaché à une compagnie.
+                </div>
+                
+                <div t-else="">
+                    <!-- Alertes intelligentes -->
+                    <div t-if="state.alerts.length > 0" class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-dark text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-bell me-2"/>
+                                        Alertes (<t t-esc="state.alerts.length"/>)
+                                    </h5>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="list-group list-group-flush">
+                                        <t t-foreach="state.alerts" t-as="alert" t-key="alert_index">
+                                            <div t-attf-class="list-group-item list-group-item-{{ alert.type }} d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <i t-attf-class="fa {{ alert.icon }} me-2"/>
+                                                    <strong t-esc="alert.title"/>: 
+                                                    <span t-esc="alert.message"/>
+                                                </div>
+                                                <button t-if="alert.action" class="btn btn-sm btn-outline-dark" 
+                                                        t-on-click="() => this.executeAlertAction(alert.action)">
+                                                    Voir <i class="fa fa-arrow-right ms-1"/>
+                                                </button>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- KPIs avec tendances -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card bg-primary text-white h-100 cursor-pointer shadow-sm" t-on-click="openMyTrips">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="text-white-50">Mes Voyages</h6>
+                                            <h2 class="mb-0" t-esc="formatNumber(state.totalTrips)"/>
+                                        </div>
+                                        <i class="fa fa-bus fa-3x opacity-50"/>
+                                    </div>
+                                    <div class="mt-2">
+                                        <span class="badge bg-light text-primary me-1">
+                                            <t t-esc="state.scheduledTrips"/> programmés
+                                        </span>
+                                        <span class="badge bg-light text-success" t-if="state.completedTrips > 0">
+                                            <t t-esc="state.completedTrips"/> terminés
+                                        </span>
+                                    </div>
+                                    <div class="mt-1" t-if="state.boardingTrips > 0 || state.departedTrips > 0">
+                                        <small>
+                                            <span class="badge bg-warning text-dark" t-if="state.boardingTrips > 0">
+                                                <i class="fa fa-users me-1"/><t t-esc="state.boardingTrips"/> embarquement
+                                            </span>
+                                            <span class="badge bg-info" t-if="state.departedTrips > 0">
+                                                <i class="fa fa-road me-1"/><t t-esc="state.departedTrips"/> en route
+                                            </span>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card bg-success text-white h-100 cursor-pointer shadow-sm" t-on-click="openMyBookings">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="text-white-50">Réservations</h6>
+                                            <h2 class="mb-0" t-esc="formatNumber(state.totalBookings)"/>
+                                        </div>
+                                        <i class="fa fa-ticket fa-3x opacity-50"/>
+                                    </div>
+                                    <div class="mt-2">
+                                        <span class="badge bg-light text-success me-1">
+                                            <t t-esc="state.confirmedBookings"/> confirmées
+                                        </span>
+                                        <span class="badge bg-light text-warning">
+                                            <t t-esc="state.pendingBookings"/> en attente
+                                        </span>
+                                    </div>
+                                    <div class="mt-1" t-if="state.bookingsTrend != 0">
+                                        <small t-attf-class="{{ getTrendClass(state.bookingsTrend) }}">
+                                            <i t-attf-class="fa {{ getTrendIcon(state.bookingsTrend) }}"/>
+                                            <t t-esc="Math.abs(state.bookingsTrend)"/>% vs semaine passée
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card bg-warning text-dark h-100 shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="text-dark-50">Revenu du mois</h6>
+                                            <h2 class="mb-0" t-esc="formatCurrency(state.monthRevenue)"/>
+                                        </div>
+                                        <i class="fa fa-money fa-3x opacity-50"/>
+                                    </div>
+                                    <div class="mt-2" t-if="state.revenueGrowth != 0">
+                                        <span t-attf-class="badge {{ state.revenueGrowth > 0 ? 'bg-success' : 'bg-danger' }}">
+                                            <i t-attf-class="fa {{ getTrendIcon(state.revenueGrowth) }}"/>
+                                            <t t-esc="Math.abs(state.revenueGrowth)"/>% vs mois dernier
+                                        </span>
+                                    </div>
+                                    <div class="mt-1 small">
+                                        <span class="badge bg-dark">
+                                            Semaine: <t t-esc="formatCurrency(state.weekRevenue)"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card bg-info text-white h-100 cursor-pointer shadow-sm" t-on-click="openMyBuses">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="text-white-50">Mes Bus</h6>
+                                            <h2 class="mb-0" t-esc="state.totalBuses"/>
+                                        </div>
+                                        <i class="fa fa-bus fa-3x opacity-50"/>
+                                    </div>
+                                    <div class="mt-2">
+                                        <span class="badge bg-light text-success">
+                                            <i class="fa fa-check me-1"/><t t-esc="state.activeBuses"/> disponibles
+                                        </span>
+                                        <span class="badge bg-light text-secondary ms-1" t-if="state.inMaintenanceBuses > 0">
+                                            <i class="fa fa-wrench me-1"/><t t-esc="state.inMaintenanceBuses"/> maintenance
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats du jour + Performance -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-2 col-6">
+                            <div class="card text-center cursor-pointer shadow-sm" t-on-click="openTodayTrips">
+                                <div class="card-body">
+                                    <h3 class="text-primary mb-0" t-esc="state.todayTrips"/>
+                                    <small class="text-muted">Voyages aujourd'hui</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <div class="card text-center shadow-sm">
+                                <div class="card-body">
+                                    <h3 class="text-success mb-0" t-esc="state.todayBookings"/>
+                                    <small class="text-muted">Réservations aujourd'hui</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <div class="card text-center shadow-sm">
+                                <div class="card-body">
+                                    <h3 class="text-warning mb-0" t-esc="formatCurrency(state.todayRevenue)"/>
+                                    <small class="text-muted">Revenus aujourd'hui</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <div class="card text-center shadow-sm cursor-pointer" t-on-click="openUnpaidBookings">
+                                <div class="card-body">
+                                    <h3 t-attf-class="{{ state.unpaidBookings > 0 ? 'text-danger' : 'text-success' }} mb-0" 
+                                        t-esc="state.unpaidBookings"/>
+                                    <small class="text-muted">Impayées</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <div class="card text-center shadow-sm">
+                                <div class="card-body">
+                                    <h3 t-attf-class="{{ state.avgOccupancyRate >= 70 ? 'text-success' : state.avgOccupancyRate >= 40 ? 'text-warning' : 'text-danger' }} mb-0">
+                                        <t t-esc="state.avgOccupancyRate"/>%
+                                    </h3>
+                                    <small class="text-muted">Taux occupation</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <div class="card text-center shadow-sm">
+                                <div class="card-body">
+                                    <h3 t-attf-class="{{ state.cancellationRate > 10 ? 'text-danger' : 'text-success' }} mb-0">
+                                        <t t-esc="state.cancellationRate"/>%
+                                    </h3>
+                                    <small class="text-muted">Taux annulation</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Prédictions -->
+                    <div class="row g-3 mb-4" t-if="state.predictedRevenue > 0 || state.predictedBookings > 0">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header bg-gradient bg-dark text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-line-chart me-2"/>
+                                        Prévisions (7 prochains jours)
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-3">
+                                                    <i class="fa fa-money fa-2x text-warning"/>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted">Revenus prévus</small>
+                                                    <h4 class="mb-0" t-esc="formatCurrency(state.predictedRevenue)"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-3">
+                                                    <i class="fa fa-ticket fa-2x text-success"/>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted">Réservations prévues</small>
+                                                    <h4 class="mb-0">~ <t t-esc="state.predictedBookings"/></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tendances de la semaine -->
+                    <div class="row g-3 mb-4" t-if="state.weeklyRevenue.length > 0">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-bar-chart me-2"/>
+                                        Revenus des 7 derniers jours
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <t t-foreach="state.weeklyRevenue" t-as="day" t-key="day_index">
+                                            <div class="col text-center">
+                                                <small class="text-muted d-block" t-esc="day.day"/>
+                                                <div class="progress mt-1" style="height: 60px; transform: rotate(180deg);">
+                                                    <div class="progress-bar bg-success" role="progressbar" 
+                                                         t-attf-style="width: 100%; height: {{ Math.max(10, (day.value / Math.max(...state.weeklyRevenue.map(d => d.value || 1))) * 100) }}%"/>
+                                                </div>
+                                                <small class="d-block mt-1 fw-bold" t-esc="formatCurrency(day.value)"/>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tableaux -->
+                    <div class="row g-4">
+                        <!-- Voyages à venir -->
+                        <div class="col-lg-5">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-calendar text-primary me-2"/>
+                                        Prochains Voyages
+                                    </h5>
+                                    <button class="btn btn-sm btn-outline-primary" t-on-click="openMyTrips">
+                                        Voir tout <i class="fa fa-arrow-right ms-1"/>
+                                    </button>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="list-group list-group-flush">
+                                        <t t-foreach="state.upcomingTrips" t-as="trip" t-key="trip.id">
+                                            <a href="#" class="list-group-item list-group-item-action"
+                                               t-on-click.prevent="() => this.openTrip(trip.id)">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <strong t-esc="trip.name"/>
+                                                        <span t-attf-class="badge {{ getStateBadgeClass(trip.state) }} ms-2">
+                                                            <t t-esc="getStateLabel(trip.state)"/>
+                                                        </span>
+                                                        <br/>
+                                                        <small class="text-muted" t-esc="trip.route_id ? trip.route_id[1] : '-'"/>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <span class="small" t-esc="formatDateTime(trip.departure_datetime)"/>
+                                                        <br/>
+                                                        <div class="progress mt-1" style="width: 80px; height: 8px;">
+                                                            <div class="progress-bar" 
+                                                                 t-attf-class="{{ getOccupancyClass(((trip.total_seats - trip.available_seats) / trip.total_seats) * 100) }}"
+                                                                 t-attf-style="width: {{ ((trip.total_seats - trip.available_seats) / trip.total_seats) * 100 }}%"/>
+                                                        </div>
+                                                        <small class="text-muted">
+                                                            <t t-esc="trip.total_seats - trip.available_seats"/>/<t t-esc="trip.total_seats"/> places
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </t>
+                                        <div t-if="!state.upcomingTrips.length" class="list-group-item text-center text-muted py-4">
+                                            <i class="fa fa-calendar-o fa-2x mb-2"/><br/>
+                                            Aucun voyage programmé
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Réservations récentes -->
+                        <div class="col-lg-7">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-clock-o text-success me-2"/>
+                                        Dernières Réservations
+                                    </h5>
+                                    <button class="btn btn-sm btn-outline-success" t-on-click="openMyBookings">
+                                        Voir tout <i class="fa fa-arrow-right ms-1"/>
+                                    </button>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Réf.</th>
+                                                    <th>Passager</th>
+                                                    <th class="text-center">Siège</th>
+                                                    <th class="text-end">Montant</th>
+                                                    <th class="text-center">État</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr t-foreach="state.recentBookings" t-as="booking" t-key="booking.id"
+                                                    t-attf-class="cursor-pointer {{ booking.amount_due > 0 ? 'table-warning' : '' }}"
+                                                    t-on-click="() => this.openBooking(booking.id)">
+                                                    <td>
+                                                        <code class="text-primary" t-esc="booking.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <strong t-esc="booking.passenger_name"/>
+                                                        <br t-if="booking.passenger_phone"/>
+                                                        <small class="text-muted" t-esc="booking.passenger_phone"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span class="badge bg-primary" t-esc="booking.seat_number || '-'"/>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <span t-esc="formatCurrency(booking.total_amount)"/>
+                                                        <br t-if="booking.amount_due > 0"/>
+                                                        <small class="text-danger" t-if="booking.amount_due > 0">
+                                                            <i class="fa fa-exclamation-circle"/> 
+                                                            <t t-esc="formatCurrency(booking.amount_due)"/>
+                                                        </small>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-attf-class="badge {{ getStateBadgeClass(booking.state) }}"
+                                                              t-esc="getStateLabel(booking.state)"/>
+                                                    </td>
+                                                </tr>
+                                                <tr t-if="!state.recentBookings.length">
+                                                    <td colspan="5" class="text-center text-muted py-4">
+                                                        <i class="fa fa-inbox fa-2x mb-2"/><br/>
+                                                        Aucune réservation récente
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    
+</templates>

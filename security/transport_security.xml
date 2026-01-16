@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Module Category -->
+        <record id="module_category_transport" model="ir.module.category">
+            <field name="name">Transport Interurbain</field>
+            <field name="description">Gestion du transport interurbain et des voyages</field>
+            <field name="sequence">60</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- GROUPES DE SÉCURITÉ -->
+        <!-- ============================================ -->
+
+        <!-- Utilisateur Public (Portail) -->
+        <record id="group_transport_portal" model="res.groups">
+            <field name="name">Usager Transport (Portail)</field>
+            <field name="comment">Usager - Peut consulter les voyages et réserver des tickets via le portail</field>
+            <field name="category_id" ref="module_category_transport"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+
+        <!-- Utilisateur Interne de base -->
+        <record id="group_transport_user" model="res.groups">
+            <field name="name">Utilisateur Transport</field>
+            <field name="comment">Utilisateur interne - Accès en lecture aux données de transport</field>
+            <field name="category_id" ref="module_category_transport"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Agent de gare / Billetterie -->
+        <record id="group_transport_agent" model="res.groups">
+            <field name="name">Agent de gare</field>
+            <field name="comment">Agent - Peut vendre des tickets, enregistrer des passagers et gérer les embarquements</field>
+            <field name="category_id" ref="module_category_transport"/>
+            <field name="implied_ids" eval="[(4, ref('group_transport_user'))]"/>
+        </record>
+
+        <!-- Responsable de Compagnie -->
+        <record id="group_transport_company_manager" model="res.groups">
+            <field name="name">Responsable Compagnie</field>
+            <field name="comment">Responsable Compagnie - Peut programmer des voyages, gérer les bus et voir les statistiques de sa compagnie</field>
+            <field name="category_id" ref="module_category_transport"/>
+            <field name="implied_ids" eval="[(4, ref('group_transport_agent'))]"/>
+        </record>
+
+        <!-- Administrateur Transport -->
+        <record id="group_transport_admin" model="res.groups">
+            <field name="name">Administrateur Transport</field>
+            <field name="comment">Administrateur - Accès complet : création d'itinéraires, gestion des compagnies, configuration système</field>
+            <field name="category_id" ref="module_category_transport"/>
+            <field name="implied_ids" eval="[(4, ref('group_transport_company_manager'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- RÈGLES D'ENREGISTREMENT -->
+        <!-- ============================================ -->
+
+        <!-- Règle compagnie: les responsables ne voient que leur compagnie -->
+        <record id="transport_company_manager_rule" model="ir.rule">
+            <field name="name">Compagnie: Responsable voit sa compagnie</field>
+            <field name="model_id" ref="model_transport_company"/>
+            <field name="domain_force">[('manager_ids', 'in', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_transport_company_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Règle compagnie: les admins voient tout -->
+        <record id="transport_company_admin_rule" model="ir.rule">
+            <field name="name">Compagnie: Admin voit tout</field>
+            <field name="model_id" ref="model_transport_company"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_transport_admin'))]"/>
+        </record>
+
+        <!-- Règle bus: les responsables voient les bus de leur compagnie -->
+        <record id="transport_bus_company_rule" model="ir.rule">
+            <field name="name">Bus: Responsable voit sa flotte</field>
+            <field name="model_id" ref="model_transport_bus"/>
+            <field name="domain_force">[('company_id.manager_ids', 'in', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_transport_company_manager'))]"/>
+        </record>
+
+        <!-- Règle voyage: les responsables voient les voyages de leur compagnie -->
+        <record id="transport_trip_company_rule" model="ir.rule">
+            <field name="name">Voyage: Responsable voit ses voyages</field>
+            <field name="model_id" ref="model_transport_trip"/>
+            <field name="domain_force">[('company_id.manager_ids', 'in', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_transport_company_manager'))]"/>
+        </record>
+
+        <!-- Règle voyage: les agents voient les voyages programmés -->
+        <record id="transport_trip_agent_rule" model="ir.rule">
+            <field name="name">Voyage: Agent voit voyages programmés</field>
+            <field name="model_id" ref="model_transport_trip"/>
+            <field name="domain_force">[('state', '!=', 'draft')]</field>
+            <field name="groups" eval="[(4, ref('group_transport_agent'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Règle réservation: les responsables voient les réservations de leur compagnie -->
+        <record id="transport_booking_company_rule" model="ir.rule">
+            <field name="name">Réservation: Responsable voit ses réservations</field>
+            <field name="model_id" ref="model_transport_booking"/>
+            <field name="domain_force">[('company_id.manager_ids', 'in', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_transport_company_manager'))]"/>
+        </record>
+
+        <!-- Règle réservation: utilisateur portail voit ses propres réservations -->
+        <record id="transport_booking_portal_rule" model="ir.rule">
+            <field name="name">Réservation: Usager voit ses réservations</field>
+            <field name="model_id" ref="model_transport_booking"/>
+            <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_transport_portal'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Règle paiement: responsables voient les paiements de leur compagnie -->
+        <record id="transport_payment_company_rule" model="ir.rule">
+            <field name="name">Paiement: Responsable voit ses paiements</field>
+            <field name="model_id" ref="model_transport_payment"/>
+            <field name="domain_force">[('company_id.manager_ids', 'in', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_transport_company_manager'))]"/>
+        </record>
+
+    </data>
+</odoo>

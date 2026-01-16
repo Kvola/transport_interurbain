@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================ -->
+    <!-- VUES POUR LES ITINÉRAIRES -->
+    <!-- ============================================ -->
+
+    <!-- Vue Tree -->
+    <record id="transport_route_view_tree" model="ir.ui.view">
+        <field name="name">transport.route.view.tree</field>
+        <field name="model">transport.route</field>
+        <field name="arch" type="xml">
+            <tree string="Itinéraires" decoration-muted="state == 'suspended'" decoration-info="state == 'draft'">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="departure_city_id"/>
+                <field name="arrival_city_id"/>
+                <field name="distance_km"/>
+                <field name="estimated_duration" widget="float_time"/>
+                <field name="base_price" widget="monetary"/>
+                <field name="stop_count"/>
+                <field name="trip_count"/>
+                <field name="state" widget="badge" 
+                       decoration-success="state == 'active'"
+                       decoration-warning="state == 'draft'"
+                       decoration-danger="state == 'suspended'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vue Form -->
+    <record id="transport_route_view_form" model="ir.ui.view">
+        <field name="name">transport.route.view.form</field>
+        <field name="model">transport.route</field>
+        <field name="arch" type="xml">
+            <form string="Itinéraire">
+                <header>
+                    <button name="action_activate" type="object" string="Activer"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_suspend" type="object" string="Suspendre"
+                            class="btn-warning" invisible="state != 'active'"/>
+                    <button name="action_draft" type="object" string="Brouillon"
+                            invisible="state not in ['active', 'suspended']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_trips" type="object"
+                                class="oe_stat_button" icon="fa-bus">
+                            <field name="trip_count" widget="statinfo" string="Voyages"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="code" readonly="1"/>
+                        </h1>
+                        <h2>
+                            <field name="name" placeholder="Nom de l'itinéraire"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="Trajet">
+                            <field name="departure_city_id"/>
+                            <field name="arrival_city_id"/>
+                            <field name="distance_km"/>
+                            <field name="estimated_duration" widget="float_time"/>
+                        </group>
+                        <group string="Tarification">
+                            <field name="base_price"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Arrêts intermédiaires" name="stops">
+                            <field name="stop_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="city_id"/>
+                                    <field name="distance_from_start"/>
+                                    <field name="duration_from_start" widget="float_time"/>
+                                    <field name="price_from_start"/>
+                                    <field name="price_to_end"/>
+                                    <field name="is_boarding_point"/>
+                                    <field name="is_dropoff_point"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Description de l'itinéraire..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vue Kanban -->
+    <record id="transport_route_view_kanban" model="ir.ui.view">
+        <field name="name">transport.route.view.kanban</field>
+        <field name="model">transport.route</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="departure_city_id"/>
+                <field name="arrival_city_id"/>
+                <field name="distance_km"/>
+                <field name="base_price"/>
+                <field name="state"/>
+                <field name="currency_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                <div class="o_kanban_tags_section">
+                                    <span t-attf-class="badge #{record.state.raw_value == 'active' ? 'bg-success' : record.state.raw_value == 'draft' ? 'bg-warning' : 'bg-danger'}">
+                                        <field name="state"/>
+                                    </span>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <i class="fa fa-road me-1"/> <field name="distance_km"/> km
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-money me-1"/> <field name="base_price" widget="monetary"/> FCFA
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vue Search -->
+    <record id="transport_route_view_search" model="ir.ui.view">
+        <field name="name">transport.route.view.search</field>
+        <field name="model">transport.route</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher un itinéraire">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="departure_city_id"/>
+                <field name="arrival_city_id"/>
+                <filter string="Actifs" name="active_routes" domain="[('state', '=', 'active')]"/>
+                <filter string="Brouillons" name="draft" domain="[('state', '=', 'draft')]"/>
+                <separator/>
+                <filter string="Suspendus" name="suspended" domain="[('state', '=', 'suspended')]"/>
+                <group expand="0" string="Grouper par">
+                    <filter string="Ville de départ" name="departure" context="{'group_by': 'departure_city_id'}"/>
+                    <filter string="Ville d'arrivée" name="arrival" context="{'group_by': 'arrival_city_id'}"/>
+                    <filter string="État" name="state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="transport_route_action" model="ir.actions.act_window">
+        <field name="name">Itinéraires</field>
+        <field name="res_model">transport.route</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="search_view_id" ref="transport_route_view_search"/>
+        <field name="context">{'search_default_active_routes': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer un nouvel itinéraire
+            </p>
+            <p>
+                Définissez les itinéraires de voyage avec les villes de départ et d'arrivée,
+                les arrêts intermédiaires et les tarifs.
+            </p>
+        </field>
+    </record>
+
+</odoo>

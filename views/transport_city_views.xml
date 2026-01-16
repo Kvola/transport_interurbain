@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================ -->
+    <!-- VUES POUR LES VILLES / ARRÊTS -->
+    <!-- ============================================ -->
+
+    <!-- Vue Tree -->
+    <record id="transport_city_view_tree" model="ir.ui.view">
+        <field name="name">transport.city.view.tree</field>
+        <field name="model">transport.city</field>
+        <field name="arch" type="xml">
+            <tree string="Villes">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="region"/>
+                <field name="is_major_city"/>
+                <field name="departure_count"/>
+                <field name="arrival_count"/>
+                <field name="active" column_invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vue Form -->
+    <record id="transport_city_view_form" model="ir.ui.view">
+        <field name="name">transport.city.view.form</field>
+        <field name="model">transport.city</field>
+        <field name="arch" type="xml">
+            <form string="Ville">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_departures" type="object"
+                                class="oe_stat_button" icon="fa-plane">
+                            <field name="departure_count" widget="statinfo" string="Départs"/>
+                        </button>
+                        <button name="action_view_arrivals" type="object"
+                                class="oe_stat_button" icon="fa-map-marker">
+                            <field name="arrival_count" widget="statinfo" string="Arrivées"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archivé" bg_color="bg-danger"
+                            invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="region"/>
+                            <field name="country_id"/>
+                        </group>
+                        <group>
+                            <field name="is_major_city"/>
+                            <field name="latitude"/>
+                            <field name="longitude"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Description de la ville..."/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vue Kanban -->
+    <record id="transport_city_view_kanban" model="ir.ui.view">
+        <field name="name">transport.city.view.kanban</field>
+        <field name="model">transport.city</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="region"/>
+                <field name="is_major_city"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                    <span class="badge bg-primary ms-2" t-if="record.is_major_city.raw_value">
+                                        Principale
+                                    </span>
+                                </strong>
+                                <div class="text-muted">
+                                    <span><field name="code"/></span>
+                                    <span t-if="record.region.value"> - <field name="region"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vue Search -->
+    <record id="transport_city_view_search" model="ir.ui.view">
+        <field name="name">transport.city.view.search</field>
+        <field name="model">transport.city</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher une ville">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="region"/>
+                <filter string="Villes principales" name="major" domain="[('is_major_city', '=', True)]"/>
+                <filter string="Archivées" name="archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Grouper par">
+                    <filter string="Région" name="region" context="{'group_by': 'region'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="transport_city_action" model="ir.actions.act_window">
+        <field name="name">Villes</field>
+        <field name="res_model">transport.city</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="search_view_id" ref="transport_city_view_search"/>
+        <field name="context">{'search_default_major': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer une nouvelle ville
+            </p>
+            <p>
+                Ajoutez les villes et arrêts pour les itinéraires de transport.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================ -->
+    <!-- TABLEAU DE BORD ADMINISTRATEUR -->
+    <!-- ============================================ -->
+
+    <record id="transport_admin_dashboard_action" model="ir.actions.client">
+        <field name="name">Tableau de bord Admin</field>
+        <field name="tag">transport_admin_dashboard</field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- TABLEAU DE BORD COMPAGNIE -->
+    <!-- ============================================ -->
+
+    <record id="transport_company_dashboard_action" model="ir.actions.client">
+        <field name="name">Tableau de bord Compagnie</field>
+        <field name="tag">transport_company_dashboard</field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- VUE PIVOT POUR STATISTIQUES -->
+    <!-- ============================================ -->
+
+    <record id="transport_booking_view_pivot" model="ir.ui.view">
+        <field name="name">transport.booking.view.pivot</field>
+        <field name="model">transport.booking</field>
+        <field name="arch" type="xml">
+            <pivot string="Analyse des réservations">
+                <field name="departure_datetime" type="row" interval="month"/>
+                <field name="company_id" type="col"/>
+                <field name="total_amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="transport_booking_view_graph" model="ir.ui.view">
+        <field name="name">transport.booking.view.graph</field>
+        <field name="model">transport.booking</field>
+        <field name="arch" type="xml">
+            <graph string="Réservations" type="bar">
+                <field name="departure_datetime" type="row" interval="day"/>
+                <field name="total_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Action statistiques -->
+    <record id="transport_booking_stats_action" model="ir.actions.act_window">
+        <field name="name">Statistiques Réservations</field>
+        <field name="res_model">transport.booking</field>
+        <field name="view_mode">pivot,graph,tree</field>
+        <field name="domain">[('state', 'in', ['confirmed', 'completed'])]</field>
+    </record>
+
+    <!-- Vue pivot voyages -->
+    <record id="transport_trip_view_pivot" model="ir.ui.view">
+        <field name="name">transport.trip.view.pivot</field>
+        <field name="model">transport.trip</field>
+        <field name="arch" type="xml">
+            <pivot string="Analyse des voyages">
+                <field name="departure_date" type="row" interval="month"/>
+                <field name="route_id" type="col"/>
+                <field name="booked_seats" type="measure"/>
+                <field name="available_seats" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="transport_trip_view_graph" model="ir.ui.view">
+        <field name="name">transport.trip.view.graph</field>
+        <field name="model">transport.trip</field>
+        <field name="arch" type="xml">
+            <graph string="Taux de remplissage" type="line">
+                <field name="departure_date" type="row" interval="day"/>
+                <field name="occupancy_rate" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Action statistiques voyages -->
+    <record id="transport_trip_stats_action" model="ir.actions.act_window">
+        <field name="name">Statistiques Voyages</field>
+        <field name="res_model">transport.trip</field>
+        <field name="view_mode">pivot,graph,tree</field>
+    </record>
+
+</odoo>

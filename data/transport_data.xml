@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ============================================ -->
+        <!-- VILLES PRINCIPALES DE CÔTE D'IVOIRE -->
+        <!-- ============================================ -->
+        
+        <record id="city_abidjan" model="transport.city">
+            <field name="name">Abidjan</field>
+            <field name="code">ABJ</field>
+            <field name="region">Lagunes</field>
+            <field name="is_major_city" eval="True"/>
+            <field name="latitude">5.3599</field>
+            <field name="longitude">-4.0083</field>
+        </record>
+
+        <record id="city_yamoussoukro" model="transport.city">
+            <field name="name">Yamoussoukro</field>
+            <field name="code">YAM</field>
+            <field name="region">Lacs</field>
+            <field name="is_major_city" eval="True"/>
+            <field name="latitude">6.8206</field>
+            <field name="longitude">-5.2764</field>
+        </record>
+
+        <record id="city_bouake" model="transport.city">
+            <field name="name">Bouaké</field>
+            <field name="code">BKE</field>
+            <field name="region">Vallée du Bandama</field>
+            <field name="is_major_city" eval="True"/>
+            <field name="latitude">7.6939</field>
+            <field name="longitude">-5.0308</field>
+        </record>
+
+        <record id="city_korhogo" model="transport.city">
+            <field name="name">Korhogo</field>
+            <field name="code">KRH</field>
+            <field name="region">Savanes</field>
+            <field name="is_major_city" eval="True"/>
+            <field name="latitude">9.4580</field>
+            <field name="longitude">-5.6294</field>
+        </record>
+
+        <record id="city_san_pedro" model="transport.city">
+            <field name="name">San Pedro</field>
+            <field name="code">SPD</field>
+            <field name="region">Bas-Sassandra</field>
+            <field name="is_major_city" eval="True"/>
+            <field name="latitude">4.7485</field>
+            <field name="longitude">-6.6363</field>
+        </record>
+
+        <record id="city_daloa" model="transport.city">
+            <field name="name">Daloa</field>
+            <field name="code">DLO</field>
+            <field name="region">Haut-Sassandra</field>
+            <field name="is_major_city" eval="True"/>
+            <field name="latitude">6.8774</field>
+            <field name="longitude">-6.4502</field>
+        </record>
+
+        <record id="city_man" model="transport.city">
+            <field name="name">Man</field>
+            <field name="code">MAN</field>
+            <field name="region">Montagnes</field>
+            <field name="is_major_city" eval="True"/>
+            <field name="latitude">7.4125</field>
+            <field name="longitude">-7.5536</field>
+        </record>
+
+        <record id="city_gagnoa" model="transport.city">
+            <field name="name">Gagnoa</field>
+            <field name="code">GAG</field>
+            <field name="region">Gôh</field>
+            <field name="is_major_city" eval="True"/>
+            <field name="latitude">6.1319</field>
+            <field name="longitude">-5.9506</field>
+        </record>
+
+        <record id="city_divo" model="transport.city">
+            <field name="name">Divo</field>
+            <field name="code">DIV</field>
+            <field name="region">Lôh-Djiboua</field>
+            <field name="is_major_city" eval="False"/>
+            <field name="latitude">5.8392</field>
+            <field name="longitude">-5.3597</field>
+        </record>
+
+        <record id="city_abengourou" model="transport.city">
+            <field name="name">Abengourou</field>
+            <field name="code">ABG</field>
+            <field name="region">Indénié-Djuablin</field>
+            <field name="is_major_city" eval="True"/>
+            <field name="latitude">6.7297</field>
+            <field name="longitude">-3.4964</field>
+        </record>
+
+        <record id="city_grand_bassam" model="transport.city">
+            <field name="name">Grand-Bassam</field>
+            <field name="code">GBA</field>
+            <field name="region">Sud-Comoé</field>
+            <field name="is_major_city" eval="False"/>
+            <field name="latitude">5.2089</field>
+            <field name="longitude">-3.7342</field>
+        </record>
+
+        <record id="city_odienne" model="transport.city">
+            <field name="name">Odienné</field>
+            <field name="code">ODN</field>
+            <field name="region">Kabadougou</field>
+            <field name="is_major_city" eval="True"/>
+            <field name="latitude">9.5089</field>
+            <field name="longitude">-7.5633</field>
+        </record>
+
+        <record id="city_ferkessedougou" model="transport.city">
+            <field name="name">Ferkessédougou</field>
+            <field name="code">FER</field>
+            <field name="region">Tchologo</field>
+            <field name="is_major_city" eval="False"/>
+            <field name="latitude">9.5950</field>
+            <field name="longitude">-5.1947</field>
+        </record>
+
+        <record id="city_bondoukou" model="transport.city">
+            <field name="name">Bondoukou</field>
+            <field name="code">BDK</field>
+            <field name="region">Gontougo</field>
+            <field name="is_major_city" eval="True"/>
+            <field name="latitude">8.0403</field>
+            <field name="longitude">-2.8000</field>
+        </record>
+
+        <record id="city_dimbokro" model="transport.city">
+            <field name="name">Dimbokro</field>
+            <field name="code">DMB</field>
+            <field name="region">N'Zi</field>
+            <field name="is_major_city" eval="False"/>
+            <field name="latitude">6.6494</field>
+            <field name="longitude">-4.7050</field>
+        </record>
+
+        <record id="city_soubre" model="transport.city">
+            <field name="name">Soubré</field>
+            <field name="code">SBR</field>
+            <field name="region">Nawa</field>
+            <field name="is_major_city" eval="False"/>
+            <field name="latitude">5.7856</field>
+            <field name="longitude">-6.5950</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- ITINÉRAIRES POPULAIRES -->
+        <!-- ============================================ -->
+
+        <record id="route_abidjan_bouake" model="transport.route">
+            <field name="departure_city_id" ref="city_abidjan"/>
+            <field name="arrival_city_id" ref="city_bouake"/>
+            <field name="distance_km">350</field>
+            <field name="estimated_duration">4.5</field>
+            <field name="base_price">5000</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="route_abidjan_yamoussoukro" model="transport.route">
+            <field name="departure_city_id" ref="city_abidjan"/>
+            <field name="arrival_city_id" ref="city_yamoussoukro"/>
+            <field name="distance_km">240</field>
+            <field name="estimated_duration">3.0</field>
+            <field name="base_price">4000</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="route_abidjan_san_pedro" model="transport.route">
+            <field name="departure_city_id" ref="city_abidjan"/>
+            <field name="arrival_city_id" ref="city_san_pedro"/>
+            <field name="distance_km">350</field>
+            <field name="estimated_duration">5.0</field>
+            <field name="base_price">6000</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="route_abidjan_daloa" model="transport.route">
+            <field name="departure_city_id" ref="city_abidjan"/>
+            <field name="arrival_city_id" ref="city_daloa"/>
+            <field name="distance_km">383</field>
+            <field name="estimated_duration">5.5</field>
+            <field name="base_price">5500</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="route_abidjan_korhogo" model="transport.route">
+            <field name="departure_city_id" ref="city_abidjan"/>
+            <field name="arrival_city_id" ref="city_korhogo"/>
+            <field name="distance_km">635</field>
+            <field name="estimated_duration">8.0</field>
+            <field name="base_price">9000</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="route_abidjan_man" model="transport.route">
+            <field name="departure_city_id" ref="city_abidjan"/>
+            <field name="arrival_city_id" ref="city_man"/>
+            <field name="distance_km">570</field>
+            <field name="estimated_duration">7.0</field>
+            <field name="base_price">8000</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="route_bouake_korhogo" model="transport.route">
+            <field name="departure_city_id" ref="city_bouake"/>
+            <field name="arrival_city_id" ref="city_korhogo"/>
+            <field name="distance_km">290</field>
+            <field name="estimated_duration">3.5</field>
+            <field name="base_price">4000</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Arrêts intermédiaires pour Abidjan - Bouaké -->
+        <record id="stop_abj_bke_yamoussoukro" model="transport.route.stop">
+            <field name="route_id" ref="route_abidjan_bouake"/>
+            <field name="city_id" ref="city_yamoussoukro"/>
+            <field name="sequence">10</field>
+            <field name="distance_from_start">240</field>
+            <field name="duration_from_start">3.0</field>
+            <field name="price_from_start">4000</field>
+            <field name="price_to_end">2000</field>
+        </record>
+
+        <!-- Arrêts intermédiaires pour Abidjan - Korhogo -->
+        <record id="stop_abj_krh_yamoussoukro" model="transport.route.stop">
+            <field name="route_id" ref="route_abidjan_korhogo"/>
+            <field name="city_id" ref="city_yamoussoukro"/>
+            <field name="sequence">10</field>
+            <field name="distance_from_start">240</field>
+            <field name="duration_from_start">3.0</field>
+            <field name="price_from_start">4000</field>
+            <field name="price_to_end">6000</field>
+        </record>
+
+        <record id="stop_abj_krh_bouake" model="transport.route.stop">
+            <field name="route_id" ref="route_abidjan_korhogo"/>
+            <field name="city_id" ref="city_bouake"/>
+            <field name="sequence">20</field>
+            <field name="distance_from_start">350</field>
+            <field name="duration_from_start">4.5</field>
+            <field name="price_from_start">5000</field>
+            <field name="price_to_end">4500</field>
+        </record>
+
+        <record id="stop_abj_krh_ferke" model="transport.route.stop">
+            <field name="route_id" ref="route_abidjan_korhogo"/>
+            <field name="city_id" ref="city_ferkessedougou"/>
+            <field name="sequence">30</field>
+            <field name="distance_from_start">550</field>
+            <field name="duration_from_start">7.0</field>
+            <field name="price_from_start">7500</field>
+            <field name="price_to_end">2000</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- TÂCHE PLANIFIÉE EXPIRATION RÉSERVATIONS -->
+        <!-- ============================================ -->
+
+        <record id="ir_cron_expire_reservations" model="ir.cron">
+            <field name="name">Transport: Expirer les réservations non payées</field>
+            <field name="model_id" ref="model_transport_booking"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_expire_reservations()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- PARAMÈTRES SYSTÈME -->
+        <!-- ============================================ -->
+
+        <record id="transport_config_wave_enabled" model="ir.config_parameter">
+            <field name="key">transport.wave_payment_enabled</field>
+            <field name="value">True</field>
+        </record>
+
+        <record id="transport_config_booking_reminder" model="ir.config_parameter">
+            <field name="key">transport.booking_reminder_hours</field>
+            <field name="value">2</field>
+        </record>
+
+        <record id="transport_config_min_booking_before" model="ir.config_parameter">
+            <field name="key">transport.min_booking_hours_before</field>
+            <field name="value">1</field>
+        </record>
+
+    </data>
+</odoo>

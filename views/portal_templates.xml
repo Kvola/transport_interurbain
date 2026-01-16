@@ -1,0 +1,1397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================ -->
+    <!-- TEMPLATES PORTAIL TRANSPORT -->
+    <!-- ============================================ -->
+
+    <!-- Ajout au menu portail -->
+    <template id="portal_my_home_transport" name="Transport" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="transport_bookings" t-value="request.env['transport.booking'].search_count([('partner_id', '=', request.env.user.partner_id.id)])"/>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'fa fa-bus'"/>
+                <t t-set="title">Mes billets de transport</t>
+                <t t-set="url" t-value="'/my/bookings'"/>
+                <t t-set="text">Gérer mes réservations</t>
+                <t t-set="placeholder_count" t-value="transport_bookings"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Breadcrumb -->
+    <template id="portal_breadcrumb_transport" name="Portal Breadcrumb Transport">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/my/home"><i class="fa fa-home"/></a></li>
+            <li class="breadcrumb-item active" t-esc="page_name"/>
+        </ol>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- PAGE D'ACCUEIL TRANSPORT -->
+    <!-- ============================================ -->
+
+    <template id="transport_portal_home" name="Transport - Page d'accueil">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="transport_interurbain.portal_breadcrumb_transport">
+                <t t-set="page_name">Transport Interurbain</t>
+            </t>
+
+            <div class="container mt-4">
+                <!-- Barre de recherche -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title mb-3">
+                            <i class="fa fa-search me-2"/> Rechercher un voyage
+                        </h4>
+                        <form action="/transport/search" method="get" class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Ville de départ</label>
+                                <select name="departure_id" class="form-select" required="required">
+                                    <option value="">Sélectionner...</option>
+                                    <t t-foreach="cities" t-as="city">
+                                        <option t-att-value="city.id" t-esc="city.name"/>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Ville d'arrivée</label>
+                                <select name="arrival_id" class="form-select" required="required">
+                                    <option value="">Sélectionner...</option>
+                                    <t t-foreach="cities" t-as="city">
+                                        <option t-att-value="city.id" t-esc="city.name"/>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Date aller</label>
+                                <input type="date" name="departure_date" class="form-control" 
+                                       t-att-min="today" required="required"/>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Date retour (optionnel)</label>
+                                <input type="date" name="return_date" class="form-control" t-att-min="today"/>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fa fa-search me-1"/> Rechercher
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Voyages du jour -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h4><i class="fa fa-calendar me-2"/> Voyages du jour</h4>
+                    </div>
+                </div>
+
+                <div class="row" t-if="today_trips">
+                    <t t-foreach="today_trips" t-as="trip">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">
+                                        <t t-esc="trip.route_id.name"/>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><i class="fa fa-building me-1"/> <t t-esc="trip.company_id.name"/></span>
+                                        <span class="badge bg-success">
+                                            <t t-esc="trip.available_seats"/> places
+                                        </span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <i class="fa fa-clock-o me-1"/>
+                                        <strong><t t-esc="trip.departure_datetime" t-options='{"widget": "datetime", "format": "HH:mm"}'/></strong>
+                                    </div>
+                                    <div class="mb-2">
+                                        <i class="fa fa-map-marker me-1"/>
+                                        <t t-esc="trip.meeting_point"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="fs-4 text-primary fw-bold">
+                                            <t t-esc="'{:,.0f}'.format(trip.price)"/> FCFA
+                                        </span>
+                                    </div>
+                                    <a t-attf-href="/transport/trip/#{trip.id}" class="btn btn-outline-primary w-100"
+                                       t-att-class="'btn btn-outline-primary w-100' if trip.available_seats > 0 else 'btn btn-secondary w-100 disabled'">
+                                        <t t-if="trip.available_seats > 0">
+                                            <i class="fa fa-ticket me-1"/> Réserver
+                                        </t>
+                                        <t t-else="">
+                                            Complet
+                                        </t>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="alert alert-info" t-else="">
+                    <i class="fa fa-info-circle me-2"/> Aucun voyage programmé pour aujourd'hui.
+                </div>
+
+                <!-- Compagnies partenaires -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h4><i class="fa fa-handshake-o me-2"/> Nos compagnies partenaires</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <t t-foreach="companies" t-as="company">
+                        <div class="col-md-3 col-6 mb-3">
+                            <a t-attf-href="/transport/company/#{company.id}" class="text-decoration-none">
+                                <div class="card h-100 text-center shadow-sm">
+                                    <div class="card-body">
+                                        <t t-if="company.logo">
+                                            <img t-attf-src="data:image/png;base64,#{company.logo.decode()}" 
+                                                 class="img-fluid mb-2" style="max-height: 60px;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-bus fa-3x text-muted mb-2"/>
+                                        </t>
+                                        <h6 class="card-title mb-0" t-esc="company.name"/>
+                                        <div class="text-warning" t-if="company.rating">
+                                            <t t-foreach="range(5)" t-as="star">
+                                                <i t-att-class="'fa fa-star' if star_index &lt; company.rating else 'fa fa-star-o'"/>
+                                            </t>
+                                            <small class="text-muted">(<t t-esc="company.rating_count"/>)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- PAGE RÉSULTATS DE RECHERCHE -->
+    <!-- ============================================ -->
+
+    <template id="transport_search_results" name="Transport - Résultats de recherche">
+        <t t-call="portal.portal_layout">
+            <t t-call="transport_interurbain.portal_breadcrumb_transport">
+                <t t-set="page_name">Résultats de recherche</t>
+            </t>
+
+            <div class="container mt-4">
+                <h3 class="mb-4">
+                    <i class="fa fa-bus me-2"/>
+                    <t t-esc="departure_city.name"/> → <t t-esc="arrival_city.name"/>
+                    <small class="text-muted">- <t t-esc="departure_date"/></small>
+                </h3>
+
+                <div class="row" t-if="trips">
+                    <t t-foreach="trips" t-as="trip">
+                        <div class="col-12 mb-3">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-2 text-center">
+                                            <t t-if="trip.company_id.logo">
+                                                <img t-attf-src="data:image/png;base64,#{trip.company_id.logo.decode()}" 
+                                                     class="img-fluid" style="max-height: 50px;"/>
+                                            </t>
+                                            <div class="small text-muted" t-esc="trip.company_id.name"/>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="fs-4 fw-bold">
+                                                <t t-esc="trip.departure_datetime" t-options='{"widget": "datetime", "format": "HH:mm"}'/>
+                                            </div>
+                                            <div class="text-muted">
+                                                <i class="fa fa-map-marker me-1"/>
+                                                <t t-esc="trip.meeting_point"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <i class="fa fa-long-arrow-right fa-2x text-muted"/>
+                                            <div class="small text-muted">
+                                                <t t-esc="trip.route_id.estimated_duration"/>h
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="fs-4 fw-bold">
+                                                <t t-esc="trip.arrival_datetime" t-options='{"widget": "datetime", "format": "HH:mm"}'/>
+                                            </div>
+                                            <div class="text-muted">
+                                                <t t-esc="arrival_city.name"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <div class="fs-3 text-primary fw-bold">
+                                                <t t-esc="'{:,.0f}'.format(trip.price)"/>
+                                            </div>
+                                            <div class="small text-muted">FCFA</div>
+                                            <span t-attf-class="badge #{trip.available_seats > 5 and 'bg-success' or trip.available_seats > 0 and 'bg-warning' or 'bg-danger'}">
+                                                <t t-esc="trip.available_seats"/> places
+                                            </span>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a t-attf-href="/transport/trip/#{trip.id}/book" 
+                                               class="btn btn-primary"
+                                               t-att-class="'btn btn-primary' if trip.available_seats > 0 else 'btn btn-secondary disabled'">
+                                                <i class="fa fa-ticket"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- Équipements -->
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <small class="text-muted">
+                                                <t t-if="trip.bus_id.has_ac"><span class="badge bg-light text-dark me-1"><i class="fa fa-snowflake-o"/> Clim</span></t>
+                                                <t t-if="trip.bus_id.has_wifi"><span class="badge bg-light text-dark me-1"><i class="fa fa-wifi"/> WiFi</span></t>
+                                                <t t-if="trip.bus_id.has_usb"><span class="badge bg-light text-dark me-1"><i class="fa fa-usb"/> USB</span></t>
+                                                <t t-if="trip.bus_id.has_tv"><span class="badge bg-light text-dark me-1"><i class="fa fa-tv"/> TV</span></t>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="alert alert-warning" t-else="">
+                    <i class="fa fa-exclamation-triangle me-2"/> 
+                    Aucun voyage trouvé pour cette date et cet itinéraire.
+                    <a href="/transport" class="alert-link">Modifier la recherche</a>
+                </div>
+
+                <!-- Résultats retour si aller-retour -->
+                <div t-if="return_trips">
+                    <h4 class="mt-4 mb-3">
+                        <i class="fa fa-reply me-2"/>
+                        Retour : <t t-esc="arrival_city.name"/> → <t t-esc="departure_city.name"/>
+                        <small class="text-muted">- <t t-esc="return_date"/></small>
+                    </h4>
+                    <div class="row">
+                        <t t-foreach="return_trips" t-as="trip">
+                            <!-- Même structure que ci-dessus -->
+                            <div class="col-12 mb-3">
+                                <div class="card shadow-sm border-info">
+                                    <div class="card-body">
+                                        <!-- Contenu similaire -->
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2 text-center">
+                                                <div class="small text-muted" t-esc="trip.company_id.name"/>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="fs-4 fw-bold">
+                                                    <t t-esc="trip.departure_datetime" t-options='{"widget": "datetime", "format": "HH:mm"}'/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center">
+                                                <i class="fa fa-long-arrow-right fa-2x text-muted"/>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="fs-4 fw-bold">
+                                                    <t t-esc="trip.arrival_datetime" t-options='{"widget": "datetime", "format": "HH:mm"}'/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center">
+                                                <div class="fs-3 text-primary fw-bold">
+                                                    <t t-esc="'{:,.0f}'.format(trip.price)"/>
+                                                </div>
+                                                <span class="badge bg-success">
+                                                    <t t-esc="trip.available_seats"/> places
+                                                </span>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a t-attf-href="/transport/trip/#{trip.id}/book?return=1" 
+                                                   class="btn btn-info">
+                                                    <i class="fa fa-ticket"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- PAGE DÉTAIL VOYAGE & RÉSERVATION -->
+    <!-- ============================================ -->
+
+    <template id="transport_trip_detail" name="Transport - Détail voyage">
+        <t t-call="portal.portal_layout">
+            <t t-call="transport_interurbain.portal_breadcrumb_transport">
+                <t t-set="page_name">Réserver un billet</t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <!-- Formulaire de réservation -->
+                    <div class="col-md-8">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-ticket me-2"/>
+                                    Réserver pour <t t-esc="trip.route_id.name"/>
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <form action="/transport/booking/create" method="post" id="booking_form">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" name="trip_id" t-att-value="trip.id"/>
+
+                                    <!-- Informations passager -->
+                                    <h6 class="border-bottom pb-2 mb-3">
+                                        <i class="fa fa-user me-1"/> Informations passager
+                                    </h6>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Nom complet *</label>
+                                            <input type="text" name="passenger_name" class="form-control" 
+                                                   required="required" t-att-value="user.name if user else ''"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Téléphone *</label>
+                                            <input type="tel" name="passenger_phone" class="form-control" 
+                                                   required="required" t-att-value="user.phone if user else ''"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" name="passenger_email" class="form-control"
+                                                   t-att-value="user.email if user else ''"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Type de billet</label>
+                                            <select name="ticket_type" class="form-select" id="ticket_type">
+                                                <option value="adult" t-att-data-price="trip.price">Adulte</option>
+                                                <option value="child" t-att-data-price="trip.child_price or trip.price * 0.5">Enfant (-12 ans)</option>
+                                                <t t-if="trip.vip_price">
+                                                    <option value="vip" t-att-data-price="trip.vip_price">VIP</option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Sélection du siège -->
+                                    <h6 class="border-bottom pb-2 mb-3 mt-4">
+                                        <i class="fa fa-th me-1"/> Choisir votre siège
+                                    </h6>
+                                    <div class="seat-map mb-3" id="seat_map">
+                                        <div class="d-flex flex-wrap justify-content-center">
+                                            <t t-foreach="seats" t-as="seat">
+                                                <div t-attf-class="seat-item m-1 p-2 text-center rounded #{seat.is_booked and 'bg-danger text-white' or seat.seat_type == 'vip' and 'bg-warning' or 'bg-light'}"
+                                                     t-att-data-seat-id="seat.id"
+                                                     t-att-data-seat-number="seat.seat_number"
+                                                     style="width: 40px; cursor: pointer;">
+                                                    <small t-esc="seat.seat_number"/>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <div class="mt-2 small">
+                                            <span class="badge bg-light text-dark me-2"><i class="fa fa-square"/> Disponible</span>
+                                            <span class="badge bg-warning me-2"><i class="fa fa-square"/> VIP</span>
+                                            <span class="badge bg-danger me-2"><i class="fa fa-square"/> Occupé</span>
+                                            <span class="badge bg-primary me-2"><i class="fa fa-square"/> Sélectionné</span>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="seat_id" id="selected_seat_id"/>
+
+                                    <!-- Bagages -->
+                                    <t t-if="trip.manage_luggage">
+                                        <h6 class="border-bottom pb-2 mb-3 mt-4">
+                                            <i class="fa fa-suitcase me-1"/> Bagages
+                                        </h6>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Nombre de bagages</label>
+                                                <input type="number" name="luggage_count" class="form-control" 
+                                                       min="0" max="3" value="1"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Poids estimé (kg)</label>
+                                                <input type="number" name="luggage_weight" class="form-control" 
+                                                       min="0" max="50" value="15" id="luggage_weight"/>
+                                                <small class="text-muted">
+                                                    <t t-esc="trip.luggage_included_kg"/> kg inclus. 
+                                                    Supplément: <t t-esc="'{:,.0f}'.format(trip.extra_luggage_price)"/> FCFA/kg
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </t>
+
+                                    <!-- Mode de paiement -->
+                                    <h6 class="border-bottom pb-2 mb-3 mt-4">
+                                        <i class="fa fa-credit-card me-1"/> Mode de paiement
+                                    </h6>
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="booking_type" 
+                                                       id="book_reserve" value="reservation" checked="checked"/>
+                                                <label class="form-check-label" for="book_reserve">
+                                                    <i class="fa fa-clock-o me-1"/> Réserver (payer plus tard - 24h max)
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="booking_type" 
+                                                       id="book_pay" value="purchase"/>
+                                                <label class="form-check-label" for="book_pay">
+                                                    <i class="fa fa-money me-1"/> Payer maintenant (Wave)
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">
+                                        <i class="fa fa-check me-1"/> Confirmer la réservation
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Récapitulatif -->
+                    <div class="col-md-4">
+                        <div class="card shadow-sm sticky-top" style="top: 20px;">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fa fa-info-circle me-1"/> Récapitulatif
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <strong><t t-esc="trip.company_id.name"/></strong>
+                                </div>
+                                <div class="mb-2">
+                                    <i class="fa fa-route me-2"/>
+                                    <t t-esc="trip.route_id.name"/>
+                                </div>
+                                <div class="mb-2">
+                                    <i class="fa fa-calendar me-2"/>
+                                    <t t-esc="trip.departure_datetime" t-options='{"widget": "datetime"}'/>
+                                </div>
+                                <div class="mb-2">
+                                    <i class="fa fa-map-marker me-2"/>
+                                    <t t-esc="trip.meeting_point"/>
+                                </div>
+                                <hr/>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Prix du billet</span>
+                                    <span id="ticket_price_display"><t t-esc="'{:,.0f}'.format(trip.price)"/> FCFA</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2" id="luggage_extra_row" style="display: none !important;">
+                                    <span>Supplément bagages</span>
+                                    <span id="luggage_extra_display">0 FCFA</span>
+                                </div>
+                                <hr/>
+                                <div class="d-flex justify-content-between">
+                                    <strong>Total</strong>
+                                    <strong class="text-primary fs-4" id="total_display">
+                                        <t t-esc="'{:,.0f}'.format(trip.price)"/> FCFA
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- MES RÉSERVATIONS -->
+    <!-- ============================================ -->
+
+    <template id="portal_my_bookings" name="Mes réservations">
+        <t t-call="portal.portal_layout">
+            <t t-call="transport_interurbain.portal_breadcrumb_transport">
+                <t t-set="page_name">Mes billets de transport</t>
+            </t>
+
+            <div class="container mt-4">
+                <h3 class="mb-4">
+                    <i class="fa fa-ticket me-2"/> Mes billets de transport
+                </h3>
+
+                <!-- Tableau de bord usager -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h3 t-esc="stats.get('total', 0)"/>
+                                <div>Total voyages</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body text-center">
+                                <h3 t-esc="stats.get('confirmed', 0)"/>
+                                <div>Confirmés</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-dark">
+                            <div class="card-body text-center">
+                                <h3 t-esc="stats.get('pending', 0)"/>
+                                <div>En attente</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white">
+                            <div class="card-body text-center">
+                                <h3><t t-esc="'{:,.0f}'.format(stats.get('spent', 0))"/></h3>
+                                <div>FCFA dépensés</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liste des réservations -->
+                <div class="card shadow-sm" t-if="bookings">
+                    <div class="card-body p-0">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Référence</th>
+                                    <th>Voyage</th>
+                                    <th>Date</th>
+                                    <th>Siège</th>
+                                    <th>Montant</th>
+                                    <th>État</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="bookings" t-as="booking">
+                                    <tr>
+                                        <td>
+                                            <a t-attf-href="/my/bookings/#{booking.id}">
+                                                <t t-esc="booking.name"/>
+                                            </a>
+                                        </td>
+                                        <td><t t-esc="booking.route_id.name"/></td>
+                                        <td><t t-esc="booking.departure_datetime" t-options='{"widget": "datetime"}'/></td>
+                                        <td><t t-esc="booking.seat_number"/></td>
+                                        <td><t t-esc="'{:,.0f}'.format(booking.total_amount)"/> FCFA</td>
+                                        <td>
+                                            <span t-attf-class="badge #{booking.state == 'confirmed' and 'bg-success' or booking.state == 'reserved' and 'bg-warning' or booking.state == 'completed' and 'bg-secondary' or 'bg-danger'}">
+                                                <t t-esc="booking.state"/>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a t-attf-href="/my/bookings/#{booking.id}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-eye"/>
+                                            </a>
+                                            <t t-if="booking.state == 'reserved' and booking.amount_due > 0">
+                                                <a t-attf-href="/transport/booking/#{booking.id}/pay" class="btn btn-sm btn-success">
+                                                    <i class="fa fa-money"/> Payer
+                                                </a>
+                                            </t>
+                                            <t t-if="booking.state == 'confirmed'">
+                                                <a t-attf-href="/transport/booking/#{booking.id}/ticket" class="btn btn-sm btn-info">
+                                                    <i class="fa fa-download"/> Ticket
+                                                </a>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="alert alert-info" t-else="">
+                    <i class="fa fa-info-circle me-2"/> 
+                    Vous n'avez pas encore de réservation.
+                    <a href="/transport" class="alert-link">Réserver un voyage</a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- DÉTAIL RÉSERVATION -->
+    <!-- ============================================ -->
+
+    <template id="portal_booking_detail" name="Détail réservation">
+        <t t-call="portal.portal_layout">
+            <t t-call="transport_interurbain.portal_breadcrumb_transport">
+                <t t-set="page_name" t-value="booking.name"/>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card shadow-sm">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-ticket me-2"/> Billet <t t-esc="booking.name"/>
+                                </h5>
+                                <span t-attf-class="badge #{booking.state == 'confirmed' and 'bg-success' or booking.state == 'reserved' and 'bg-warning' or 'bg-secondary'}">
+                                    <t t-esc="booking.state"/>
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-4">
+                                    <div class="col-6">
+                                        <h6 class="text-muted">DÉPART</h6>
+                                        <div class="fs-3 fw-bold">
+                                            <t t-esc="booking.trip_id.departure_datetime" t-options='{"widget": "datetime", "format": "HH:mm"}'/>
+                                        </div>
+                                        <div><t t-esc="booking.boarding_stop_id.name or booking.route_id.departure_city_id.name"/></div>
+                                        <div class="text-muted small"><t t-esc="booking.trip_id.meeting_point"/></div>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <h6 class="text-muted">ARRIVÉE</h6>
+                                        <div class="fs-3 fw-bold">
+                                            <t t-esc="booking.trip_id.arrival_datetime" t-options='{"widget": "datetime", "format": "HH:mm"}'/>
+                                        </div>
+                                        <div><t t-esc="booking.alighting_stop_id.name or booking.route_id.arrival_city_id.name"/></div>
+                                    </div>
+                                </div>
+                                
+                                <hr/>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Passager:</strong> <t t-esc="booking.passenger_name"/></p>
+                                        <p><strong>Téléphone:</strong> <t t-esc="booking.passenger_phone"/></p>
+                                        <p><strong>Compagnie:</strong> <t t-esc="booking.company_id.name"/></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Siège:</strong> <t t-esc="booking.seat_number"/></p>
+                                        <p><strong>Type:</strong> <t t-esc="booking.ticket_type"/></p>
+                                        <p><strong>Bus:</strong> <t t-esc="booking.bus_id.name"/></p>
+                                    </div>
+                                </div>
+
+                                <!-- QR Code pour billets confirmés -->
+                                <div class="text-center mt-4" t-if="booking.state == 'confirmed' and booking.qr_code">
+                                    <img t-attf-src="data:image/png;base64,#{booking.qr_code.decode()}" 
+                                         class="img-fluid" style="max-width: 200px;"/>
+                                    <div class="small text-muted mt-2">
+                                        Présentez ce QR code lors de l'embarquement
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header">
+                                <h6 class="mb-0">Paiement</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Prix billet</span>
+                                    <span><t t-esc="'{:,.0f}'.format(booking.ticket_price)"/> FCFA</span>
+                                </div>
+                                <t t-if="booking.luggage_extra_price">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Supplément bagages</span>
+                                        <span><t t-esc="'{:,.0f}'.format(booking.luggage_extra_price)"/> FCFA</span>
+                                    </div>
+                                </t>
+                                <hr/>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <strong>Total</strong>
+                                    <strong><t t-esc="'{:,.0f}'.format(booking.total_amount)"/> FCFA</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Payé</span>
+                                    <span class="text-success"><t t-esc="'{:,.0f}'.format(booking.amount_paid)"/> FCFA</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2" t-if="booking.amount_due > 0">
+                                    <span>Reste à payer</span>
+                                    <span class="text-danger"><t t-esc="'{:,.0f}'.format(booking.amount_due)"/> FCFA</span>
+                                </div>
+                            </div>
+                            <div class="card-footer" t-if="booking.state == 'reserved' and booking.amount_due > 0">
+                                <a t-attf-href="/transport/booking/#{booking.id}/pay" class="btn btn-success w-100">
+                                    <i class="fa fa-money me-1"/> Payer maintenant
+                                </a>
+                                <div class="text-center small text-danger mt-2">
+                                    <i class="fa fa-clock-o me-1"/>
+                                    Expire le <t t-esc="booking.reservation_deadline" t-options='{"widget": "datetime"}'/>
+                                </div>
+                            </div>
+                            <div class="card-footer" t-if="booking.state == 'confirmed'">
+                                <a t-attf-href="/transport/booking/#{booking.id}/ticket" class="btn btn-primary w-100 mb-2">
+                                    <i class="fa fa-download me-1"/> Télécharger le ticket
+                                </a>
+                                <a t-attf-href="/transport/booking/#{booking.id}/cancel" 
+                                   class="btn btn-outline-danger w-100"
+                                   onclick="return confirm('Êtes-vous sûr de vouloir annuler ce billet ?');">
+                                    <i class="fa fa-times me-1"/> Annuler
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- PAGE COMPAGNIE -->
+    <!-- ============================================ -->
+
+    <template id="transport_company_page" name="Page compagnie">
+        <t t-call="portal.portal_layout">
+            <t t-call="transport_interurbain.portal_breadcrumb_transport">
+                <t t-set="page_name" t-value="company.name"/>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <t t-if="company.logo">
+                                    <img t-attf-src="data:image/png;base64,#{company.logo.decode()}" 
+                                         class="img-fluid mb-3" style="max-height: 100px;"/>
+                                </t>
+                                <h4 t-esc="company.name"/>
+                                <div class="text-warning mb-2" t-if="company.rating">
+                                    <t t-foreach="range(5)" t-as="star">
+                                        <i t-att-class="'fa fa-star' if star_index &lt; company.rating else 'fa fa-star-o'"/>
+                                    </t>
+                                    (<t t-esc="company.rating_count"/> avis)
+                                </div>
+                                <div class="text-muted" t-if="company.phone">
+                                    <i class="fa fa-phone me-1"/> <t t-esc="company.phone"/>
+                                </div>
+                                <div class="text-muted" t-if="company.email">
+                                    <i class="fa fa-envelope me-1"/> <t t-esc="company.email"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h4>Prochains voyages</h4>
+                        <t t-foreach="trips" t-as="trip">
+                            <div class="card mb-2">
+                                <div class="card-body py-2">
+                                    <div class="row align-items-center">
+                                        <div class="col-5">
+                                            <strong><t t-esc="trip.route_id.name"/></strong>
+                                        </div>
+                                        <div class="col-3">
+                                            <t t-esc="trip.departure_datetime" t-options='{"widget": "datetime"}'/>
+                                        </div>
+                                        <div class="col-2">
+                                            <t t-esc="'{:,.0f}'.format(trip.price)"/> FCFA
+                                        </div>
+                                        <div class="col-2">
+                                            <a t-attf-href="/transport/trip/#{trip.id}" class="btn btn-sm btn-primary">
+                                                Réserver
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- PAGE PUBLIQUE VOYAGES DU JOUR -->
+    <!-- ============================================ -->
+
+    <template id="transport_public_trips" name="Voyages du jour (Public)">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="text-center mb-5">
+                    <h1>
+                        <i class="fa fa-bus me-2 text-primary"/> Voyages du jour
+                    </h1>
+                    <p class="lead text-muted">
+                        Découvrez tous les voyages disponibles aujourd'hui
+                    </p>
+                    <a href="/transport" class="btn btn-outline-primary">
+                        <i class="fa fa-search me-1"/> Rechercher un voyage
+                    </a>
+                </div>
+                
+                <!-- Statistiques -->
+                <div class="row mb-4">
+                    <div class="col-md-4 text-center">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h2 class="text-primary" t-esc="len(trips)"/>
+                                <div class="text-muted">Voyages disponibles</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h2 class="text-success" t-esc="sum(t.available_seats for t in trips)"/>
+                                <div class="text-muted">Places disponibles</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h2 class="text-info" t-esc="len(set(t.company_id.id for t in trips))"/>
+                                <div class="text-muted">Compagnies</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row" t-if="trips">
+                    <t t-foreach="trips" t-as="trip">
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-sm hover-shadow" style="transition: all 0.3s;">
+                                <div class="card-header bg-gradient text-white" 
+                                     style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0" t-esc="trip.route_id.name"/>
+                                        <span class="badge bg-light text-primary">
+                                            <t t-esc="trip.departure_datetime" t-options='{"widget": "datetime", "format": "HH:mm"}'/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <t t-if="trip.company_id.logo">
+                                            <img t-attf-src="data:image/png;base64,#{trip.company_id.logo.decode()}" 
+                                                 class="me-2" style="max-height: 30px;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-building me-2 text-muted"/>
+                                        </t>
+                                        <span t-esc="trip.company_id.name"/>
+                                    </div>
+                                    
+                                    <div class="mb-2">
+                                        <i class="fa fa-map-marker text-danger me-2"/>
+                                        <small t-esc="trip.meeting_point"/>
+                                    </div>
+                                    
+                                    <div class="mb-2">
+                                        <i class="fa fa-clock-o text-info me-2"/>
+                                        Durée: <t t-esc="trip.route_id.estimated_duration"/>h
+                                    </div>
+                                    
+                                    <!-- Équipements -->
+                                    <div class="mb-3">
+                                        <t t-if="trip.bus_id.has_ac"><span class="badge bg-light text-dark me-1" title="Climatisation"><i class="fa fa-snowflake-o"/></span></t>
+                                        <t t-if="trip.bus_id.has_wifi"><span class="badge bg-light text-dark me-1" title="WiFi"><i class="fa fa-wifi"/></span></t>
+                                        <t t-if="trip.bus_id.has_usb"><span class="badge bg-light text-dark me-1" title="USB"><i class="fa fa-usb"/></span></t>
+                                        <t t-if="trip.bus_id.has_tv"><span class="badge bg-light text-dark me-1" title="TV"><i class="fa fa-tv"/></span></t>
+                                        <t t-if="trip.bus_id.has_toilet"><span class="badge bg-light text-dark me-1" title="Toilettes"><i class="fa fa-restroom"/></span></t>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="fs-3 text-primary fw-bold">
+                                                <t t-esc="'{:,.0f}'.format(trip.price)"/>
+                                            </span>
+                                            <span class="text-muted">FCFA</span>
+                                        </div>
+                                        <span t-attf-class="badge #{trip.available_seats > 10 and 'bg-success' or trip.available_seats > 5 and 'bg-warning' or trip.available_seats > 0 and 'bg-danger' or 'bg-dark'}">
+                                            <i class="fa fa-users me-1"/>
+                                            <t t-esc="trip.available_seats"/> places
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white border-0">
+                                    <a t-attf-href="/transport/trip/#{trip.id}" 
+                                       t-attf-class="btn w-100 #{trip.available_seats > 0 and 'btn-primary' or 'btn-secondary disabled'}">
+                                        <t t-if="trip.available_seats > 0">
+                                            <i class="fa fa-ticket me-1"/> Réserver maintenant
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-ban me-1"/> Complet
+                                        </t>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="text-center py-5" t-else="">
+                    <i class="fa fa-calendar-times-o fa-4x text-muted mb-3"/>
+                    <h4 class="text-muted">Aucun voyage programmé pour aujourd'hui</h4>
+                    <p>Recherchez un voyage pour une autre date</p>
+                    <a href="/transport" class="btn btn-primary btn-lg">
+                        <i class="fa fa-search me-1"/> Rechercher un voyage
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- PAGE LISTE DES COMPAGNIES -->
+    <!-- ============================================ -->
+
+    <template id="transport_companies_list" name="Liste des compagnies">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="text-center mb-5">
+                    <h1>
+                        <i class="fa fa-building me-2 text-primary"/> Nos Compagnies Partenaires
+                    </h1>
+                    <p class="lead text-muted">
+                        Découvrez les compagnies de transport qui opèrent sur notre plateforme
+                    </p>
+                </div>
+                
+                <div class="row" t-if="companies">
+                    <t t-foreach="companies" t-as="company">
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <div class="text-center mb-3">
+                                        <t t-if="company.logo">
+                                            <img t-attf-src="data:image/png;base64,#{company.logo.decode()}" 
+                                                 class="img-fluid mb-2" style="max-height: 80px;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-bus fa-4x text-muted mb-2"/>
+                                        </t>
+                                    </div>
+                                    
+                                    <h5 class="card-title text-center" t-esc="company.name"/>
+                                    
+                                    <!-- Rating -->
+                                    <div class="text-center mb-3" t-if="company.rating">
+                                        <div class="text-warning">
+                                            <t t-foreach="range(5)" t-as="star">
+                                                <i t-att-class="'fa ' + ('fa-star' if star_index &lt; int(company.rating) else ('fa-star-half-o' if star_index &lt; company.rating else 'fa-star-o'))"/>
+                                            </t>
+                                        </div>
+                                        <small class="text-muted">
+                                            <t t-esc="company.rating"/>/5 (<t t-esc="company.rating_count"/> avis)
+                                        </small>
+                                    </div>
+                                    
+                                    <!-- Infos -->
+                                    <ul class="list-unstyled">
+                                        <li t-if="company.phone" class="mb-1">
+                                            <i class="fa fa-phone text-primary me-2"/>
+                                            <t t-esc="company.phone"/>
+                                        </li>
+                                        <li t-if="company.email" class="mb-1">
+                                            <i class="fa fa-envelope text-primary me-2"/>
+                                            <t t-esc="company.email"/>
+                                        </li>
+                                        <li t-if="company.city_id" class="mb-1">
+                                            <i class="fa fa-map-marker text-primary me-2"/>
+                                            <t t-esc="company.city_id.name"/>
+                                        </li>
+                                    </ul>
+                                    
+                                    <!-- Statistiques -->
+                                    <div class="row text-center border-top pt-3 mt-3">
+                                        <div class="col-6">
+                                            <h5 class="text-primary mb-0" t-esc="company.bus_count"/>
+                                            <small class="text-muted">Bus</small>
+                                        </div>
+                                        <div class="col-6">
+                                            <h5 class="text-success mb-0" t-esc="company.active_trip_count"/>
+                                            <small class="text-muted">Voyages actifs</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white">
+                                    <a t-attf-href="/transport/company/#{company.id}" class="btn btn-outline-primary w-100">
+                                        <i class="fa fa-eye me-1"/> Voir les voyages
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="text-center py-5" t-else="">
+                    <i class="fa fa-building fa-4x text-muted mb-3"/>
+                    <h4 class="text-muted">Aucune compagnie disponible</h4>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- TABLEAU DE BORD USAGER ENRICHI -->
+    <!-- ============================================ -->
+
+    <template id="portal_user_dashboard" name="Tableau de bord usager">
+        <t t-call="portal.portal_layout">
+            <t t-call="transport_interurbain.portal_breadcrumb_transport">
+                <t t-set="page_name">Mon tableau de bord</t>
+            </t>
+
+            <div class="container mt-4">
+                <h3 class="mb-4">
+                    <i class="fa fa-dashboard me-2"/> Mon tableau de bord transport
+                </h3>
+
+                <!-- Statistiques principales -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-gradient text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h2 class="mb-0" t-esc="stats.get('total_trips', 0)"/>
+                                        <div>Voyages effectués</div>
+                                    </div>
+                                    <i class="fa fa-road fa-3x opacity-50"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-gradient text-white" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h2 class="mb-0" t-esc="'{:,.0f}'.format(stats.get('total_km', 0))"/>
+                                        <div>Kilomètres parcourus</div>
+                                    </div>
+                                    <i class="fa fa-map-o fa-3x opacity-50"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-gradient text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h2 class="mb-0" t-esc="'{:,.0f}'.format(stats.get('total_spent', 0))"/>
+                                        <div>FCFA dépensés</div>
+                                    </div>
+                                    <i class="fa fa-money fa-3x opacity-50"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-gradient text-white" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h2 class="mb-0" t-esc="stats.get('favorite_company', 'N/A')"/>
+                                        <div>Compagnie préférée</div>
+                                    </div>
+                                    <i class="fa fa-heart fa-3x opacity-50"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Prochain voyage -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="fa fa-calendar-check-o me-2"/> Prochain voyage</h5>
+                            </div>
+                            <div class="card-body" t-if="next_booking">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="mb-0" t-esc="next_booking.route_id.name"/>
+                                    <span class="badge bg-success" t-esc="next_booking.state"/>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p class="mb-1"><i class="fa fa-calendar me-2"/>
+                                            <t t-esc="next_booking.departure_datetime" t-options='{"widget": "datetime"}'/>
+                                        </p>
+                                        <p class="mb-1"><i class="fa fa-building me-2"/>
+                                            <t t-esc="next_booking.company_id.name"/>
+                                        </p>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <p class="mb-1"><i class="fa fa-ticket me-2"/>
+                                            Siège <t t-esc="next_booking.seat_number"/>
+                                        </p>
+                                        <p class="mb-1"><i class="fa fa-map-marker me-2"/>
+                                            <t t-esc="next_booking.trip_id.meeting_point"/>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a t-attf-href="/my/bookings/#{next_booking.id}" class="btn btn-primary">
+                                        <i class="fa fa-eye me-1"/> Voir le billet
+                                    </a>
+                                    <a t-attf-href="/transport/booking/#{next_booking.id}/ticket" class="btn btn-outline-primary">
+                                        <i class="fa fa-download me-1"/> Télécharger
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body text-center text-muted" t-else="">
+                                <i class="fa fa-calendar-times-o fa-3x mb-2"/>
+                                <p>Aucun voyage à venir</p>
+                                <a href="/transport" class="btn btn-primary">
+                                    <i class="fa fa-search me-1"/> Réserver un voyage
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Itinéraires fréquents -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0"><i class="fa fa-star me-2"/> Itinéraires fréquents</h5>
+                            </div>
+                            <div class="card-body" t-if="frequent_routes">
+                                <t t-foreach="frequent_routes[:5]" t-as="route">
+                                    <div class="d-flex justify-content-between align-items-center mb-2 py-2 border-bottom">
+                                        <div>
+                                            <i class="fa fa-route me-2 text-info"/>
+                                            <t t-esc="route.get('name')"/>
+                                        </div>
+                                        <span class="badge bg-secondary">
+                                            <t t-esc="route.get('count')"/> voyage(s)
+                                        </span>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class="card-body text-center text-muted" t-else="">
+                                <p>Aucun itinéraire fréquent</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Historique récent -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-secondary text-white d-flex justify-content-between">
+                        <h5 class="mb-0"><i class="fa fa-history me-2"/> Historique récent</h5>
+                        <a href="/my/bookings" class="btn btn-sm btn-light">Voir tout</a>
+                    </div>
+                    <div class="card-body p-0" t-if="recent_bookings">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Itinéraire</th>
+                                    <th>Compagnie</th>
+                                    <th>Montant</th>
+                                    <th>État</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="recent_bookings[:5]" t-as="booking">
+                                    <tr>
+                                        <td><t t-esc="booking.departure_datetime" t-options='{"widget": "date"}'/></td>
+                                        <td><t t-esc="booking.route_id.name"/></td>
+                                        <td><t t-esc="booking.company_id.name"/></td>
+                                        <td><t t-esc="'{:,.0f}'.format(booking.total_amount)"/> FCFA</td>
+                                        <td>
+                                            <span t-attf-class="badge #{booking.state == 'completed' and 'bg-success' or booking.state == 'confirmed' and 'bg-primary' or 'bg-secondary'}">
+                                                <t t-esc="booking.state"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-body text-center text-muted" t-else="">
+                        <p>Aucun voyage dans l'historique</p>
+                    </div>
+                </div>
+
+                <!-- Actions rapides -->
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <a href="/transport" class="btn btn-lg btn-outline-primary w-100 py-3">
+                            <i class="fa fa-search fa-2x mb-2 d-block"/>
+                            Rechercher un voyage
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="/transport/trips/today" class="btn btn-lg btn-outline-success w-100 py-3">
+                            <i class="fa fa-calendar fa-2x mb-2 d-block"/>
+                            Voyages du jour
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="/transport/companies" class="btn btn-lg btn-outline-info w-100 py-3">
+                            <i class="fa fa-building fa-2x mb-2 d-block"/>
+                            Nos compagnies
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- PAGE D'ÉVALUATION -->
+    <!-- ============================================ -->
+
+    <template id="portal_rate_booking" name="Évaluer un voyage">
+        <t t-call="portal.portal_layout">
+            <t t-call="transport_interurbain.portal_breadcrumb_transport">
+                <t t-set="page_name">Évaluer le voyage</t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-warning text-dark">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-star me-2"/> Évaluez votre voyage
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Résumé du voyage -->
+                                <div class="bg-light p-3 rounded mb-4">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="mb-1"><strong>Voyage:</strong> <t t-esc="booking.route_id.name"/></p>
+                                            <p class="mb-1"><strong>Compagnie:</strong> <t t-esc="booking.company_id.name"/></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mb-1"><strong>Date:</strong> <t t-esc="booking.departure_datetime" t-options='{"widget": "date"}'/></p>
+                                            <p class="mb-1"><strong>Référence:</strong> <t t-esc="booking.name"/></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <form action="" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    
+                                    <!-- Étoiles de notation -->
+                                    <div class="mb-4 text-center">
+                                        <h6>Comment évaluez-vous ce voyage ?</h6>
+                                        <div class="rating-stars d-flex justify-content-center gap-2" id="rating-container">
+                                            <t t-foreach="range(1, 6)" t-as="star">
+                                                <input type="radio" name="rating" t-att-value="star" t-att-id="'star-' + str(star)" class="d-none"/>
+                                                <label t-att-for="'star-' + str(star)" class="rating-star" style="cursor: pointer; font-size: 2.5rem;">
+                                                    <i class="fa fa-star-o text-warning" t-att-data-value="star"/>
+                                                </label>
+                                            </t>
+                                        </div>
+                                        <div class="mt-2">
+                                            <span class="badge bg-light text-dark" id="rating-label">Cliquez pour noter</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Commentaire -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Votre commentaire (optionnel)</label>
+                                        <textarea name="comment" class="form-control" rows="4" 
+                                                  placeholder="Partagez votre expérience de voyage..."></textarea>
+                                    </div>
+
+                                    <!-- Boutons -->
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" class="btn btn-warning flex-grow-1">
+                                            <i class="fa fa-paper-plane me-1"/> Envoyer mon évaluation
+                                        </button>
+                                        <a t-attf-href="/my/bookings/#{booking.id}" class="btn btn-outline-secondary">
+                                            <i class="fa fa-times me-1"/> Annuler
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Script pour les étoiles interactives -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const ratingLabels = {
+                        1: 'Très mauvais',
+                        2: 'Mauvais',
+                        3: 'Correct',
+                        4: 'Bon',
+                        5: 'Excellent'
+                    };
+                    
+                    document.querySelectorAll('.rating-star').forEach(function(star) {
+                        star.addEventListener('click', function() {
+                            const value = this.querySelector('i').dataset.value;
+                            // Mettre à jour les étoiles
+                            document.querySelectorAll('.rating-star i').forEach(function(s) {
+                                if (parseInt(s.dataset.value) &lt;= parseInt(value)) {
+                                    s.classList.remove('fa-star-o');
+                                    s.classList.add('fa-star');
+                                } else {
+                                    s.classList.remove('fa-star');
+                                    s.classList.add('fa-star-o');
+                                }
+                            });
+                            // Mettre à jour le label
+                            document.getElementById('rating-label').textContent = ratingLabels[value];
+                        });
+                        
+                        star.addEventListener('mouseenter', function() {
+                            const value = this.querySelector('i').dataset.value;
+                            document.querySelectorAll('.rating-star i').forEach(function(s) {
+                                if (parseInt(s.dataset.value) &lt;= parseInt(value)) {
+                                    s.classList.remove('fa-star-o');
+                                    s.classList.add('fa-star');
+                                }
+                            });
+                        });
+                        
+                        star.addEventListener('mouseleave', function() {
+                            const selected = document.querySelector('input[name="rating"]:checked');
+                            const selectedValue = selected ? parseInt(selected.value) : 0;
+                            document.querySelectorAll('.rating-star i').forEach(function(s) {
+                                if (parseInt(s.dataset.value) &lt;= selectedValue) {
+                                    s.classList.remove('fa-star-o');
+                                    s.classList.add('fa-star');
+                                } else {
+                                    s.classList.remove('fa-star');
+                                    s.classList.add('fa-star-o');
+                                }
+                            });
+                        });
+                    });
+                });
+            </script>
+        </t>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- BOUTON ÉVALUER DANS LE DÉTAIL RÉSERVATION -->
+    <!-- ============================================ -->
+
+    <template id="portal_booking_rating_button" name="Bouton évaluation" inherit_id="transport_interurbain.portal_booking_detail">
+        <xpath expr="//div[hasclass('card-footer')][last()]" position="inside">
+            <t t-if="booking.state == 'completed' and not booking.rating">
+                <a t-attf-href="/transport/booking/#{booking.id}/rate" class="btn btn-warning w-100 mt-2">
+                    <i class="fa fa-star me-1"/> Évaluer ce voyage
+                </a>
+            </t>
+            <t t-if="booking.rating">
+                <div class="mt-2 text-center">
+                    <span class="text-muted">Votre note: </span>
+                    <t t-foreach="range(5)" t-as="star">
+                        <i t-att-class="'fa text-warning ' + ('fa-star' if star_index &lt; booking.rating else 'fa-star-o')"/>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- ============================================ -->
+        <!-- COMPAGNIES DE TRANSPORT -->
+        <!-- ============================================ -->
+        
+        <!-- Compagnie 1: UTB (Union des Transports de Bouaké) -->
+        <record id="company_utb" model="transport.company">
+            <field name="name">UTB - Union des Transports de Bouaké</field>
+            <field name="code">UTB</field>
+            <field name="phone">+225 27 20 22 22 22</field>
+            <field name="email">contact@utb-ci.com</field>
+            <field name="website">https://www.utb-ci.com</field>
+            <field name="address">Gare Routière d'Adjamé, Abidjan</field>
+            <field name="city_id" ref="city_abidjan"/>
+            <field name="reservation_duration_hours">24</field>
+            <field name="reservation_fee">500</field>
+            <field name="allow_online_payment" eval="True"/>
+            <field name="description"><![CDATA[
+                <p><strong>UTB - Le confort à votre service depuis 1985</strong></p>
+                <p>Leader du transport interurbain en Côte d'Ivoire, UTB vous offre:</p>
+                <ul>
+                    <li>Une flotte moderne et climatisée</li>
+                    <li>Des départs réguliers vers toutes les grandes villes</li>
+                    <li>Un service client disponible 24h/24</li>
+                    <li>Programme de fidélité UTB Plus</li>
+                </ul>
+            ]]></field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Compagnie 2: ATT (Africa Trans Tours) -->
+        <record id="company_att" model="transport.company">
+            <field name="name">ATT - Africa Trans Tours</field>
+            <field name="code">ATT</field>
+            <field name="phone">+225 27 20 33 33 33</field>
+            <field name="email">reservation@att-voyages.ci</field>
+            <field name="website">https://www.att-voyages.ci</field>
+            <field name="address">Gare Routière d'Adjamé, Zone B, Abidjan</field>
+            <field name="city_id" ref="city_abidjan"/>
+            <field name="reservation_duration_hours">12</field>
+            <field name="reservation_fee">300</field>
+            <field name="allow_online_payment" eval="True"/>
+            <field name="description"><![CDATA[
+                <p><strong>ATT - Voyagez en toute sérénité</strong></p>
+                <p>Depuis 1990, Africa Trans Tours dessert les principales villes de Côte d'Ivoire avec:</p>
+                <ul>
+                    <li>Des autocars grand confort</li>
+                    <li>Des tarifs compétitifs</li>
+                    <li>Une ponctualité garantie</li>
+                </ul>
+            ]]></field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Compagnie 3: CTV (Côte d'Ivoire Transport Voyageurs) -->
+        <record id="company_ctv" model="transport.company">
+            <field name="name">CTV - Côte d'Ivoire Transport Voyageurs</field>
+            <field name="code">CTV</field>
+            <field name="phone">+225 27 20 44 44 44</field>
+            <field name="email">info@ctv.ci</field>
+            <field name="address">Gare Routière Yopougon, Abidjan</field>
+            <field name="city_id" ref="city_abidjan"/>
+            <field name="reservation_duration_hours">24</field>
+            <field name="reservation_fee">0</field>
+            <field name="allow_online_payment" eval="True"/>
+            <field name="description"><![CDATA[
+                <p><strong>CTV - La qualité à prix accessible</strong></p>
+                <p>CTV propose des voyages confortables à des prix abordables pour tous les Ivoiriens.</p>
+            ]]></field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Compagnie 4: TCV Express -->
+        <record id="company_tcv" model="transport.company">
+            <field name="name">TCV Express</field>
+            <field name="code">TCV</field>
+            <field name="phone">+225 27 20 55 55 55</field>
+            <field name="email">express@tcv-ci.com</field>
+            <field name="address">Gare Routière de Marcory, Abidjan</field>
+            <field name="city_id" ref="city_abidjan"/>
+            <field name="reservation_duration_hours">6</field>
+            <field name="reservation_fee">200</field>
+            <field name="allow_online_payment" eval="True"/>
+            <field name="description"><![CDATA[
+                <p><strong>TCV Express - Rapide et fiable</strong></p>
+                <p>Spécialiste des liaisons rapides vers le Nord:</p>
+                <ul>
+                    <li>Abidjan - Bouaké en 4h</li>
+                    <li>Abidjan - Korhogo en 7h30</li>
+                    <li>WiFi gratuit à bord</li>
+                </ul>
+            ]]></field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Compagnie 5: STS (Sud Transport Services) -->
+        <record id="company_sts" model="transport.company">
+            <field name="name">STS - Sud Transport Services</field>
+            <field name="code">STS</field>
+            <field name="phone">+225 27 20 66 66 66</field>
+            <field name="email">contact@sts-ci.com</field>
+            <field name="address">Gare Routière de Treichville, Abidjan</field>
+            <field name="city_id" ref="city_abidjan"/>
+            <field name="reservation_duration_hours">24</field>
+            <field name="reservation_fee">500</field>
+            <field name="allow_online_payment" eval="True"/>
+            <field name="description"><![CDATA[
+                <p><strong>STS - Spécialiste du Sud-Ouest</strong></p>
+                <p>Liaisons quotidiennes vers San Pedro, Daloa, Man et les villes du Sud-Ouest.</p>
+            ]]></field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- FLOTTE DE BUS - UTB -->
+        <!-- ============================================ -->
+        
+        <record id="bus_utb_001" model="transport.bus">
+            <field name="name">UTB-001 VIP</field>
+            <field name="code">UTB-001</field>
+            <field name="company_id" ref="company_utb"/>
+            <field name="bus_type">coach</field>
+            <field name="seat_capacity">55</field>
+            <field name="seat_layout">2+2</field>
+            <field name="has_vip_seats" eval="True"/>
+            <field name="vip_seat_count">8</field>
+            <field name="vip_seat_numbers">1-8</field>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">1200</field>
+            <field name="luggage_per_passenger_kg">30</field>
+            <field name="extra_luggage_price_kg">200</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="True"/>
+            <field name="has_toilet" eval="True"/>
+            <field name="has_tv" eval="True"/>
+            <field name="has_usb" eval="True"/>
+            <field name="has_reclining_seats" eval="True"/>
+            <field name="make">Mercedes-Benz</field>
+            <field name="model">Tourismo</field>
+            <field name="year">2023</field>
+            <field name="license_plate">1234 AB 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <record id="bus_utb_002" model="transport.bus">
+            <field name="name">UTB-002 Confort</field>
+            <field name="code">UTB-002</field>
+            <field name="company_id" ref="company_utb"/>
+            <field name="bus_type">coach</field>
+            <field name="seat_capacity">50</field>
+            <field name="seat_layout">2+2</field>
+            <field name="has_vip_seats" eval="False"/>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">1000</field>
+            <field name="luggage_per_passenger_kg">25</field>
+            <field name="extra_luggage_price_kg">200</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="False"/>
+            <field name="has_toilet" eval="True"/>
+            <field name="has_tv" eval="True"/>
+            <field name="has_usb" eval="False"/>
+            <field name="has_reclining_seats" eval="True"/>
+            <field name="make">Volvo</field>
+            <field name="model">9700</field>
+            <field name="year">2022</field>
+            <field name="license_plate">2345 BC 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <record id="bus_utb_003" model="transport.bus">
+            <field name="name">UTB-003 Standard</field>
+            <field name="code">UTB-003</field>
+            <field name="company_id" ref="company_utb"/>
+            <field name="bus_type">standard</field>
+            <field name="seat_capacity">45</field>
+            <field name="seat_layout">2+2</field>
+            <field name="has_vip_seats" eval="False"/>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">900</field>
+            <field name="luggage_per_passenger_kg">25</field>
+            <field name="extra_luggage_price_kg">150</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="False"/>
+            <field name="has_toilet" eval="False"/>
+            <field name="has_tv" eval="True"/>
+            <field name="has_usb" eval="False"/>
+            <field name="has_reclining_seats" eval="True"/>
+            <field name="make">Scania</field>
+            <field name="model">Interlink</field>
+            <field name="year">2021</field>
+            <field name="license_plate">3456 CD 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- FLOTTE DE BUS - ATT -->
+        <!-- ============================================ -->
+
+        <record id="bus_att_001" model="transport.bus">
+            <field name="name">ATT-001 Luxe</field>
+            <field name="code">ATT-001</field>
+            <field name="company_id" ref="company_att"/>
+            <field name="bus_type">coach</field>
+            <field name="seat_capacity">52</field>
+            <field name="seat_layout">2+2</field>
+            <field name="has_vip_seats" eval="True"/>
+            <field name="vip_seat_count">10</field>
+            <field name="vip_seat_numbers">1-10</field>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">1100</field>
+            <field name="luggage_per_passenger_kg">28</field>
+            <field name="extra_luggage_price_kg">180</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="True"/>
+            <field name="has_toilet" eval="True"/>
+            <field name="has_tv" eval="True"/>
+            <field name="has_usb" eval="True"/>
+            <field name="has_reclining_seats" eval="True"/>
+            <field name="make">MAN</field>
+            <field name="model">Lion's Coach</field>
+            <field name="year">2024</field>
+            <field name="license_plate">4567 DE 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <record id="bus_att_002" model="transport.bus">
+            <field name="name">ATT-002 Confort</field>
+            <field name="code">ATT-002</field>
+            <field name="company_id" ref="company_att"/>
+            <field name="bus_type">standard</field>
+            <field name="seat_capacity">48</field>
+            <field name="seat_layout">2+2</field>
+            <field name="has_vip_seats" eval="False"/>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">950</field>
+            <field name="luggage_per_passenger_kg">25</field>
+            <field name="extra_luggage_price_kg">150</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="False"/>
+            <field name="has_toilet" eval="False"/>
+            <field name="has_tv" eval="True"/>
+            <field name="has_usb" eval="False"/>
+            <field name="has_reclining_seats" eval="True"/>
+            <field name="make">Iveco</field>
+            <field name="model">Crossway</field>
+            <field name="year">2022</field>
+            <field name="license_plate">5678 EF 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- FLOTTE DE BUS - CTV -->
+        <!-- ============================================ -->
+
+        <record id="bus_ctv_001" model="transport.bus">
+            <field name="name">CTV-001</field>
+            <field name="code">CTV-001</field>
+            <field name="company_id" ref="company_ctv"/>
+            <field name="bus_type">standard</field>
+            <field name="seat_capacity">50</field>
+            <field name="seat_layout">2+2</field>
+            <field name="has_vip_seats" eval="False"/>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">1000</field>
+            <field name="luggage_per_passenger_kg">25</field>
+            <field name="extra_luggage_price_kg">100</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="False"/>
+            <field name="has_toilet" eval="False"/>
+            <field name="has_tv" eval="False"/>
+            <field name="has_usb" eval="False"/>
+            <field name="has_reclining_seats" eval="True"/>
+            <field name="make">Yutong</field>
+            <field name="model">ZK6127</field>
+            <field name="year">2021</field>
+            <field name="license_plate">6789 FG 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <record id="bus_ctv_002" model="transport.bus">
+            <field name="name">CTV-002</field>
+            <field name="code">CTV-002</field>
+            <field name="company_id" ref="company_ctv"/>
+            <field name="bus_type">midi</field>
+            <field name="seat_capacity">30</field>
+            <field name="seat_layout">2+1</field>
+            <field name="has_vip_seats" eval="False"/>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">600</field>
+            <field name="luggage_per_passenger_kg">20</field>
+            <field name="extra_luggage_price_kg">100</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="False"/>
+            <field name="has_toilet" eval="False"/>
+            <field name="has_tv" eval="False"/>
+            <field name="has_usb" eval="False"/>
+            <field name="has_reclining_seats" eval="False"/>
+            <field name="make">Toyota</field>
+            <field name="model">Coaster</field>
+            <field name="year">2020</field>
+            <field name="license_plate">7890 GH 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- FLOTTE DE BUS - TCV Express -->
+        <!-- ============================================ -->
+
+        <record id="bus_tcv_001" model="transport.bus">
+            <field name="name">TCV-EXPRESS-001</field>
+            <field name="code">TCV-001</field>
+            <field name="company_id" ref="company_tcv"/>
+            <field name="bus_type">coach</field>
+            <field name="seat_capacity">45</field>
+            <field name="seat_layout">2+1</field>
+            <field name="has_vip_seats" eval="True"/>
+            <field name="vip_seat_count">15</field>
+            <field name="vip_seat_numbers">1-15</field>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">900</field>
+            <field name="luggage_per_passenger_kg">30</field>
+            <field name="extra_luggage_price_kg">250</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="True"/>
+            <field name="has_toilet" eval="True"/>
+            <field name="has_tv" eval="True"/>
+            <field name="has_usb" eval="True"/>
+            <field name="has_reclining_seats" eval="True"/>
+            <field name="make">Mercedes-Benz</field>
+            <field name="model">Travego</field>
+            <field name="year">2024</field>
+            <field name="license_plate">8901 HI 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- FLOTTE DE BUS - STS -->
+        <!-- ============================================ -->
+
+        <record id="bus_sts_001" model="transport.bus">
+            <field name="name">STS-001</field>
+            <field name="code">STS-001</field>
+            <field name="company_id" ref="company_sts"/>
+            <field name="bus_type">coach</field>
+            <field name="seat_capacity">50</field>
+            <field name="seat_layout">2+2</field>
+            <field name="has_vip_seats" eval="True"/>
+            <field name="vip_seat_count">6</field>
+            <field name="vip_seat_numbers">1-6</field>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">1000</field>
+            <field name="luggage_per_passenger_kg">25</field>
+            <field name="extra_luggage_price_kg">200</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="False"/>
+            <field name="has_toilet" eval="True"/>
+            <field name="has_tv" eval="True"/>
+            <field name="has_usb" eval="False"/>
+            <field name="has_reclining_seats" eval="True"/>
+            <field name="make">Scania</field>
+            <field name="model">Touring</field>
+            <field name="year">2023</field>
+            <field name="license_plate">9012 IJ 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <record id="bus_sts_002" model="transport.bus">
+            <field name="name">STS-002</field>
+            <field name="code">STS-002</field>
+            <field name="company_id" ref="company_sts"/>
+            <field name="bus_type">standard</field>
+            <field name="seat_capacity">48</field>
+            <field name="seat_layout">2+2</field>
+            <field name="has_vip_seats" eval="False"/>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">950</field>
+            <field name="luggage_per_passenger_kg">25</field>
+            <field name="extra_luggage_price_kg">150</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="False"/>
+            <field name="has_toilet" eval="False"/>
+            <field name="has_tv" eval="True"/>
+            <field name="has_usb" eval="False"/>
+            <field name="has_reclining_seats" eval="True"/>
+            <field name="make">Volvo</field>
+            <field name="model">B8R</field>
+            <field name="year">2022</field>
+            <field name="license_plate">0123 JK 01</field>
+            <field name="state">available</field>
+        </record>
+
+    </data>
+</odoo>

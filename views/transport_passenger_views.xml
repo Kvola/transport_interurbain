@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================ -->
+    <!-- VUES POUR LES PASSAGERS -->
+    <!-- ============================================ -->
+
+    <!-- Vue Tree -->
+    <record id="transport_passenger_view_tree" model="ir.ui.view">
+        <field name="name">transport.passenger.view.tree</field>
+        <field name="model">transport.passenger</field>
+        <field name="arch" type="xml">
+            <tree string="Passagers">
+                <field name="name"/>
+                <field name="phone" widget="phone"/>
+                <field name="email" widget="email"/>
+                <field name="id_type"/>
+                <field name="id_number"/>
+                <field name="booking_count"/>
+                <field name="total_spent" widget="monetary"/>
+                <field name="loyalty_level" widget="badge"
+                       decoration-muted="loyalty_level == 'bronze'"
+                       decoration-info="loyalty_level == 'silver'"
+                       decoration-warning="loyalty_level == 'gold'"
+                       decoration-success="loyalty_level == 'platinum'"/>
+                <field name="last_trip_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vue Form -->
+    <record id="transport_passenger_view_form" model="ir.ui.view">
+        <field name="name">transport.passenger.view.form</field>
+        <field name="model">transport.passenger</field>
+        <field name="arch" type="xml">
+            <form string="Passager">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_bookings" type="object"
+                                class="oe_stat_button" icon="fa-ticket">
+                            <field name="booking_count" widget="statinfo" string="Voyages"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nom complet"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Contact">
+                            <field name="phone" widget="phone"/>
+                            <field name="email" widget="email"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group string="Identité">
+                            <field name="id_type"/>
+                            <field name="id_number"/>
+                            <field name="date_of_birth"/>
+                            <field name="gender"/>
+                            <field name="is_minor"/>
+                        </group>
+                    </group>
+                    <group invisible="not is_minor">
+                        <group string="Tuteur (pour mineurs)">
+                            <field name="guardian_name"/>
+                            <field name="guardian_phone" widget="phone"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Préférences" name="preferences">
+                            <group>
+                                <field name="preferred_seat_position"/>
+                                <field name="special_needs"/>
+                            </group>
+                        </page>
+                        <page string="Fidélité" name="loyalty">
+                            <group>
+                                <group>
+                                    <field name="loyalty_points"/>
+                                    <field name="loyalty_level"/>
+                                </group>
+                                <group>
+                                    <field name="total_spent"/>
+                                    <field name="last_trip_date"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vue Kanban -->
+    <record id="transport_passenger_view_kanban" model="ir.ui.view">
+        <field name="name">transport.passenger.view.kanban</field>
+        <field name="model">transport.passenger</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="booking_count"/>
+                <field name="loyalty_level"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                <div class="o_kanban_tags_section">
+                                    <span t-attf-class="badge #{record.loyalty_level.raw_value == 'platinum' ? 'bg-success' : record.loyalty_level.raw_value == 'gold' ? 'bg-warning' : record.loyalty_level.raw_value == 'silver' ? 'bg-info' : 'bg-secondary'}">
+                                        <field name="loyalty_level"/>
+                                    </span>
+                                </div>
+                                <div><i class="fa fa-phone me-1"/><field name="phone"/></div>
+                                <div><i class="fa fa-ticket me-1"/><field name="booking_count"/> voyages</div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vue Search -->
+    <record id="transport_passenger_view_search" model="ir.ui.view">
+        <field name="name">transport.passenger.view.search</field>
+        <field name="model">transport.passenger</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher un passager">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="id_number"/>
+                <separator/>
+                <filter string="Mineurs" name="minors" domain="[('is_minor', '=', True)]"/>
+                <group expand="0" string="Grouper par">
+                    <filter string="Niveau fidélité" name="loyalty" context="{'group_by': 'loyalty_level'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="transport_passenger_action" model="ir.actions.act_window">
+        <field name="name">Passagers</field>
+        <field name="res_model">transport.passenger</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="search_view_id" ref="transport_passenger_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Ajouter un passager
+            </p>
+            <p>
+                Gérez les informations des passagers et leur programme de fidélité.
+            </p>
+        </field>
+    </record>
+
+</odoo>

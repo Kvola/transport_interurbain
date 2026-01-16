@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Action de rapport ticket -->
+    <record id="action_report_ticket" model="ir.actions.report">
+        <field name="name">Ticket de voyage</field>
+        <field name="model">transport.booking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">transport_interurbain.report_transport_ticket</field>
+        <field name="report_file">transport_interurbain.report_transport_ticket</field>
+        <field name="print_report_name">'Ticket-%s' % (object.name or 'Nouveau')</field>
+        <field name="binding_model_id" ref="model_transport_booking"/>
+        <field name="binding_type">report</field>
+    </record>
+    
+    <!-- Template du ticket -->
+    <template id="report_transport_ticket">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="booking">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                            .ticket-container {
+                                border: 2px dashed #ccc;
+                                border-radius: 15px;
+                                padding: 20px;
+                                margin: 20px 0;
+                            }
+                            .ticket-header {
+                                background: linear-gradient(135deg, #1e3c72, #2a5298);
+                                color: white;
+                                padding: 20px;
+                                border-radius: 10px;
+                                margin-bottom: 20px;
+                                text-align: center;
+                            }
+                            .ticket-header h1 {
+                                margin: 0;
+                                font-size: 24px;
+                            }
+                            .ticket-header .company-name {
+                                font-size: 14px;
+                                opacity: 0.9;
+                            }
+                            .ticket-body {
+                                display: flex;
+                                gap: 30px;
+                            }
+                            .ticket-main {
+                                flex: 1;
+                            }
+                            .ticket-qr {
+                                width: 150px;
+                                text-align: center;
+                            }
+                            .ticket-qr img {
+                                width: 120px;
+                                height: 120px;
+                            }
+                            .route-info {
+                                display: flex;
+                                align-items: center;
+                                gap: 20px;
+                                margin-bottom: 20px;
+                                padding: 15px;
+                                background: #f8f9fa;
+                                border-radius: 10px;
+                            }
+                            .route-city {
+                                flex: 1;
+                            }
+                            .route-city-name {
+                                font-size: 18px;
+                                font-weight: bold;
+                                color: #1e3c72;
+                            }
+                            .route-city-time {
+                                font-size: 14px;
+                                color: #666;
+                            }
+                            .route-arrow {
+                                font-size: 24px;
+                                color: #28a745;
+                            }
+                            .info-grid {
+                                display: grid;
+                                grid-template-columns: repeat(2, 1fr);
+                                gap: 15px;
+                                margin-bottom: 20px;
+                            }
+                            .info-item {
+                                padding: 10px;
+                                background: #f8f9fa;
+                                border-radius: 8px;
+                            }
+                            .info-label {
+                                font-size: 11px;
+                                color: #666;
+                                text-transform: uppercase;
+                                margin-bottom: 3px;
+                            }
+                            .info-value {
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: #333;
+                            }
+                            .seat-badge {
+                                display: inline-block;
+                                background: #1e3c72;
+                                color: white;
+                                padding: 10px 20px;
+                                border-radius: 10px;
+                                font-size: 18px;
+                                font-weight: bold;
+                            }
+                            .price-box {
+                                text-align: right;
+                                padding: 15px;
+                                background: #d4edda;
+                                border-radius: 10px;
+                            }
+                            .price-amount {
+                                font-size: 24px;
+                                font-weight: bold;
+                                color: #28a745;
+                            }
+                            .ticket-footer {
+                                margin-top: 20px;
+                                padding-top: 15px;
+                                border-top: 1px dashed #ccc;
+                                font-size: 11px;
+                                color: #666;
+                            }
+                            .ticket-reference {
+                                font-family: monospace;
+                                font-size: 16px;
+                                font-weight: bold;
+                                letter-spacing: 2px;
+                            }
+                        </style>
+                        
+                        <div class="ticket-container">
+                            <!-- En-tête -->
+                            <div class="ticket-header">
+                                <div class="company-name" t-esc="booking.company_id.name"/>
+                                <h1>TICKET DE VOYAGE</h1>
+                                <div class="ticket-reference" t-esc="booking.name"/>
+                            </div>
+                            
+                            <div class="ticket-body">
+                                <div class="ticket-main">
+                                    <!-- Itinéraire -->
+                                    <div class="route-info">
+                                        <div class="route-city">
+                                            <div class="route-city-name" t-esc="booking.boarding_stop_id.name or booking.route_id.departure_city_id.name"/>
+                                            <div class="route-city-time">
+                                                Départ: <t t-esc="booking.departure_datetime" t-options="{'widget': 'datetime', 'format': 'dd/MM/yyyy HH:mm'}"/>
+                                            </div>
+                                        </div>
+                                        <div class="route-arrow">→</div>
+                                        <div class="route-city" style="text-align: right;">
+                                            <div class="route-city-name" t-esc="booking.alighting_stop_id.name or booking.route_id.arrival_city_id.name"/>
+                                            <div class="route-city-time">
+                                                Arrivée: <t t-esc="booking.arrival_datetime" t-options="{'widget': 'datetime', 'format': 'dd/MM/yyyy HH:mm'}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Informations -->
+                                    <div class="info-grid">
+                                        <div class="info-item">
+                                            <div class="info-label">Passager</div>
+                                            <div class="info-value" t-esc="booking.passenger_name"/>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Téléphone</div>
+                                            <div class="info-value" t-esc="booking.passenger_phone"/>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Bus</div>
+                                            <div class="info-value" t-esc="booking.bus_id.name"/>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Place</div>
+                                            <div class="info-value">
+                                                <span class="seat-badge" t-esc="booking.seat_number or 'Libre'"/>
+                                            </div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Type de billet</div>
+                                            <div class="info-value">
+                                                <t t-if="booking.ticket_type == 'adult'">Adulte</t>
+                                                <t t-elif="booking.ticket_type == 'child'">Enfant</t>
+                                                <t t-elif="booking.ticket_type == 'student'">Étudiant</t>
+                                                <t t-elif="booking.ticket_type == 'senior'">Senior</t>
+                                                <t t-elif="booking.ticket_type == 'vip'">VIP</t>
+                                            </div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Point de rendez-vous</div>
+                                            <div class="info-value" t-esc="booking.trip_id.meeting_point or 'Gare routière'"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Bagages -->
+                                    <t t-if="booking.luggage_count">
+                                        <div class="info-item" style="margin-bottom: 15px;">
+                                            <div class="info-label">Bagages</div>
+                                            <div class="info-value">
+                                                <t t-esc="booking.luggage_count"/> bagage(s) - 
+                                                <t t-esc="booking.luggage_weight"/> kg
+                                            </div>
+                                        </div>
+                                    </t>
+                                    
+                                    <!-- Prix -->
+                                    <div class="price-box">
+                                        <div style="font-size: 12px; color: #666;">MONTANT PAYÉ</div>
+                                        <div class="price-amount">
+                                            <t t-esc="booking.total_amount" t-options="{'widget': 'monetary', 'display_currency': booking.currency_id}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- QR Code -->
+                                <div class="ticket-qr">
+                                    <t t-if="booking.qr_code">
+                                        <img t-att-src="'data:image/png;base64,' + booking.qr_code.decode('utf-8')" alt="QR Code"/>
+                                    </t>
+                                    <div style="margin-top: 10px; font-size: 11px; color: #666;">
+                                        Présentez ce code<br/>lors de l'embarquement
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Pied de page -->
+                            <div class="ticket-footer">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>
+                                        <strong>Conditions :</strong><br/>
+                                        • Présentation obligatoire du ticket et d'une pièce d'identité<br/>
+                                        • Arriver 30 minutes avant le départ<br/>
+                                        • Ce billet est nominatif et non transférable
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <strong>Contact :</strong><br/>
+                                        <t t-esc="booking.company_id.phone"/><br/>
+                                        <t t-esc="booking.company_id.email"/>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; margin-top: 15px;">
+                                    Ticket émis le <t t-esc="datetime.datetime.now()" t-options="{'widget': 'datetime', 'format': 'dd/MM/yyyy à HH:mm'}"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Talon détachable -->
+                        <div style="margin-top: 30px; border-top: 2px dashed #ccc; padding-top: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong style="font-size: 14px;">TALON EMBARQUEMENT</strong><br/>
+                                    <span style="font-size: 12px;">
+                                        <t t-esc="booking.name"/> | 
+                                        <t t-esc="booking.passenger_name"/> |
+                                        Place: <t t-esc="booking.seat_number or 'Libre'"/>
+                                    </span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <strong>
+                                        <t t-esc="booking.route_id.departure_city_id.name"/> → <t t-esc="booking.route_id.arrival_city_id.name"/>
+                                    </strong><br/>
+                                    <span style="font-size: 12px;">
+                                        <t t-esc="booking.departure_datetime" t-options="{'widget': 'datetime', 'format': 'dd/MM HH:mm'}"/>
+                                    </span>
+                                </div>
+                                <div>
+                                    <t t-if="booking.qr_code">
+                                        <img t-att-src="'data:image/png;base64,' + booking.qr_code.decode('utf-8')" 
+                                             style="width: 60px; height: 60px;" alt="QR"/>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    
+    <!-- Rapport manifeste passagers (liste des passagers pour un voyage) -->
+    <record id="action_report_trip_manifest" model="ir.actions.report">
+        <field name="name">Manifeste des passagers</field>
+        <field name="model">transport.trip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">transport_interurbain.report_trip_manifest</field>
+        <field name="report_file">transport_interurbain.report_trip_manifest</field>
+        <field name="print_report_name">'Manifeste-%s' % (object.name or 'Voyage')</field>
+        <field name="binding_model_id" ref="model_transport_trip"/>
+        <field name="binding_type">report</field>
+    </record>
+    
+    <template id="report_trip_manifest">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="trip">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 style="text-align: center; margin-bottom: 20px;">
+                            MANIFESTE DES PASSAGERS
+                        </h2>
+                        
+                        <!-- Informations du voyage -->
+                        <table class="table table-sm" style="margin-bottom: 30px;">
+                            <tr>
+                                <td><strong>Voyage :</strong></td>
+                                <td t-esc="trip.name"/>
+                                <td><strong>Date :</strong></td>
+                                <td t-esc="trip.departure_datetime" t-options="{'widget': 'datetime', 'format': 'dd/MM/yyyy HH:mm'}"/>
+                            </tr>
+                            <tr>
+                                <td><strong>Itinéraire :</strong></td>
+                                <td t-esc="trip.route_id.name"/>
+                                <td><strong>Bus :</strong></td>
+                                <td t-esc="trip.bus_id.name"/> (<t t-esc="trip.bus_id.immatriculation"/>)
+                            </tr>
+                            <tr>
+                                <td><strong>Compagnie :</strong></td>
+                                <td t-esc="trip.company_id.name"/>
+                                <td><strong>Chauffeur :</strong></td>
+                                <td t-esc="trip.driver_id.name or '-'"/>
+                            </tr>
+                        </table>
+                        
+                        <!-- Statistiques -->
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-around; text-align: center;">
+                                <div>
+                                    <div style="font-size: 24px; font-weight: bold; color: #007bff;">
+                                        <t t-esc="trip.total_seats"/>
+                                    </div>
+                                    <div>Places totales</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 24px; font-weight: bold; color: #28a745;">
+                                        <t t-esc="trip.booked_seats"/>
+                                    </div>
+                                    <div>Places réservées</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 24px; font-weight: bold; color: #6c757d;">
+                                        <t t-esc="trip.available_seats"/>
+                                    </div>
+                                    <div>Places disponibles</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Liste des passagers -->
+                        <table class="table table-bordered table-sm">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th style="width: 40px;">#</th>
+                                    <th>Place</th>
+                                    <th>Nom du passager</th>
+                                    <th>Téléphone</th>
+                                    <th>Embarquement</th>
+                                    <th>Descente</th>
+                                    <th>Statut</th>
+                                    <th style="width: 60px;">Présent</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="counter" t-value="0"/>
+                                <t t-foreach="trip.booking_ids.filtered(lambda b: b.state in ['confirmed', 'reserved', 'checked_in']).sorted('seat_number')" t-as="booking">
+                                    <t t-set="counter" t-value="counter + 1"/>
+                                    <tr>
+                                        <td t-esc="counter"/>
+                                        <td style="font-weight: bold;" t-esc="booking.seat_number or '-'"/>
+                                        <td t-esc="booking.passenger_name"/>
+                                        <td t-esc="booking.passenger_phone"/>
+                                        <td t-esc="booking.boarding_stop_id.name or trip.route_id.departure_city_id.name"/>
+                                        <td t-esc="booking.alighting_stop_id.name or trip.route_id.arrival_city_id.name"/>
+                                        <td>
+                                            <t t-if="booking.state == 'confirmed'">✓ Confirmé</t>
+                                            <t t-elif="booking.state == 'reserved'">⏳ Réservé</t>
+                                            <t t-elif="booking.state == 'checked_in'">✓✓ Embarqué</t>
+                                        </td>
+                                        <td style="text-align: center;">☐</td>
+                                    </tr>
+                                </t>
+                                <t t-if="not trip.booking_ids.filtered(lambda b: b.state in ['confirmed', 'reserved', 'checked_in'])">
+                                    <tr>
+                                        <td colspan="8" style="text-align: center; color: #666; padding: 20px;">
+                                            Aucune réservation pour ce voyage
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        
+                        <!-- Signature -->
+                        <div style="margin-top: 50px; display: flex; justify-content: space-between;">
+                            <div style="width: 45%;">
+                                <div style="border-top: 1px solid #000; margin-top: 50px; padding-top: 5px; text-align: center;">
+                                    Signature du chauffeur
+                                </div>
+                            </div>
+                            <div style="width: 45%;">
+                                <div style="border-top: 1px solid #000; margin-top: 50px; padding-top: 5px; text-align: center;">
+                                    Signature du contrôleur
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 30px; font-size: 11px; color: #666;">
+                            Document généré le <t t-esc="datetime.datetime.now()" t-options="{'widget': 'datetime', 'format': 'dd/MM/yyyy à HH:mm'}"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
