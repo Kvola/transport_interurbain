@@ -1,0 +1,59 @@
+name: transport_usager
+description: Application mobile pour les usagers du transport interurbain
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  http: ^1.1.0
+  provider: ^6.1.1
+  shared_preferences: ^2.2.2
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^3.5.5
+  intl: ^0.18.1
+  flutter_secure_storage: ^9.0.0
+  cached_network_image: ^3.3.0
+  flutter_svg: ^2.0.9
+  pull_to_refresh: ^2.0.0
+  shimmer: ^3.0.0
+  fluttertoast: ^8.2.4
+  url_launcher: ^6.2.1
+  connectivity_plus: ^5.0.2
+  flutter_local_notifications: ^16.1.0
+  
+  # Partage
+  share_plus: ^7.2.1
+  
+  # Stockage offline
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.1
+  uuid: ^4.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/
+  
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700

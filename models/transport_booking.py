@@ -71,6 +71,46 @@ class TransportBooking(models.Model):
         string='Numéro de pièce',
     )
     
+    # ==================== ACHAT POUR UN TIERS ====================
+    is_for_other = fields.Boolean(
+        string='Achat pour un tiers',
+        default=False,
+        help="Coché si le billet a été acheté par quelqu'un d'autre pour ce passager",
+    )
+    buyer_id = fields.Many2one(
+        'transport.passenger',
+        string='Acheteur',
+        help="L'usager qui a acheté le billet (si différent du voyageur)",
+    )
+    buyer_name = fields.Char(
+        string='Nom de l\'acheteur',
+    )
+    buyer_phone = fields.Char(
+        string='Téléphone de l\'acheteur',
+    )
+    
+    # Informations d'identité du voyageur (pour les achats tiers)
+    traveler_name = fields.Char(
+        string='Nom du voyageur',
+        help="Nom du voyageur si différent du profil passager",
+    )
+    traveler_phone = fields.Char(
+        string='Téléphone du voyageur',
+        help="Téléphone du voyageur si différent du profil passager",
+    )
+    traveler_email = fields.Char(
+        string='Email du voyageur',
+    )
+    traveler_id_type = fields.Selection([
+        ('cni', 'CNI'),
+        ('passport', 'Passeport'),
+        ('permis', 'Permis de conduire'),
+        ('other', 'Autre'),
+    ], string='Pièce d\'identité voyageur')
+    traveler_id_number = fields.Char(
+        string='N° pièce voyageur',
+    )
+    
     # Siège
     seat_id = fields.Many2one(
         'transport.bus.seat',
@@ -244,6 +284,17 @@ class TransportBooking(models.Model):
         default=lambda self: str(uuid.uuid4()),
     )
     
+    # Token de partage (différent du ticket_token pour plus de sécurité)
+    share_token = fields.Char(
+        string='Token de partage',
+        copy=False,
+        help="Token unique pour partager le billet via un lien public",
+    )
+    share_url = fields.Char(
+        string='URL de partage',
+        compute='_compute_share_url',
+    )
+    
     # Évaluation
     rating = fields.Integer(
         string='Note',
@@ -254,8 +305,8 @@ class TransportBooking(models.Model):
     )
     
     # Relations calculées
-    company_id = fields.Many2one(
-        related='trip_id.company_id',
+    transport_company_id = fields.Many2one(
+        related='trip_id.transport_company_id',
         string='Compagnie',
         store=True,
     )
@@ -459,11 +510,11 @@ class TransportBooking(models.Model):
         for booking in self:
             booking.amount_due = booking.total_amount - booking.amount_paid
 
-    @api.depends('booking_type', 'create_date', 'company_id.reservation_duration_hours')
+    @api.depends('booking_type', 'create_date', 'transport_company_id.reservation_duration_hours')
     def _compute_reservation_deadline(self):
         for booking in self:
             if booking.booking_type == 'reservation' and booking.create_date:
-                hours = booking.company_id.reservation_duration_hours or 24
+                hours = booking.transport_company_id.reservation_duration_hours or 24
                 booking.reservation_deadline = booking.create_date + timedelta(hours=hours)
             else:
                 booking.reservation_deadline = False
@@ -489,14 +540,34 @@ class TransportBooking(models.Model):
             else:
                 booking.qr_code = False
 
+    @api.depends('share_token')
+    def _compute_share_url(self):
+        """Calcule l'URL de partage public du billet"""
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        for booking in self:
+            if booking.share_token:
+                booking.share_url = f"{base_url}/ticket/share/{booking.share_token}"
+            else:
+                booking.share_url = False
+
+    def action_generate_share_token(self):
+        """Génère un token de partage unique pour le billet"""
+        self.ensure_one()
+        if not self.share_token:
+            self.share_token = str(uuid.uuid4())[:12].upper()
+        return {
+            'share_token': self.share_token,
+            'share_url': self.share_url,
+        }
+
     @api.onchange('trip_id')
     def _onchange_trip_id(self):
         if self.trip_id:
             self.ticket_price = self.trip_id.price
             self.boarding_stop_id = self.trip_id.route_id.departure_city_id
             self.alighting_stop_id = self.trip_id.route_id.arrival_city_id
-            if self.trip_id.company_id:
-                self.reservation_fee = self.trip_id.company_id.reservation_fee
+            if self.trip_id.transport_company_id:
+                self.reservation_fee = self.trip_id.transport_company_id.reservation_fee
 
     @api.onchange('partner_id')
     def _onchange_partner_id(self):

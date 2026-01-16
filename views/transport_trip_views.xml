@@ -16,7 +16,7 @@
                   decoration-info="state == 'boarding'"
                   multi_edit="1" sample="1">
                 <field name="name" decoration-bf="1"/>
-                <field name="company_id" optional="show"/>
+                <field name="transport_company_id" optional="show"/>
                 <field name="route_id"/>
                 <field name="bus_id" optional="show"/>
                 <field name="departure_datetime" widget="datetime"/>
@@ -125,7 +125,7 @@
                     
                     <group>
                         <group string="🚌 Voyage">
-                            <field name="company_id" readonly="state != 'draft'" widget="selection"
+                            <field name="transport_company_id" readonly="state != 'draft'" widget="selection"
                                    options="{'no_create': True}"/>
                             <field name="route_id" readonly="state != 'draft'"
                                    options="{'no_create': True}"
@@ -250,7 +250,7 @@
         <field name="model">transport.trip</field>
         <field name="arch" type="xml">
             <calendar string="Voyages" date_start="departure_datetime" date_stop="arrival_datetime"
-                      color="company_id" mode="week" quick_create="0">
+                      color="transport_company_id" mode="week" quick_create="0">
                 <field name="name"/>
                 <field name="route_id"/>
                 <field name="bus_id"/>
@@ -266,7 +266,7 @@
         <field name="arch" type="xml">
             <kanban class="o_kanban_mobile" default_group_by="state">
                 <field name="name"/>
-                <field name="company_id"/>
+                <field name="transport_company_id"/>
                 <field name="route_id"/>
                 <field name="departure_datetime"/>
                 <field name="available_seats"/>
@@ -312,7 +312,7 @@
         <field name="arch" type="xml">
             <search string="Rechercher un voyage">
                 <field name="name"/>
-                <field name="company_id"/>
+                <field name="transport_company_id"/>
                 <field name="route_id"/>
                 <field name="bus_id"/>
                 <field name="driver_name"/>
@@ -326,7 +326,7 @@
                 <filter string="Avec places" name="available" domain="[('available_seats', '>', 0)]"/>
                 <filter string="Complet" name="full" domain="[('available_seats', '=', 0)]"/>
                 <group expand="0" string="Grouper par">
-                    <filter string="Compagnie" name="company" context="{'group_by': 'company_id'}"/>
+                    <filter string="Compagnie" name="company" context="{'group_by': 'transport_company_id'}"/>
                     <filter string="Itinéraire" name="route" context="{'group_by': 'route_id'}"/>
                     <filter string="Date" name="date" context="{'group_by': 'departure_date'}"/>
                     <filter string="État" name="state" context="{'group_by': 'state'}"/>

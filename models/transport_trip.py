@@ -32,7 +32,7 @@ class TransportTrip(models.Model):
         index=True,
         help="Programme de voyage ayant généré ce voyage",
     )
-    company_id = fields.Many2one(
+    transport_company_id = fields.Many2one(
         'transport.company',
         string='Compagnie',
         required=True,
@@ -51,7 +51,7 @@ class TransportTrip(models.Model):
         string='Bus',
         required=True,
         tracking=True,
-        domain="[('company_id', '=', company_id), ('state', '=', 'available')]",
+        domain="[('transport_company_id', '=', transport_company_id), ('state', '=', 'available')]",
     )
     driver_name = fields.Char(
         string='Conducteur',
@@ -123,7 +123,7 @@ class TransportTrip(models.Model):
         help="Prix pour les enfants de moins de 12 ans",
     )
     currency_id = fields.Many2one(
-        related='company_id.currency_id',
+        related='transport_company_id.currency_id',
     )
     
     # Gestion bagages (hérité du bus mais modifiable)
@@ -252,15 +252,15 @@ class TransportTrip(models.Model):
                         "La date de départ doit être dans le futur pour le voyage %s!"
                     ) % trip.name)
 
-    @api.constrains('bus_id', 'company_id')
+    @api.constrains('bus_id', 'transport_company_id')
     def _check_bus_company(self):
         """Vérifier que le bus appartient à la compagnie"""
         for trip in self:
-            if trip.bus_id and trip.company_id:
-                if trip.bus_id.company_id != trip.company_id:
+            if trip.bus_id and trip.transport_company_id:
+                if trip.bus_id.transport_company_id != trip.transport_company_id:
                     raise ValidationError(_(
                         "Le bus '%s' n'appartient pas à la compagnie '%s'!"
-                    ) % (trip.bus_id.name, trip.company_id.name))
+                    ) % (trip.bus_id.name, trip.transport_company_id.name))
 
     @api.constrains('bus_id', 'departure_datetime')
     def _check_bus_availability(self):
@@ -292,15 +292,15 @@ class TransportTrip(models.Model):
                     "Le prix enfant (%s) ne peut pas être supérieur au prix normal (%s)!"
                 ) % (trip.child_price, trip.price))
 
-    @api.constrains('route_id', 'company_id')
+    @api.constrains('route_id', 'transport_company_id')
     def _check_route_company(self):
         """Vérifier que la compagnie peut opérer sur cet itinéraire"""
         for trip in self:
             if trip.route_id and trip.route_id.company_ids:
-                if trip.company_id not in trip.route_id.company_ids:
+                if trip.transport_company_id not in trip.route_id.company_ids:
                     raise ValidationError(_(
                         "La compagnie '%s' n'est pas autorisée à opérer sur l'itinéraire '%s'!"
-                    ) % (trip.company_id.name, trip.route_id.name))
+                    ) % (trip.transport_company_id.name, trip.route_id.name))
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -548,7 +548,7 @@ class TransportTrip(models.Model):
         if route_id:
             domain.append(('route_id', '=', route_id))
         if company_id:
-            domain.append(('company_id', '=', company_id))
+            domain.append(('transport_company_id', '=', company_id))
         
         return self.search(domain, order='departure_datetime')
 

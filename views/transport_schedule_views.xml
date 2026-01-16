@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
             <tree string="Programmes de voyages" decoration-muted="state=='archived'" decoration-info="state=='draft'">
                 <field name="name"/>
-                <field name="company_id"/>
+                <field name="transport_company_id"/>
                 <field name="route_id"/>
                 <field name="default_bus_id"/>
                 <field name="default_price" widget="monetary"/>
@@ -49,9 +49,9 @@
                     </div>
                     <group>
                         <group string="Configuration générale">
-                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="transport_company_id" options="{'no_create': True}"/>
                             <field name="route_id" options="{'no_create': True}"/>
-                            <field name="default_bus_id" options="{'no_create': True}" domain="[('company_id', '=', company_id)]"/>
+                            <field name="default_bus_id" options="{'no_create': True}" domain="[('transport_company_id', '=', transport_company_id)]"/>
                             <field name="meeting_point"/>
                         </group>
                         <group string="Tarification">
@@ -106,7 +106,7 @@
                                     <field name="sequence" widget="handle"/>
                                     <field name="departure_hour" widget="float_time"/>
                                     <field name="label"/>
-                                    <field name="bus_id" optional="hide" domain="[('company_id', '=', parent.company_id)]"/>
+                                    <field name="bus_id" optional="hide" domain="[('transport_company_id', '=', parent.transport_company_id)]"/>
                                     <field name="driver_name" optional="hide"/>
                                     <field name="price" optional="hide" widget="monetary"/>
                                     <field name="currency_id" column_invisible="1"/>
@@ -138,7 +138,7 @@
         <field name="arch" type="xml">
             <search string="Rechercher programmes">
                 <field name="name"/>
-                <field name="company_id"/>
+                <field name="transport_company_id"/>
                 <field name="route_id"/>
                 <separator/>
                 <filter name="filter_draft" string="Brouillon" domain="[('state', '=', 'draft')]"/>
@@ -149,7 +149,7 @@
                 <filter name="filter_weekend" string="Week-end inclus" domain="['|', ('saturday', '=', True), ('sunday', '=', True)]"/>
                 <separator/>
                 <group expand="0" string="Grouper par">
-                    <filter name="group_company" string="Compagnie" context="{'group_by': 'company_id'}"/>
+                    <filter name="group_company" string="Compagnie" context="{'group_by': 'transport_company_id'}"/>
                     <filter name="group_route" string="Itinéraire" context="{'group_by': 'route_id'}"/>
                     <filter name="group_state" string="État" context="{'group_by': 'state'}"/>
                 </group>
@@ -162,10 +162,10 @@
         <field name="name">transport.trip.schedule.view.calendar</field>
         <field name="model">transport.trip.schedule</field>
         <field name="arch" type="xml">
-            <calendar string="Programmes" date_start="date_start" date_stop="date_end" color="company_id" mode="month">
+            <calendar string="Programmes" date_start="date_start" date_stop="date_end" color="transport_company_id" mode="month">
                 <field name="name"/>
                 <field name="route_id"/>
-                <field name="company_id"/>
+                <field name="transport_company_id"/>
             </calendar>
         </field>
     </record>
@@ -199,7 +199,7 @@
                 <group>
                     <group string="Programme">
                         <field name="schedule_id" readonly="1"/>
-                        <field name="company_id" readonly="1"/>
+                        <field name="transport_company_id" readonly="1"/>
                         <field name="route_id" readonly="1"/>
                         <field name="operating_days_display" string="Jours d'opération" readonly="1"/>
                     </group>

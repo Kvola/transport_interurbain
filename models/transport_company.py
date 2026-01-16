@@ -84,12 +84,12 @@ class TransportCompany(models.Model):
     # Relations
     bus_ids = fields.One2many(
         'transport.bus',
-        'company_id',
+        'transport_company_id',
         string='Flotte de bus',
     )
     trip_ids = fields.One2many(
         'transport.trip',
-        'company_id',
+        'transport_company_id',
         string='Voyages',
     )
     manager_ids = fields.Many2many(
@@ -170,17 +170,17 @@ class TransportCompany(models.Model):
             company.bus_count = len(company.bus_ids)
             company.trip_count = len(company.trip_ids)
             company.active_trip_count = self.env['transport.trip'].search_count([
-                ('company_id', '=', company.id),
+                ('transport_company_id', '=', company.id),
                 ('state', '=', 'scheduled'),
             ])
             company.total_bookings = self.env['transport.booking'].search_count([
-                ('trip_id.company_id', '=', company.id),
+                ('trip_id.transport_company_id', '=', company.id),
             ])
 
     def _compute_rating(self):
         for company in self:
             ratings = self.env['transport.booking'].search([
-                ('trip_id.company_id', '=', company.id),
+                ('trip_id.transport_company_id', '=', company.id),
                 ('rating', '>', 0),
             ])
             if ratings:
@@ -206,8 +206,8 @@ class TransportCompany(models.Model):
             'name': _('Flotte - %s') % self.name,
             'res_model': 'transport.bus',
             'view_mode': 'tree,form',
-            'domain': [('company_id', '=', self.id)],
-            'context': {'default_company_id': self.id},
+            'domain': [('transport_company_id', '=', self.id)],
+            'context': {'default_transport_company_id': self.id},
         }
 
     def action_view_trips(self):
@@ -218,8 +218,8 @@ class TransportCompany(models.Model):
             'name': _('Voyages - %s') % self.name,
             'res_model': 'transport.trip',
             'view_mode': 'tree,form,calendar',
-            'domain': [('company_id', '=', self.id)],
-            'context': {'default_company_id': self.id},
+            'domain': [('transport_company_id', '=', self.id)],
+            'context': {'default_transport_company_id': self.id},
         }
 
     def action_view_bookings(self):
@@ -230,7 +230,7 @@ class TransportCompany(models.Model):
             'name': _('Réservations - %s') % self.name,
             'res_model': 'transport.booking',
             'view_mode': 'tree,form',
-            'domain': [('trip_id.company_id', '=', self.id)],
+            'domain': [('trip_id.transport_company_id', '=', self.id)],
         }
 
     def action_open_dashboard(self):

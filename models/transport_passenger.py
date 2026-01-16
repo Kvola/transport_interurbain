@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models, _
+import uuid
+import qrcode
+import base64
+from io import BytesIO
 
 
 class TransportPassenger(models.Model):
@@ -105,6 +109,35 @@ class TransportPassenger(models.Model):
     notes = fields.Text(
         string='Notes',
     )
+    
+    # QR Code unique permanent pour identification
+    unique_token = fields.Char(
+        string='Token unique',
+        copy=False,
+        readonly=True,
+        index=True,
+        help="Token unique pour identifier le passager",
+    )
+    unique_qr_code = fields.Binary(
+        string='QR Code unique',
+        compute='_compute_unique_qr_code',
+        store=True,
+        help="QR Code unique pour identification du passager",
+    )
+    pin_code = fields.Char(
+        string='Code PIN',
+        help="Code PIN à 4 chiffres pour sécuriser l'accès mobile",
+    )
+    
+    # Authentification mobile
+    mobile_token = fields.Char(
+        string='Token mobile',
+        copy=False,
+        index=True,
+    )
+    mobile_token_expiry = fields.Datetime(
+        string='Expiration token mobile',
+    )
 
     @api.depends('date_of_birth')
     def _compute_is_minor(self):
@@ -115,6 +148,42 @@ class TransportPassenger(models.Model):
                 passenger.is_minor = age < 18
             else:
                 passenger.is_minor = False
+
+    @api.depends('unique_token')
+    def _compute_unique_qr_code(self):
+        """Générer le QR Code unique pour identification du passager"""
+        for passenger in self:
+            if passenger.unique_token:
+                qr_data = f"PASSENGER:{passenger.unique_token}"
+                qr = qrcode.QRCode(
+                    version=1,
+                    error_correction=qrcode.constants.ERROR_CORRECT_L,
+                    box_size=10,
+                    border=4,
+                )
+                qr.add_data(qr_data)
+                qr.make(fit=True)
+                img = qr.make_image(fill_color="black", back_color="white")
+                buffer = BytesIO()
+                img.save(buffer, format='PNG')
+                passenger.unique_qr_code = base64.b64encode(buffer.getvalue())
+            else:
+                passenger.unique_qr_code = False
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Générer automatiquement le token unique à la création"""
+        for vals in vals_list:
+            if not vals.get('unique_token'):
+                vals['unique_token'] = str(uuid.uuid4())
+        return super().create(vals_list)
+
+    def _generate_pin_code(self):
+        """Générer un code PIN à 4 chiffres"""
+        import random
+        self.ensure_one()
+        self.pin_code = str(random.randint(1000, 9999))
+        return self.pin_code
 
     def _compute_booking_count(self):
         for passenger in self:

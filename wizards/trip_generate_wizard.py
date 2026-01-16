@@ -16,8 +16,8 @@ class TransportTripGenerateWizard(models.TransientModel):
         required=True,
         readonly=True,
     )
-    company_id = fields.Many2one(
-        related='schedule_id.company_id',
+    transport_company_id = fields.Many2one(
+        related='schedule_id.transport_company_id',
         string='Compagnie',
     )
     route_id = fields.Many2one(

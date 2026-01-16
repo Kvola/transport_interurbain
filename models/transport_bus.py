@@ -25,7 +25,7 @@ class TransportBus(models.Model):
         default='/',
         index=True,
     )
-    company_id = fields.Many2one(
+    transport_company_id = fields.Many2one(
         'transport.company',
         string='Compagnie',
         required=True,
@@ -137,7 +137,7 @@ class TransportBus(models.Model):
     )
     
     currency_id = fields.Many2one(
-        related='company_id.currency_id',
+        related='transport_company_id.currency_id',
     )
     active = fields.Boolean(
         default=True,
@@ -230,7 +230,7 @@ class TransportBus(models.Model):
             'res_model': 'transport.trip',
             'view_mode': 'tree,form,calendar',
             'domain': [('bus_id', '=', self.id)],
-            'context': {'default_bus_id': self.id, 'default_company_id': self.company_id.id},
+            'context': {'default_bus_id': self.id, 'default_transport_company_id': self.transport_company_id.id},
         }
 
     def regenerate_seats(self):

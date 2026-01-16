@@ -91,8 +91,8 @@ class TransportPayment(models.Model):
     currency_id = fields.Many2one(
         related='booking_id.currency_id',
     )
-    company_id = fields.Many2one(
-        related='booking_id.company_id',
+    transport_company_id = fields.Many2one(
+        related='booking_id.transport_company_id',
         store=True,
     )
 
@@ -114,7 +114,7 @@ class TransportPayment(models.Model):
         if self.payment_method != 'wave':
             raise UserError(_("Cette méthode est réservée aux paiements Wave!"))
         
-        company = self.company_id
+        company = self.transport_company_id
         if not company.wave_merchant_id or not company.wave_api_key:
             raise UserError(_("La compagnie n'a pas configuré Wave!"))
         

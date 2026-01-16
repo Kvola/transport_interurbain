@@ -124,16 +124,16 @@ class TransportCompanyDashboard extends Component {
             
             // ============ STATISTIQUES VOYAGES ============
             const [totalTrips, scheduledTrips, boardingTrips, departedTrips, completedTrips, cancelledTrips] = await Promise.all([
-                this.orm.searchCount("transport.trip", [["company_id", "=", company.id]]),
-                this.orm.searchCount("transport.trip", [["company_id", "=", company.id], ["state", "=", "scheduled"]]),
-                this.orm.searchCount("transport.trip", [["company_id", "=", company.id], ["state", "=", "boarding"]]),
-                this.orm.searchCount("transport.trip", [["company_id", "=", company.id], ["state", "=", "departed"]]),
-                this.orm.searchCount("transport.trip", [["company_id", "=", company.id], ["state", "=", "completed"]]),
-                this.orm.searchCount("transport.trip", [["company_id", "=", company.id], ["state", "=", "cancelled"]]),
+                this.orm.searchCount("transport.trip", [["transport_company_id", "=", company.id]]),
+                this.orm.searchCount("transport.trip", [["transport_company_id", "=", company.id], ["state", "=", "scheduled"]]),
+                this.orm.searchCount("transport.trip", [["transport_company_id", "=", company.id], ["state", "=", "boarding"]]),
+                this.orm.searchCount("transport.trip", [["transport_company_id", "=", company.id], ["state", "=", "departed"]]),
+                this.orm.searchCount("transport.trip", [["transport_company_id", "=", company.id], ["state", "=", "completed"]]),
+                this.orm.searchCount("transport.trip", [["transport_company_id", "=", company.id], ["state", "=", "cancelled"]]),
             ]);
             
             const todayTrips = await this.orm.searchCount("transport.trip", [
-                ["company_id", "=", company.id],
+                ["transport_company_id", "=", company.id],
                 ["departure_date", "=", today]
             ]);
             
@@ -148,7 +148,7 @@ class TransportCompanyDashboard extends Component {
             // ============ STATISTIQUES RÉSERVATIONS ============
             const companyBookings = await this.orm.searchRead(
                 "transport.booking",
-                [["company_id", "=", company.id]],
+                [["transport_company_id", "=", company.id]],
                 ["state", "total_amount", "amount_due", "booking_date", "reservation_deadline"]
             );
             
@@ -223,9 +223,9 @@ class TransportCompanyDashboard extends Component {
             
             // ============ BUS ============
             const [totalBuses, activeBuses, inMaintenanceBuses] = await Promise.all([
-                this.orm.searchCount("transport.bus", [["company_id", "=", company.id]]),
-                this.orm.searchCount("transport.bus", [["company_id", "=", company.id], ["state", "=", "available"]]),
-                this.orm.searchCount("transport.bus", [["company_id", "=", company.id], ["state", "=", "maintenance"]]),
+                this.orm.searchCount("transport.bus", [["transport_company_id", "=", company.id]]),
+                this.orm.searchCount("transport.bus", [["transport_company_id", "=", company.id], ["state", "=", "available"]]),
+                this.orm.searchCount("transport.bus", [["transport_company_id", "=", company.id], ["state", "=", "maintenance"]]),
             ]);
             
             Object.assign(this.state, { totalBuses, activeBuses, inMaintenanceBuses });
@@ -234,7 +234,7 @@ class TransportCompanyDashboard extends Component {
             const upcomingTrips = await this.orm.searchRead(
                 "transport.trip",
                 [
-                    ["company_id", "=", company.id],
+                    ["transport_company_id", "=", company.id],
                     ["state", "in", ["scheduled", "boarding"]],
                     ["departure_date", ">=", today]
                 ],
@@ -252,7 +252,7 @@ class TransportCompanyDashboard extends Component {
             // ============ RÉSERVATIONS RÉCENTES ============
             const recentBookings = await this.orm.searchRead(
                 "transport.booking",
-                [["company_id", "=", company.id]],
+                [["transport_company_id", "=", company.id]],
                 ["name", "passenger_name", "passenger_phone", "trip_id", "total_amount", "amount_due", "state", "booking_date", "seat_number"],
                 { order: "create_date desc", limit: 10 }
             );
@@ -506,7 +506,7 @@ class TransportCompanyDashboard extends Component {
             name: _t("Mes Voyages"),
             res_model: "transport.trip",
             views: [[false, "list"], [false, "form"], [false, "calendar"]],
-            domain: [["company_id", "=", this.state.companyId]],
+            domain: [["transport_company_id", "=", this.state.companyId]],
             target: "current",
         });
     }
@@ -517,7 +517,7 @@ class TransportCompanyDashboard extends Component {
             name: _t("Réservations"),
             res_model: "transport.booking",
             views: [[false, "list"], [false, "form"]],
-            domain: [["company_id", "=", this.state.companyId]],
+            domain: [["transport_company_id", "=", this.state.companyId]],
             target: "current",
         });
     }
@@ -528,7 +528,7 @@ class TransportCompanyDashboard extends Component {
             name: _t("Mes Bus"),
             res_model: "transport.bus",
             views: [[false, "list"], [false, "form"]],
-            domain: [["company_id", "=", this.state.companyId]],
+            domain: [["transport_company_id", "=", this.state.companyId]],
             target: "current",
         });
     }
@@ -539,7 +539,7 @@ class TransportCompanyDashboard extends Component {
             name: _t("Bus en maintenance"),
             res_model: "transport.bus",
             views: [[false, "list"], [false, "form"]],
-            domain: [["company_id", "=", this.state.companyId], ["state", "=", "maintenance"]],
+            domain: [["transport_company_id", "=", this.state.companyId], ["state", "=", "maintenance"]],
             target: "current",
         });
     }
@@ -552,7 +552,7 @@ class TransportCompanyDashboard extends Component {
             res_model: "transport.trip",
             views: [[false, "list"], [false, "form"]],
             domain: [
-                ["company_id", "=", this.state.companyId],
+                ["transport_company_id", "=", this.state.companyId],
                 ["departure_date", "=", today]
             ],
             target: "current",
@@ -566,7 +566,7 @@ class TransportCompanyDashboard extends Component {
             res_model: "transport.trip",
             views: [[false, "list"], [false, "form"]],
             domain: [
-                ["company_id", "=", this.state.companyId],
+                ["transport_company_id", "=", this.state.companyId],
                 ["state", "=", "boarding"]
             ],
             target: "current",
@@ -580,7 +580,7 @@ class TransportCompanyDashboard extends Component {
             res_model: "transport.trip",
             views: [[false, "list"], [false, "form"]],
             domain: [
-                ["company_id", "=", this.state.companyId],
+                ["transport_company_id", "=", this.state.companyId],
                 ["state", "=", "departed"]
             ],
             target: "current",
@@ -594,7 +594,7 @@ class TransportCompanyDashboard extends Component {
             res_model: "transport.booking",
             views: [[false, "list"], [false, "form"]],
             domain: [
-                ["company_id", "=", this.state.companyId],
+                ["transport_company_id", "=", this.state.companyId],
                 ["amount_due", ">", 0],
                 ["state", "not in", ["cancelled", "expired", "refunded"]]
             ],
@@ -610,7 +610,7 @@ class TransportCompanyDashboard extends Component {
             res_model: "transport.booking",
             views: [[false, "list"], [false, "form"]],
             domain: [
-                ["company_id", "=", this.state.companyId],
+                ["transport_company_id", "=", this.state.companyId],
                 ["state", "=", "reserved"],
                 ["reservation_deadline", "<=", twoHoursLater],
             ],
@@ -624,7 +624,7 @@ class TransportCompanyDashboard extends Component {
             name: _t("Nouveau voyage"),
             res_model: "transport.trip",
             views: [[false, "form"]],
-            context: { default_company_id: this.state.companyId },
+            context: { default_transport_company_id: this.state.companyId },
             target: "current",
         });
     }

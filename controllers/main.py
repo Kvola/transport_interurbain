@@ -167,7 +167,7 @@ class TransportController(http.Controller):
             'luggage_weight': luggage_weight,
             'luggage_count': int(kw.get('luggage_count', 1)),
             'booking_type': booking_type,
-            'reservation_fee': trip.company_id.reservation_fee if booking_type == 'reservation' else 0,
+            'reservation_fee': trip.transport_company_id.reservation_fee if booking_type == 'reservation' else 0,
             'boarding_stop_id': trip.route_id.departure_city_id.id,
             'alighting_stop_id': trip.route_id.arrival_city_id.id,
         }
@@ -200,7 +200,7 @@ class TransportController(http.Controller):
                 'luggage_weight': luggage_weight,
                 'luggage_count': int(kw.get('luggage_count', 1)),
                 'booking_type': booking_type,
-                'reservation_fee': booking.return_trip_id.company_id.reservation_fee if booking_type == 'reservation' else 0,
+                'reservation_fee': booking.return_trip_id.transport_company_id.reservation_fee if booking_type == 'reservation' else 0,
                 'boarding_stop_id': booking.return_trip_id.route_id.departure_city_id.id,
                 'alighting_stop_id': booking.return_trip_id.route_id.arrival_city_id.id,
             })
@@ -256,7 +256,7 @@ class TransportController(http.Controller):
             return request.redirect('/transport')
         
         trips = Trip.search([
-            ('company_id', '=', company.id),
+            ('transport_company_id', '=', company.id),
             ('state', '=', 'scheduled'),
             ('is_published', '=', True),
             ('departure_datetime', '>=', datetime.now()),
@@ -322,8 +322,8 @@ class TransportController(http.Controller):
         # Compagnie préférée
         company_counts = {}
         for b in completed_bookings:
-            if b.company_id:
-                company_counts[b.company_id.name] = company_counts.get(b.company_id.name, 0) + 1
+            if b.transport_company_id:
+                company_counts[b.transport_company_id.name] = company_counts.get(b.transport_company_id.name, 0) + 1
         favorite_company = max(company_counts, key=company_counts.get) if company_counts else 'N/A'
         
         # Itinéraires fréquents
@@ -396,13 +396,13 @@ class TransportController(http.Controller):
         if date:
             domain.append(('departure_date', '=', date))
         if company_id:
-            domain.append(('company_id', '=', int(company_id)))
+            domain.append(('transport_company_id', '=', int(company_id)))
         
         trips = request.env['transport.trip'].sudo().search(domain, order='departure_datetime')
         return [{
             'id': t.id,
             'reference': t.name,
-            'company': t.company_id.name,
+            'company': t.transport_company_id.name,
             'route': t.route_id.name,
             'departure_datetime': t.departure_datetime.isoformat() if t.departure_datetime else None,
             'arrival_datetime': t.arrival_datetime.isoformat() if t.arrival_datetime else None,

@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between mb-2">
-                                        <span><i class="fa fa-building me-1"/> <t t-esc="trip.company_id.name"/></span>
+                                        <span><i class="fa fa-building me-1"/> <t t-esc="trip.transport_company_id.name"/></span>
                                         <span class="badge bg-success">
                                             <t t-esc="trip.available_seats"/> places
                                         </span>
@@ -195,11 +195,11 @@
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-md-2 text-center">
-                                            <t t-if="trip.company_id.logo">
-                                                <img t-attf-src="data:image/png;base64,#{trip.company_id.logo.decode()}" 
+                                            <t t-if="trip.transport_company_id.logo">
+                                                <img t-attf-src="data:image/png;base64,#{trip.transport_company_id.logo.decode()}" 
                                                      class="img-fluid" style="max-height: 50px;"/>
                                             </t>
-                                            <div class="small text-muted" t-esc="trip.company_id.name"/>
+                                            <div class="small text-muted" t-esc="trip.transport_company_id.name"/>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="fs-4 fw-bold">
@@ -279,7 +279,7 @@
                                         <!-- Contenu similaire -->
                                         <div class="row align-items-center">
                                             <div class="col-md-2 text-center">
-                                                <div class="small text-muted" t-esc="trip.company_id.name"/>
+                                                <div class="small text-muted" t-esc="trip.transport_company_id.name"/>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="fs-4 fw-bold">
@@ -467,7 +467,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-2">
-                                    <strong><t t-esc="trip.company_id.name"/></strong>
+                                    <strong><t t-esc="trip.transport_company_id.name"/></strong>
                                 </div>
                                 <div class="mb-2">
                                     <i class="fa fa-route me-2"/>
@@ -665,7 +665,7 @@
                                     <div class="col-md-6">
                                         <p><strong>Passager:</strong> <t t-esc="booking.passenger_name"/></p>
                                         <p><strong>Téléphone:</strong> <t t-esc="booking.passenger_phone"/></p>
-                                        <p><strong>Compagnie:</strong> <t t-esc="booking.company_id.name"/></p>
+                                        <p><strong>Compagnie:</strong> <t t-esc="booking.transport_company_id.name"/></p>
                                     </div>
                                     <div class="col-md-6">
                                         <p><strong>Siège:</strong> <t t-esc="booking.seat_number"/></p>
@@ -848,7 +848,7 @@
                     <div class="col-md-4 text-center">
                         <div class="card bg-light">
                             <div class="card-body">
-                                <h2 class="text-info" t-esc="len(set(t.company_id.id for t in trips))"/>
+                                <h2 class="text-info" t-esc="len(set(t.transport_company_id.id for t in trips))"/>
                                 <div class="text-muted">Compagnies</div>
                             </div>
                         </div>
@@ -870,14 +870,14 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-3">
-                                        <t t-if="trip.company_id.logo">
-                                            <img t-attf-src="data:image/png;base64,#{trip.company_id.logo.decode()}" 
+                                        <t t-if="trip.transport_company_id.logo">
+                                            <img t-attf-src="data:image/png;base64,#{trip.transport_company_id.logo.decode()}" 
                                                  class="me-2" style="max-height: 30px;"/>
                                         </t>
                                         <t t-else="">
                                             <i class="fa fa-building me-2 text-muted"/>
                                         </t>
-                                        <span t-esc="trip.company_id.name"/>
+                                        <span t-esc="trip.transport_company_id.name"/>
                                     </div>
                                     
                                     <div class="mb-2">
@@ -1118,7 +1118,7 @@
                                             <t t-esc="next_booking.departure_datetime" t-options='{"widget": "datetime"}'/>
                                         </p>
                                         <p class="mb-1"><i class="fa fa-building me-2"/>
-                                            <t t-esc="next_booking.company_id.name"/>
+                                            <t t-esc="next_booking.transport_company_id.name"/>
                                         </p>
                                     </div>
                                     <div class="col-6 text-end">
@@ -1197,7 +1197,7 @@
                                     <tr>
                                         <td><t t-esc="booking.departure_datetime" t-options='{"widget": "date"}'/></td>
                                         <td><t t-esc="booking.route_id.name"/></td>
-                                        <td><t t-esc="booking.company_id.name"/></td>
+                                        <td><t t-esc="booking.transport_company_id.name"/></td>
                                         <td><t t-esc="'{:,.0f}'.format(booking.total_amount)"/> FCFA</td>
                                         <td>
                                             <span t-attf-class="badge #{booking.state == 'completed' and 'bg-success' or booking.state == 'confirmed' and 'bg-primary' or 'bg-secondary'}">
@@ -1264,7 +1264,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <p class="mb-1"><strong>Voyage:</strong> <t t-esc="booking.route_id.name"/></p>
-                                            <p class="mb-1"><strong>Compagnie:</strong> <t t-esc="booking.company_id.name"/></p>
+                                            <p class="mb-1"><strong>Compagnie:</strong> <t t-esc="booking.transport_company_id.name"/></p>
                                         </div>
                                         <div class="col-md-6">
                                             <p class="mb-1"><strong>Date:</strong> <t t-esc="booking.departure_datetime" t-options='{"widget": "date"}'/></p>

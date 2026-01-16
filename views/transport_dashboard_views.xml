@@ -19,6 +19,31 @@
     </record>
 
     <!-- ============================================ -->
+    <!-- VUE CALENDRIER DES VOYAGES -->
+    <!-- ============================================ -->
+    
+    <record id="transport_trip_view_calendar" model="ir.ui.view">
+        <field name="name">transport.trip.view.calendar</field>
+        <field name="model">transport.trip</field>
+        <field name="arch" type="xml">
+            <calendar string="Calendrier des voyages" 
+                      date_start="departure_datetime" 
+                      date_stop="arrival_datetime"
+                      color="transport_company_id"
+                      mode="week"
+                      quick_create="0"
+                      event_open_popup="1">
+                <field name="name"/>
+                <field name="route_id"/>
+                <field name="bus_id"/>
+                <field name="booked_seats"/>
+                <field name="available_seats"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- ============================================ -->
     <!-- VUE PIVOT POUR STATISTIQUES -->
     <!-- ============================================ -->
 
@@ -26,10 +51,12 @@
         <field name="name">transport.booking.view.pivot</field>
         <field name="model">transport.booking</field>
         <field name="arch" type="xml">
-            <pivot string="Analyse des réservations">
+            <pivot string="Analyse des réservations" sample="1">
                 <field name="departure_datetime" type="row" interval="month"/>
-                <field name="company_id" type="col"/>
+                <field name="transport_company_id" type="col"/>
                 <field name="total_amount" type="measure"/>
+                <field name="ticket_price" type="measure"/>
+                <field name="amount_paid" type="measure"/>
             </pivot>
         </field>
     </record>
@@ -38,19 +65,67 @@
         <field name="name">transport.booking.view.graph</field>
         <field name="model">transport.booking</field>
         <field name="arch" type="xml">
-            <graph string="Réservations" type="bar">
+            <graph string="Réservations" type="bar" sample="1">
                 <field name="departure_datetime" type="row" interval="day"/>
                 <field name="total_amount" type="measure"/>
             </graph>
         </field>
     </record>
+    
+    <!-- Vue Graph par état -->
+    <record id="transport_booking_view_graph_state" model="ir.ui.view">
+        <field name="name">transport.booking.view.graph.state</field>
+        <field name="model">transport.booking</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <graph string="Répartition par état" type="pie">
+                <field name="state" type="row"/>
+            </graph>
+        </field>
+    </record>
+    
+    <!-- Vue Graph revenus par compagnie -->
+    <record id="transport_booking_view_graph_company" model="ir.ui.view">
+        <field name="name">transport.booking.view.graph.company</field>
+        <field name="model">transport.booking</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <graph string="Revenus par compagnie" type="bar" stacked="1">
+                <field name="transport_company_id" type="row"/>
+                <field name="total_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    
+    <!-- Vue Graph évolution temporelle -->
+    <record id="transport_booking_view_graph_timeline" model="ir.ui.view">
+        <field name="name">transport.booking.view.graph.timeline</field>
+        <field name="model">transport.booking</field>
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            <graph string="Évolution des ventes" type="line">
+                <field name="booking_date" type="row" interval="day"/>
+                <field name="total_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
 
-    <!-- Action statistiques -->
+    <!-- Action statistiques réservations améliorée -->
     <record id="transport_booking_stats_action" model="ir.actions.act_window">
-        <field name="name">Statistiques Réservations</field>
+        <field name="name">📊 Statistiques Réservations</field>
         <field name="res_model">transport.booking</field>
         <field name="view_mode">pivot,graph,tree</field>
-        <field name="domain">[('state', 'in', ['confirmed', 'completed'])]</field>
+        <field name="domain">[('state', 'in', ['confirmed', 'completed', 'checked_in'])]</field>
+        <field name="context">{'search_default_this_month': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Analysez vos réservations
+            </p>
+            <p>
+                Utilisez les tableaux croisés et graphiques pour comprendre 
+                l'évolution de votre activité.
+            </p>
+        </field>
     </record>
 
     <!-- Vue pivot voyages -->
@@ -58,11 +133,12 @@
         <field name="name">transport.trip.view.pivot</field>
         <field name="model">transport.trip</field>
         <field name="arch" type="xml">
-            <pivot string="Analyse des voyages">
+            <pivot string="Analyse des voyages" sample="1">
                 <field name="departure_date" type="row" interval="month"/>
                 <field name="route_id" type="col"/>
                 <field name="booked_seats" type="measure"/>
                 <field name="available_seats" type="measure"/>
+                <field name="total_seats" type="measure"/>
             </pivot>
         </field>
     </record>
@@ -71,8 +147,21 @@
         <field name="name">transport.trip.view.graph</field>
         <field name="model">transport.trip</field>
         <field name="arch" type="xml">
-            <graph string="Taux de remplissage" type="line">
+            <graph string="Taux de remplissage" type="line" sample="1">
                 <field name="departure_date" type="row" interval="day"/>
+                <field name="occupancy_rate" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    
+    <!-- Vue Graph remplissage par route -->
+    <record id="transport_trip_view_graph_route" model="ir.ui.view">
+        <field name="name">transport.trip.view.graph.route</field>
+        <field name="model">transport.trip</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <graph string="Remplissage par itinéraire" type="bar">
+                <field name="route_id" type="row"/>
                 <field name="occupancy_rate" type="measure"/>
             </graph>
         </field>
@@ -80,9 +169,144 @@
 
     <!-- Action statistiques voyages -->
     <record id="transport_trip_stats_action" model="ir.actions.act_window">
-        <field name="name">Statistiques Voyages</field>
+        <field name="name">📊 Statistiques Voyages</field>
         <field name="res_model">transport.trip</field>
-        <field name="view_mode">pivot,graph,tree</field>
+        <field name="view_mode">pivot,graph,tree,calendar</field>
+        <field name="context">{'search_default_this_month': 1}</field>
+    </record>
+    
+    <!-- ============================================ -->
+    <!-- VUES KANBAN AMÉLIORÉES POUR VOYAGES -->
+    <!-- ============================================ -->
+    
+    <record id="transport_trip_view_kanban_dashboard" model="ir.ui.view">
+        <field name="name">transport.trip.view.kanban.dashboard</field>
+        <field name="model">transport.trip</field>
+        <field name="priority">5</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard" default_group_by="state"
+                    quick_create="false" records_draggable="true">
+                <field name="name"/>
+                <field name="route_id"/>
+                <field name="transport_company_id"/>
+                <field name="departure_datetime"/>
+                <field name="bus_id"/>
+                <field name="driver_name"/>
+                <field name="booked_seats"/>
+                <field name="available_seats"/>
+                <field name="total_seats"/>
+                <field name="occupancy_rate"/>
+                <field name="price"/>
+                <field name="state"/>
+                <field name="currency_id"/>
+                <progressbar field="state" 
+                    colors='{"draft": "muted", "scheduled": "warning", "boarding": "info", "departed": "primary", "arrived": "success", "cancelled": "danger"}'/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click oe_kanban_card p-3 #{record.occupancy_rate.raw_value >= 80 ? 'border-success border-2' : record.occupancy_rate.raw_value >= 50 ? 'border-warning' : ''}">
+                            <!-- En-tête -->
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h4 class="mb-0 text-primary">
+                                        <i class="fa fa-bus me-1"/><field name="name"/>
+                                    </h4>
+                                    <small class="text-muted">
+                                        <field name="route_id"/>
+                                    </small>
+                                </div>
+                                <field name="state" widget="label_selection" 
+                                       options="{'classes': {'draft': 'secondary', 'scheduled': 'warning', 'boarding': 'info', 'departed': 'primary', 'arrived': 'success', 'cancelled': 'danger'}}"/>
+                            </div>
+                            
+                            <!-- Informations de départ -->
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <small class="text-muted d-block">Départ</small>
+                                    <strong><field name="departure_datetime" widget="datetime"/></strong>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <small class="text-muted d-block">Prix</small>
+                                    <strong class="text-success"><field name="price" widget="monetary"/></strong>
+                                </div>
+                            </div>
+                            
+                            <!-- Barre de progression -->
+                            <div class="mb-2">
+                                <small class="text-muted">Remplissage</small>
+                                <div class="progress" style="height: 20px;">
+                                    <div t-attf-class="progress-bar #{record.occupancy_rate.raw_value >= 80 ? 'bg-success' : record.occupancy_rate.raw_value >= 50 ? 'bg-warning' : 'bg-info'}"
+                                         role="progressbar"
+                                         t-attf-style="width: #{record.occupancy_rate.raw_value}%"
+                                         t-att-aria-valuenow="record.occupancy_rate.raw_value"
+                                         aria-valuemin="0" aria-valuemax="100">
+                                        <span class="fw-bold"><field name="occupancy_rate"/>%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Statistiques -->
+                            <div class="row text-center mb-2">
+                                <div class="col-4">
+                                    <div class="border rounded p-2 bg-light">
+                                        <div class="fw-bold text-success"><field name="booked_seats"/></div>
+                                        <small class="text-muted">Réservés</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="border rounded p-2 bg-light">
+                                        <div class="fw-bold text-info"><field name="available_seats"/></div>
+                                        <small class="text-muted">Disponibles</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="border rounded p-2 bg-light">
+                                        <div class="fw-bold"><field name="total_seats"/></div>
+                                        <small class="text-muted">Total</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Pied de page -->
+                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                                <small class="text-muted">
+                                    <i class="fa fa-car me-1"/><field name="bus_id"/>
+                                </small>
+                                <small class="text-muted" t-if="record.driver_name.raw_value">
+                                    <i class="fa fa-user me-1"/><field name="driver_name"/>
+                                </small>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    
+    <!-- ============================================ -->
+    <!-- ACTION TABLEAU DE BORD VOYAGES -->
+    <!-- ============================================ -->
+    
+    <record id="transport_trip_dashboard_action" model="ir.actions.act_window">
+        <field name="name">🚌 Tableau de bord Voyages</field>
+        <field name="res_model">transport.trip</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('transport_trip_view_kanban_dashboard')}),
+            (0, 0, {'view_mode': 'tree'}),
+            (0, 0, {'view_mode': 'form'}),
+            (0, 0, {'view_mode': 'calendar', 'view_id': ref('transport_trip_view_calendar')}),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('transport_trip_view_pivot')}),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('transport_trip_view_graph')})]"/>
+        <field name="context">{'search_default_scheduled': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Programmer un nouveau voyage
+            </p>
+            <p>
+                Gérez tous vos voyages, suivez le remplissage en temps réel
+                et optimisez vos opérations.
+            </p>
+        </field>
     </record>
 
 </odoo>

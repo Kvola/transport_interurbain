@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Utilisateur - Administrateur Transport</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+        
+        h1 {
+            color: #c0392b;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #e74c3c;
+        }
+        
+        h2 {
+            color: #c0392b;
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            page-break-after: avoid;
+        }
+        
+        h3 {
+            color: #e74c3c;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            page-break-after: avoid;
+        }
+        
+        h4 {
+            color: #34495e;
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .version-info {
+            text-align: center;
+            background: #fdedec;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        
+        .toc {
+            background: #fdedec;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            border-bottom: none;
+            text-align: center;
+        }
+        
+        .toc ol {
+            columns: 2;
+            column-gap: 30px;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+            break-inside: avoid;
+        }
+        
+        .toc a {
+            color: #c0392b;
+            text-decoration: none;
+        }
+        
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #c0392b;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .highlight-box {
+            background: #fdedec;
+            border-left: 4px solid #e74c3c;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box {
+            background: #fef9e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .danger-box {
+            background: #f9ebea;
+            border-left: 4px solid #922b21;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .success-box {
+            background: #d5f5e3;
+            border-left: 4px solid #27ae60;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .interface-mockup {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .interface-mockup .toolbar {
+            background: #c0392b;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+        }
+        
+        .interface-mockup .breadcrumb {
+            background: #ecf0f1;
+            padding: 8px 15px;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+        
+        .interface-mockup .content {
+            padding: 15px;
+        }
+        
+        .interface-mockup .menu-item {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .interface-mockup .menu-item .icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .interface-mockup .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .interface-mockup .btn {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;
+            display: inline-block;
+            margin: 5px 5px 5px 0;
+        }
+        
+        .interface-mockup .btn-secondary {
+            background: #95a5a6;
+        }
+        
+        .interface-mockup .btn-success {
+            background: #27ae60;
+        }
+        
+        .interface-mockup .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .interface-mockup .form-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+        
+        .interface-mockup .form-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fff;
+        }
+        
+        .permission-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 11px;
+            border-radius: 12px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .permission-admin {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .permission-manager {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .permission-agent {
+            background: #3498db;
+            color: white;
+        }
+        
+        .permission-user {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .steps li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 45px;
+            margin-bottom: 15px;
+        }
+        
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+        }
+        
+        .nav-path {
+            background: #ecf0f1;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+            color: #7f8c8d;
+        }
+        
+        .nav-path .arrow {
+            color: #bdc3c7;
+            margin: 0 8px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .stat-card .number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #c0392b;
+        }
+        
+        .stat-card .label {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        @media print {
+            body {
+                padding: 20px;
+            }
+            
+            h2 {
+                page-break-after: avoid;
+            }
+            
+            .interface-mockup, .highlight-box, .warning-box, table, .stats-grid {
+                page-break-inside: avoid;
+            }
+            
+            .toc {
+                page-break-after: always;
+            }
+            
+            .print-btn {
+                display: none !important;
+            }
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(192, 57, 43, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(192, 57, 43, 0.5);
+        }
+        
+        .print-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">
+        📄 Télécharger en PDF
+    </button>
+    
+    <h1>👑 Guide Utilisateur<br>Administrateur Transport</h1>
+    <p class="subtitle">Profil : Administrateur Transport - Accès complet au système</p>
+    
+    <div class="version-info">
+        <strong>Version:</strong> 1.1 | <strong>Profil Odoo:</strong> Administrateur Transport | <strong>Mise à jour:</strong> Janvier 2026
+    </div>
+    
+    <div class="toc">
+        <h2>📑 Table des Matières</h2>
+        <ol>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#connexion">Connexion au Système</a></li>
+            <li><a href="#dashboard">Tableau de Bord Global</a></li>
+            <li><a href="#compagnies">Gestion des Compagnies</a></li>
+            <li><a href="#itineraires">Gestion des Itinéraires</a></li>
+            <li><a href="#villes">Gestion des Villes</a></li>
+            <li><a href="#utilisateurs">Gestion des Utilisateurs</a></li>
+            <li><a href="#configuration">Configuration Système</a></li>
+            <li><a href="#rapports">Rapports Globaux</a></li>
+            <li><a href="#supervision">Supervision des Opérations</a></li>
+            <li><a href="#maintenance">Maintenance des Données</a></li>
+            <li><a href="#support">Support et Assistance</a></li>
+        </ol>
+    </div>
+    
+    <h2 id="introduction">1. Introduction</h2>
+    
+    <h3>👑 Votre Rôle d'Administrateur</h3>
+    <p>En tant qu'<strong>Administrateur Transport</strong>, vous disposez d'un accès complet au système de gestion du transport interurbain. Vous êtes responsable de :</p>
+    
+    <ul>
+        <li><strong>Créer et gérer</strong> les compagnies de transport</li>
+        <li><strong>Définir</strong> les itinéraires et les villes desservies</li>
+        <li><strong>Administrer</strong> les comptes utilisateurs et leurs droits</li>
+        <li><strong>Configurer</strong> les paramètres globaux du système</li>
+        <li><strong>Superviser</strong> l'ensemble des opérations</li>
+        <li><strong>Analyser</strong> les performances globales</li>
+    </ul>
+    
+    <h3>🔐 Hiérarchie des Droits</h3>
+    <p>Votre profil hérite de tous les droits des profils inférieurs :</p>
+    
+    <table>
+        <tr>
+            <th>Profil</th>
+            <th>Droits</th>
+            <th>Hérité</th>
+        </tr>
+        <tr>
+            <td><span class="permission-badge permission-admin">Administrateur</span></td>
+            <td>Configuration système, gestion compagnies, itinéraires</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td><span class="permission-badge permission-manager">Responsable</span></td>
+            <td>Programmation voyages, gestion bus, statistiques</td>
+            <td>✅</td>
+        </tr>
+        <tr>
+            <td><span class="permission-badge permission-agent">Agent</span></td>
+            <td>Vente tickets, embarquement, réservations</td>
+            <td>✅</td>
+        </tr>
+        <tr>
+            <td><span class="permission-badge permission-user">Utilisateur</span></td>
+            <td>Consultation des données</td>
+            <td>✅</td>
+        </tr>
+    </table>
+    
+    <div class="highlight-box">
+        <strong>💡 Note :</strong> Vous pouvez effectuer toutes les opérations des profils Responsable, Agent et Utilisateur en plus de vos fonctions d'administration.
+    </div>
+    
+    <h2 id="connexion">2. Connexion au Système</h2>
+    
+    <h3>🔐 Accéder à l'Interface</h3>
+    
+    <ol class="steps">
+        <li>Ouvrez votre navigateur web (Chrome recommandé)</li>
+        <li>Accédez à l'URL : <code>https://votre-domaine.odoo.com</code></li>
+        <li>Entrez votre <strong>adresse email</strong></li>
+        <li>Entrez votre <strong>mot de passe</strong></li>
+        <li>Cliquez sur "<strong>Se connecter</strong>"</li>
+    </ol>
+    
+    <div class="interface-mockup">
+        <div class="toolbar">Transport Interurbain - Connexion</div>
+        <div class="content" style="text-align: center; padding: 30px;">
+            <div style="font-size: 50px; margin-bottom: 20px;">🚌</div>
+            <div style="margin-bottom: 15px;">
+                <input type="text" placeholder="Email" style="padding: 12px; width: 280px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <input type="password" placeholder="Mot de passe" style="padding: 12px; width: 280px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div class="btn">Se connecter</div>
+        </div>
+    </div>
+    
+    <h3>🏠 Accéder au Module Transport</h3>
+    <p>Après connexion :</p>
+    <ol class="steps">
+        <li>Cliquez sur l'icône <strong>Applications</strong> (grille) en haut à gauche</li>
+        <li>Sélectionnez "<strong>Transport Interurbain</strong>"</li>
+        <li>Vous accédez au tableau de bord principal</li>
+    </ol>
+    
+    <h2 id="dashboard">3. Tableau de Bord Global</h2>
+    
+    <h3>📊 Vue d'Ensemble</h3>
+    <p>Le tableau de bord administrateur affiche les métriques globales de toutes les compagnies :</p>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="number">12</div>
+            <div class="label">Compagnies actives</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">156</div>
+            <div class="label">Voyages ce mois</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">8,450</div>
+            <div class="label">Réservations</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">45.2M</div>
+            <div class="label">CA Total (FCFA)</div>
+        </div>
+    </div>
+    
+    <h3>📈 Indicateurs Clés</h3>
+    <table>
+        <tr>
+            <th>Indicateur</th>
+            <th>Description</th>
+            <th>Fréquence</th>
+        </tr>
+        <tr>
+            <td>Taux de remplissage global</td>
+            <td>Moyenne de toutes les compagnies</td>
+            <td>Temps réel</td>
+        </tr>
+        <tr>
+            <td>Chiffre d'affaires</td>
+            <td>Total des ventes de tickets</td>
+            <td>Journalier</td>
+        </tr>
+        <tr>
+            <td>Compagnies les plus actives</td>
+            <td>Classement par nombre de voyages</td>
+            <td>Hebdomadaire</td>
+        </tr>
+        <tr>
+            <td>Itinéraires populaires</td>
+            <td>Top 10 des trajets</td>
+            <td>Mensuel</td>
+        </tr>
+        <tr>
+            <td>Taux d'annulation</td>
+            <td>% de réservations annulées</td>
+            <td>Mensuel</td>
+        </tr>
+    </table>
+    
+    <h2 id="compagnies">4. Gestion des Compagnies</h2>
+    
+    <h3>🏢 Créer une Nouvelle Compagnie</h3>
+    
+    <div class="nav-path">
+        Transport <span class="arrow">→</span> Configuration <span class="arrow">→</span> Compagnies <span class="arrow">→</span> Créer
+    </div>
+    
+    <ol class="steps">
+        <li>Accédez au menu <strong>Configuration → Compagnies</strong></li>
+        <li>Cliquez sur le bouton "<strong>Créer</strong>"</li>
+        <li>Remplissez les informations de la compagnie</li>
+        <li>Assignez les responsables</li>
+        <li>Cliquez sur "<strong>Enregistrer</strong>"</li>
+    </ol>
+    
+    <div class="interface-mockup">
+        <div class="toolbar">Compagnies / Nouveau</div>
+        <div class="breadcrumb">Transport → Configuration → Compagnies → Nouveau</div>
+        <div class="content">
+            <div class="form-group">
+                <span class="form-label">Nom de la compagnie *</span>
+                <div class="form-input">Transport Express Sénégal</div>
+            </div>
+            <div class="form-group">
+                <span class="form-label">Code</span>
+                <div class="form-input">TES</div>
+            </div>
+            <div class="form-group">
+                <span class="form-label">Adresse</span>
+                <div class="form-input">Avenue Cheikh Anta Diop, Dakar</div>
+            </div>
+            <div class="form-group">
+                <span class="form-label">Téléphone</span>
+                <div class="form-input">+221 33 XXX XX XX</div>
+            </div>
+            <div class="form-group">
+                <span class="form-label">Responsables</span>
+                <div class="form-input">Amadou Diallo, Fatou Seck</div>
+            </div>
+            <div class="form-group">
+                <span class="form-label">Logo</span>
+                <div class="form-input" style="color: #3498db;">📎 Télécharger une image...</div>
+            </div>
+            <div class="btn btn-success">Enregistrer</div>
+            <div class="btn btn-secondary">Annuler</div>
+        </div>
+    </div>
+    
+    <h3>📋 Informations de la Compagnie</h3>
+    <table>
+        <tr>
+            <th>Champ</th>
+            <th>Description</th>
+            <th>Obligatoire</th>
+        </tr>
+        <tr>
+            <td>Nom</td>
+            <td>Nom officiel de la compagnie</td>
+            <td>✅ Oui</td>
+        </tr>
+        <tr>
+            <td>Code</td>
+            <td>Code court (3-5 caractères)</td>
+            <td>❌ Non</td>
+        </tr>
+        <tr>
+            <td>Adresse</td>
+            <td>Siège social</td>
+            <td>❌ Non</td>
+        </tr>
+        <tr>
+            <td>Téléphone</td>
+            <td>Numéro de contact principal</td>
+            <td>❌ Non</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>Email de contact</td>
+            <td>❌ Non</td>
+        </tr>
+        <tr>
+            <td>Responsables</td>
+            <td>Utilisateurs gestionnaires</td>
+            <td>✅ Oui</td>
+        </tr>
+        <tr>
+            <td>Logo</td>
+            <td>Image de la compagnie</td>
+            <td>❌ Non</td>
+        </tr>
+        <tr>
+            <td>Active</td>
+            <td>Compagnie active ou non</td>
+            <td>✅ Oui</td>
+        </tr>
+    </table>
+    
+    <h3>👥 Assigner des Responsables</h3>
+    <p>Les responsables assignés à une compagnie pourront :</p>
+    <ul>
+        <li>Voir uniquement les données de leur compagnie</li>
+        <li>Programmer des voyages</li>
+        <li>Gérer les bus de la flotte</li>
+        <li>Consulter les statistiques</li>
+    </ul>
+    
+    <div class="warning-box">
+        <strong>⚠️ Important :</strong> Assurez-vous que les utilisateurs assignés comme responsables ont le profil "Responsable Compagnie" dans leurs droits d'accès.
+    </div>
+    
+    <h3>🔄 Désactiver une Compagnie</h3>
+    <p>Pour suspendre temporairement une compagnie :</p>
+    <ol class="steps">
+        <li>Ouvrez la fiche de la compagnie</li>
+        <li>Décochez le champ "<strong>Active</strong>"</li>
+        <li>Enregistrez</li>
+    </ol>
+    
+    <div class="danger-box">
+        <strong>⚠️ Attention :</strong> Désactiver une compagnie masquera tous ses voyages programmés. Les réservations existantes resteront valides.
+    </div>
+    
+    <h2 id="itineraires">5. Gestion des Itinéraires</h2>
+    
+    <h3>🛤️ Créer un Itinéraire</h3>
+    <p>Un itinéraire définit un trajet entre deux villes avec ses caractéristiques.</p>
+    
+    <div class="nav-path">
+        Transport <span class="arrow">→</span> Configuration <span class="arrow">→</span> Itinéraires <span class="arrow">→</span> Créer
+    </div>
+    
+    <ol class="steps">
+        <li>Accédez au menu <strong>Configuration → Itinéraires</strong></li>
+        <li>Cliquez sur "<strong>Créer</strong>"</li>
+        <li>Sélectionnez la <strong>ville de départ</strong></li>
+        <li>Sélectionnez la <strong>ville d'arrivée</strong></li>
+        <li>Définissez la <strong>durée estimée</strong></li>
+        <li>Définissez le <strong>prix de base</strong></li>
+        <li>Enregistrez</li>
+    </ol>
+    
+    <div class="interface-mockup">
+        <div class="toolbar">Itinéraires / Nouveau</div>
+        <div class="breadcrumb">Transport → Configuration → Itinéraires → Nouveau</div>
+        <div class="content">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <span class="form-label">Ville de départ *</span>
+                    <div class="form-input">Dakar</div>
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Ville d'arrivée *</span>
+                    <div class="form-input">Saint-Louis</div>
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Distance (km)</span>
+                    <div class="form-input">265</div>
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Durée estimée</span>
+                    <div class="form-input">4h30</div>
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Prix de base (FCFA) *</span>
+                    <div class="form-input">5 000</div>
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Active</span>
+                    <div class="form-input">☑️ Oui</div>
+                </div>
+            </div>
+            <div class="btn btn-success">Enregistrer</div>
+            <div class="btn btn-secondary">Annuler</div>
+        </div>
+    </div>
+    
+    <h3>📋 Paramètres d'un Itinéraire</h3>
+    <table>
+        <tr>
+            <th>Paramètre</th>
+            <th>Description</th>
+            <th>Utilisation</th>
+        </tr>
+        <tr>
+            <td>Prix de base</td>
+            <td>Tarif standard du trajet</td>
+            <td>Peut être modifié par voyage</td>
+        </tr>
+        <tr>
+            <td>Durée estimée</td>
+            <td>Temps de trajet prévu</td>
+            <td>Calcul heure d'arrivée</td>
+        </tr>
+        <tr>
+            <td>Distance</td>
+            <td>Kilomètres</td>
+            <td>Information / Statistiques</td>
+        </tr>
+        <tr>
+            <td>Villes intermédiaires</td>
+            <td>Arrêts sur le trajet</td>
+            <td>Optionnel</td>
+        </tr>
+    </table>
+    
+    <h3>🔄 Itinéraire Aller-Retour</h3>
+    <p>Pour créer automatiquement l'itinéraire retour :</p>
+    <ol class="steps">
+        <li>Créez l'itinéraire aller (ex: Dakar → Saint-Louis)</li>
+        <li>Cliquez sur "<strong>Créer retour</strong>" (si disponible)</li>
+        <li>Ou créez manuellement l'itinéraire inverse</li>
+    </ol>
+    
+    <h2 id="villes">6. Gestion des Villes</h2>
+    
+    <h3>🏙️ Ajouter une Ville</h3>
+    
+    <div class="nav-path">
+        Transport <span class="arrow">→</span> Configuration <span class="arrow">→</span> Villes <span class="arrow">→</span> Créer
+    </div>
+    
+    <div class="interface-mockup">
+        <div class="toolbar">Villes / Nouveau</div>
+        <div class="content">
+            <div class="form-group">
+                <span class="form-label">Nom de la ville *</span>
+                <div class="form-input">Ziguinchor</div>
+            </div>
+            <div class="form-group">
+                <span class="form-label">Code</span>
+                <div class="form-input">ZIG</div>
+            </div>
+            <div class="form-group">
+                <span class="form-label">Région</span>
+                <div class="form-input">Ziguinchor</div>
+            </div>
+            <div class="form-group">
+                <span class="form-label">Coordonnées GPS</span>
+                <div class="form-input">12.5681° N, 16.2719° W</div>
+            </div>
+            <div class="btn btn-success">Enregistrer</div>
+        </div>
+    </div>
+    
+    <h3>📍 Villes Principales</h3>
+    <table>
+        <tr>
+            <th>Ville</th>
+            <th>Code</th>
+            <th>Région</th>
+        </tr>
+        <tr>
+            <td>Dakar</td>
+            <td>DKR</td>
+            <td>Dakar</td>
+        </tr>
+        <tr>
+            <td>Thiès</td>
+            <td>THS</td>
+            <td>Thiès</td>
+        </tr>
+        <tr>
+            <td>Saint-Louis</td>
+            <td>STL</td>
+            <td>Saint-Louis</td>
+        </tr>
+        <tr>
+            <td>Kaolack</td>
+            <td>KLK</td>
+            <td>Kaolack</td>
+        </tr>
+        <tr>
+            <td>Ziguinchor</td>
+            <td>ZIG</td>
+            <td>Ziguinchor</td>
+        </tr>
+        <tr>
+            <td>Tambacounda</td>
+            <td>TBA</td>
+            <td>Tambacounda</td>
+        </tr>
+    </table>
+    
+    <h2 id="utilisateurs">7. Gestion des Utilisateurs</h2>
+    
+    <h3>👤 Créer un Compte Utilisateur</h3>
+    
+    <div class="nav-path">
+        Paramètres <span class="arrow">→</span> Utilisateurs <span class="arrow">→</span> Créer
+    </div>
+    
+    <ol class="steps">
+        <li>Accédez à <strong>Paramètres → Utilisateurs</strong></li>
+        <li>Cliquez sur "<strong>Créer</strong>"</li>
+        <li>Remplissez le nom et l'email</li>
+        <li>Sélectionnez le <strong>profil Transport</strong> approprié</li>
+        <li>Enregistrez et envoyez l'invitation</li>
+    </ol>
+    
+    <h3>🔐 Attribution des Profils</h3>
+    <table>
+        <tr>
+            <th>Profil</th>
+            <th>Pour qui ?</th>
+            <th>Droits</th>
+        </tr>
+        <tr>
+            <td><span class="permission-badge permission-admin">Administrateur Transport</span></td>
+            <td>IT, Direction générale</td>
+            <td>Accès complet</td>
+        </tr>
+        <tr>
+            <td><span class="permission-badge permission-manager">Responsable Compagnie</span></td>
+            <td>Directeurs de compagnie</td>
+            <td>Gestion de leur compagnie</td>
+        </tr>
+        <tr>
+            <td><span class="permission-badge permission-agent">Agent de gare</span></td>
+            <td>Personnel de gare</td>
+            <td>Vente et embarquement</td>
+        </tr>
+        <tr>
+            <td><span class="permission-badge permission-user">Utilisateur Transport</span></td>
+            <td>Personnel consultatif</td>
+            <td>Lecture seule</td>
+        </tr>
+    </table>
+    
+    <div class="interface-mockup">
+        <div class="toolbar">Utilisateurs / Nouveau</div>
+        <div class="content">
+            <div class="form-group">
+                <span class="form-label">Nom *</span>
+                <div class="form-input">Moussa Fall</div>
+            </div>
+            <div class="form-group">
+                <span class="form-label">Email *</span>
+                <div class="form-input">moussa.fall@transport.sn</div>
+            </div>
+            <div class="card">
+                <strong>Droits d'accès - Transport Interurbain</strong>
+                <div style="margin-top: 10px;">
+                    <label><input type="radio" name="transport"> Utilisateur Transport</label><br>
+                    <label><input type="radio" name="transport"> Agent de gare</label><br>
+                    <label><input type="radio" name="transport" checked> Responsable Compagnie</label><br>
+                    <label><input type="radio" name="transport"> Administrateur Transport</label>
+                </div>
+            </div>
+            <div class="btn btn-success">Enregistrer</div>
+        </div>
+    </div>
+    
+    <h3>🔄 Réinitialiser un Mot de Passe</h3>
+    <ol class="steps">
+        <li>Ouvrez la fiche de l'utilisateur</li>
+        <li>Cliquez sur <strong>Action → Changer le mot de passe</strong></li>
+        <li>Entrez le nouveau mot de passe</li>
+        <li>Confirmez</li>
+    </ol>
+    
+    <h3>🚫 Désactiver un Utilisateur</h3>
+    <ol class="steps">
+        <li>Ouvrez la fiche de l'utilisateur</li>
+        <li>Décochez "<strong>Actif</strong>"</li>
+        <li>Enregistrez</li>
+    </ol>
+    
+    <div class="warning-box">
+        <strong>⚠️ Note :</strong> La désactivation empêche l'utilisateur de se connecter mais conserve son historique d'actions.
+    </div>
+    
+    <h2 id="configuration">8. Configuration Système</h2>
+    
+    <h3>⚙️ Paramètres Généraux</h3>
+    
+    <div class="nav-path">
+        Transport <span class="arrow">→</span> Configuration <span class="arrow">→</span> Paramètres
+    </div>
+    
+    <table>
+        <tr>
+            <th>Paramètre</th>
+            <th>Description</th>
+            <th>Valeur par défaut</th>
+        </tr>
+        <tr>
+            <td>Délai d'annulation</td>
+            <td>Heures avant départ pour annuler</td>
+            <td>24 heures</td>
+        </tr>
+        <tr>
+            <td>Taux de remboursement</td>
+            <td>% remboursé en cas d'annulation</td>
+            <td>80%</td>
+        </tr>
+        <tr>
+            <td>Surréservation</td>
+            <td>Autoriser plus de réservations que de places</td>
+            <td>Non</td>
+        </tr>
+        <tr>
+            <td>Notifications SMS</td>
+            <td>Envoyer des SMS aux passagers</td>
+            <td>Oui</td>
+        </tr>
+        <tr>
+            <td>Rappel J-1</td>
+            <td>Envoyer un rappel la veille</td>
+            <td>Oui</td>
+        </tr>
+        <tr>
+            <td>Validité token</td>
+            <td>Durée de connexion mobile (heures)</td>
+            <td>720 (30 jours)</td>
+        </tr>
+    </table>
+    
+    <h3>📱 Configuration des Applications Mobiles</h3>
+    <table>
+        <tr>
+            <th>Paramètre</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>URL API</td>
+            <td>Adresse du serveur pour les apps</td>
+        </tr>
+        <tr>
+            <td>Mode hors ligne</td>
+            <td>Activer/désactiver le mode hors ligne</td>
+        </tr>
+        <tr>
+            <td>Durée cache</td>
+            <td>Temps de conservation des données locales</td>
+        </tr>
+    </table>
+    
+    <h3>💳 Configuration des Paiements</h3>
+    <table>
+        <tr>
+            <th>Mode de paiement</th>
+            <th>Statut</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Orange Money</td>
+            <td>✅ Actif</td>
+            <td>Configurer les clés API</td>
+        </tr>
+        <tr>
+            <td>Wave</td>
+            <td>✅ Actif</td>
+            <td>Configurer le merchant ID</td>
+        </tr>
+        <tr>
+            <td>Free Money</td>
+            <td>❌ Inactif</td>
+            <td>Activer et configurer</td>
+        </tr>
+        <tr>
+            <td>Espèces (guichet)</td>
+            <td>✅ Actif</td>
+            <td>-</td>
+        </tr>
+    </table>
+    
+    <h2 id="rapports">9. Rapports Globaux</h2>
+    
+    <h3>📊 Accéder aux Rapports</h3>
+    
+    <div class="nav-path">
+        Transport <span class="arrow">→</span> Rapports
+    </div>
+    
+    <h3>📈 Types de Rapports</h3>
+    <table>
+        <tr>
+            <th>Rapport</th>
+            <th>Contenu</th>
+            <th>Export</th>
+        </tr>
+        <tr>
+            <td>Chiffre d'affaires global</td>
+            <td>Revenus par compagnie, par période</td>
+            <td>Excel, PDF</td>
+        </tr>
+        <tr>
+            <td>Performance des itinéraires</td>
+            <td>Taux de remplissage, revenus par trajet</td>
+            <td>Excel, PDF</td>
+        </tr>
+        <tr>
+            <td>Analyse des compagnies</td>
+            <td>Comparatif des performances</td>
+            <td>Excel, PDF</td>
+        </tr>
+        <tr>
+            <td>Statistiques voyages</td>
+            <td>Nombre de voyages, passagers transportés</td>
+            <td>Excel, PDF</td>
+        </tr>
+        <tr>
+            <td>Rapport d'annulations</td>
+            <td>Motifs, volumes, impact financier</td>
+            <td>Excel, PDF</td>
+        </tr>
+        <tr>
+            <td>Activité des agents</td>
+            <td>Validations, ventes par agent</td>
+            <td>Excel, PDF</td>
+        </tr>
+    </table>
+    
+    <h3>🔍 Filtres de Rapport</h3>
+    <ul>
+        <li><strong>Période</strong> : Jour, semaine, mois, année, personnalisé</li>
+        <li><strong>Compagnie</strong> : Une ou plusieurs compagnies</li>
+        <li><strong>Itinéraire</strong> : Un ou plusieurs trajets</li>
+        <li><strong>Statut</strong> : Confirmé, annulé, validé</li>
+    </ul>
+    
+    <h2 id="supervision">10. Supervision des Opérations</h2>
+    
+    <h3>👁️ Vue Temps Réel</h3>
+    <p>Surveillez l'activité en temps réel de toutes les compagnies :</p>
+    
+    <div class="nav-path">
+        Transport <span class="arrow">→</span> Supervision
+    </div>
+    
+    <h3>📋 Éléments à Surveiller</h3>
+    <table>
+        <tr>
+            <th>Élément</th>
+            <th>Indicateur</th>
+            <th>Seuil d'alerte</th>
+        </tr>
+        <tr>
+            <td>Voyages du jour</td>
+            <td>Nombre et statut</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>Taux de remplissage</td>
+            <td>% moyen des voyages</td>
+            <td>&lt; 50%</td>
+        </tr>
+        <tr>
+            <td>Réservations en attente</td>
+            <td>Paiements non confirmés</td>
+            <td>&gt; 100</td>
+        </tr>
+        <tr>
+            <td>Erreurs API</td>
+            <td>Nombre d'erreurs/heure</td>
+            <td>&gt; 10</td>
+        </tr>
+        <tr>
+            <td>Validations agent</td>
+            <td>Embarquements en cours</td>
+            <td>-</td>
+        </tr>
+    </table>
+    
+    <h3>🔔 Alertes et Notifications</h3>
+    <p>Configurez des alertes automatiques pour :</p>
+    <ul>
+        <li>Voyages avec faible remplissage (&lt; 30%)</li>
+        <li>Annulations massives</li>
+        <li>Erreurs système répétées</li>
+        <li>Bus en retard de maintenance</li>
+    </ul>
+    
+    <h2 id="maintenance">11. Maintenance des Données</h2>
+    
+    <h3>🗃️ Archivage des Données</h3>
+    <p>Les données anciennes peuvent être archivées pour optimiser les performances :</p>
+    
+    <table>
+        <tr>
+            <th>Type de donnée</th>
+            <th>Délai d'archivage</th>
+            <th>Conservation</th>
+        </tr>
+        <tr>
+            <td>Voyages terminés</td>
+            <td>6 mois</td>
+            <td>5 ans</td>
+        </tr>
+        <tr>
+            <td>Réservations validées</td>
+            <td>6 mois</td>
+            <td>5 ans</td>
+        </tr>
+        <tr>
+            <td>Logs d'activité</td>
+            <td>3 mois</td>
+            <td>1 an</td>
+        </tr>
+        <tr>
+            <td>Données annulées</td>
+            <td>1 mois</td>
+            <td>1 an</td>
+        </tr>
+    </table>
+    
+    <h3>🔄 Actions de Maintenance</h3>
+    <ol class="steps">
+        <li><strong>Archiver les anciens voyages</strong> : Transport → Maintenance → Archiver</li>
+        <li><strong>Nettoyer les sessions expirées</strong> : Automatique</li>
+        <li><strong>Vérifier l'intégrité</strong> : Transport → Maintenance → Vérification</li>
+    </ol>
+    
+    <div class="danger-box">
+        <strong>⚠️ Attention :</strong> Toujours effectuer une sauvegarde avant toute opération de maintenance. Contactez l'équipe technique si nécessaire.
+    </div>
+    
+    <h2 id="support">12. Support et Assistance</h2>
+    
+    <h3>📞 Contacts</h3>
+    <table>
+        <tr>
+            <th>Type de support</th>
+            <th>Contact</th>
+            <th>Horaires</th>
+        </tr>
+        <tr>
+            <td>Support fonctionnel</td>
+            <td>support@transport.sn</td>
+            <td>Lun-Ven 8h-18h</td>
+        </tr>
+        <tr>
+            <td>Support technique</td>
+            <td>tech@transport.sn</td>
+            <td>Lun-Ven 8h-18h</td>
+        </tr>
+        <tr>
+            <td>Urgences</td>
+            <td>+221 77 XXX XX XX</td>
+            <td>24h/24</td>
+        </tr>
+    </table>
+    
+    <h3>📚 Ressources</h3>
+    <ul>
+        <li><strong>Guide Responsable Compagnie</strong> : Fonctions de gestion de compagnie</li>
+        <li><strong>Guide Agent</strong> : Application mobile d'embarquement</li>
+        <li><strong>Guide Technique</strong> : Documentation API et administration système</li>
+        <li><strong>FAQ</strong> : Questions fréquentes</li>
+    </ul>
+    
+    <h3>🔄 Demander une Amélioration</h3>
+    <p>Pour suggérer une amélioration ou signaler un problème :</p>
+    <ol class="steps">
+        <li>Décrivez le besoin ou le problème</li>
+        <li>Envoyez un email à <strong>support@transport.sn</strong></li>
+        <li>Incluez des captures d'écran si possible</li>
+        <li>Précisez l'urgence (basse, moyenne, haute)</li>
+    </ol>
+    
+    <div class="footer">
+        <p><strong>Transport Interurbain - Guide Administrateur Transport</strong></p>
+        <p>Profil : Administrateur Transport | Version 1.1 - Janvier 2026</p>
+        <p>© 2026 - Document confidentiel - Usage interne uniquement</p>
+    </div>
+</body>
+</html>

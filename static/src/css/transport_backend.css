@@ -1,10 +1,88 @@
 /* Transport Backend Styles */
 
-/* Dashboard styles */
+/* Dashboard styles - Scrollable dashboards */
 .o_transport_admin_dashboard,
 .o_transport_company_dashboard {
     background-color: #f8f9fa;
-    min-height: 100vh;
+    min-height: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Ensure parent container allows scrolling */
+.o_action_manager .o_action:has(.o_transport_admin_dashboard),
+.o_action_manager .o_action:has(.o_transport_company_dashboard) {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Dashboard inner container */
+.o_transport_admin_dashboard > .container-fluid,
+.o_transport_company_dashboard > .container-fluid {
+    padding-bottom: 2rem;
+}
+
+/* Scrollable tables inside dashboards */
+.o_transport_admin_dashboard .table-responsive,
+.o_transport_company_dashboard .table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Scrollable list groups inside dashboards */
+.o_transport_admin_dashboard .list-group.list-group-flush,
+.o_transport_company_dashboard .list-group.list-group-flush {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+/* Scrollable alerts section */
+.o_transport_admin_dashboard .card-body > .list-group,
+.o_transport_company_dashboard .card-body > .list-group {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+/* Custom scrollbar styling */
+.o_transport_admin_dashboard::-webkit-scrollbar,
+.o_transport_company_dashboard::-webkit-scrollbar,
+.o_transport_admin_dashboard .table-responsive::-webkit-scrollbar,
+.o_transport_company_dashboard .table-responsive::-webkit-scrollbar,
+.o_transport_admin_dashboard .list-group::-webkit-scrollbar,
+.o_transport_company_dashboard .list-group::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.o_transport_admin_dashboard::-webkit-scrollbar-track,
+.o_transport_company_dashboard::-webkit-scrollbar-track,
+.o_transport_admin_dashboard .table-responsive::-webkit-scrollbar-track,
+.o_transport_company_dashboard .table-responsive::-webkit-scrollbar-track,
+.o_transport_admin_dashboard .list-group::-webkit-scrollbar-track,
+.o_transport_company_dashboard .list-group::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.o_transport_admin_dashboard::-webkit-scrollbar-thumb,
+.o_transport_company_dashboard::-webkit-scrollbar-thumb,
+.o_transport_admin_dashboard .table-responsive::-webkit-scrollbar-thumb,
+.o_transport_company_dashboard .table-responsive::-webkit-scrollbar-thumb,
+.o_transport_admin_dashboard .list-group::-webkit-scrollbar-thumb,
+.o_transport_company_dashboard .list-group::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.o_transport_admin_dashboard::-webkit-scrollbar-thumb:hover,
+.o_transport_company_dashboard::-webkit-scrollbar-thumb:hover,
+.o_transport_admin_dashboard .table-responsive::-webkit-scrollbar-thumb:hover,
+.o_transport_company_dashboard .table-responsive::-webkit-scrollbar-thumb:hover,
+.o_transport_admin_dashboard .list-group::-webkit-scrollbar-thumb:hover,
+.o_transport_company_dashboard .list-group::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
 }
 
 .o_transport_admin_dashboard .card,

@@ -7,7 +7,7 @@
     <!-- Menu racine -->
     <menuitem id="transport_menu_root"
               name="Transport"
-              sequence="100"
+              sequence="1"
               web_icon="transport_interurbain,static/description/icon.png"
               groups="group_transport_user"/>
 

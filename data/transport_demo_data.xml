@@ -120,7 +120,7 @@
         <record id="bus_utb_001" model="transport.bus">
             <field name="name">UTB-001 VIP</field>
             <field name="code">UTB-001</field>
-            <field name="company_id" ref="company_utb"/>
+            <field name="transport_company_id" ref="company_utb"/>
             <field name="bus_type">coach</field>
             <field name="seat_capacity">55</field>
             <field name="seat_layout">2+2</field>
@@ -147,7 +147,7 @@
         <record id="bus_utb_002" model="transport.bus">
             <field name="name">UTB-002 Confort</field>
             <field name="code">UTB-002</field>
-            <field name="company_id" ref="company_utb"/>
+            <field name="transport_company_id" ref="company_utb"/>
             <field name="bus_type">coach</field>
             <field name="seat_capacity">50</field>
             <field name="seat_layout">2+2</field>
@@ -172,7 +172,7 @@
         <record id="bus_utb_003" model="transport.bus">
             <field name="name">UTB-003 Standard</field>
             <field name="code">UTB-003</field>
-            <field name="company_id" ref="company_utb"/>
+            <field name="transport_company_id" ref="company_utb"/>
             <field name="bus_type">standard</field>
             <field name="seat_capacity">45</field>
             <field name="seat_layout">2+2</field>
@@ -201,7 +201,7 @@
         <record id="bus_att_001" model="transport.bus">
             <field name="name">ATT-001 Luxe</field>
             <field name="code">ATT-001</field>
-            <field name="company_id" ref="company_att"/>
+            <field name="transport_company_id" ref="company_att"/>
             <field name="bus_type">coach</field>
             <field name="seat_capacity">52</field>
             <field name="seat_layout">2+2</field>
@@ -228,7 +228,7 @@
         <record id="bus_att_002" model="transport.bus">
             <field name="name">ATT-002 Confort</field>
             <field name="code">ATT-002</field>
-            <field name="company_id" ref="company_att"/>
+            <field name="transport_company_id" ref="company_att"/>
             <field name="bus_type">standard</field>
             <field name="seat_capacity">48</field>
             <field name="seat_layout">2+2</field>
@@ -257,7 +257,7 @@
         <record id="bus_ctv_001" model="transport.bus">
             <field name="name">CTV-001</field>
             <field name="code">CTV-001</field>
-            <field name="company_id" ref="company_ctv"/>
+            <field name="transport_company_id" ref="company_ctv"/>
             <field name="bus_type">standard</field>
             <field name="seat_capacity">50</field>
             <field name="seat_layout">2+2</field>
@@ -282,7 +282,7 @@
         <record id="bus_ctv_002" model="transport.bus">
             <field name="name">CTV-002</field>
             <field name="code">CTV-002</field>
-            <field name="company_id" ref="company_ctv"/>
+            <field name="transport_company_id" ref="company_ctv"/>
             <field name="bus_type">midi</field>
             <field name="seat_capacity">30</field>
             <field name="seat_layout">2+1</field>
@@ -311,7 +311,7 @@
         <record id="bus_tcv_001" model="transport.bus">
             <field name="name">TCV-EXPRESS-001</field>
             <field name="code">TCV-001</field>
-            <field name="company_id" ref="company_tcv"/>
+            <field name="transport_company_id" ref="company_tcv"/>
             <field name="bus_type">coach</field>
             <field name="seat_capacity">45</field>
             <field name="seat_layout">2+1</field>
@@ -342,7 +342,7 @@
         <record id="bus_sts_001" model="transport.bus">
             <field name="name">STS-001</field>
             <field name="code">STS-001</field>
-            <field name="company_id" ref="company_sts"/>
+            <field name="transport_company_id" ref="company_sts"/>
             <field name="bus_type">coach</field>
             <field name="seat_capacity">50</field>
             <field name="seat_layout">2+2</field>
@@ -369,7 +369,7 @@
         <record id="bus_sts_002" model="transport.bus">
             <field name="name">STS-002</field>
             <field name="code">STS-002</field>
-            <field name="company_id" ref="company_sts"/>
+            <field name="transport_company_id" ref="company_sts"/>
             <field name="bus_type">standard</field>
             <field name="seat_capacity">48</field>
             <field name="seat_layout">2+2</field>

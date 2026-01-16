@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Utilisateur - Application Usager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        h2 {
+            color: #2980b9;
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            page-break-after: avoid;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            page-break-after: avoid;
+        }
+        
+        h4 {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .version-info {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            border-bottom: none;
+            text-align: center;
+        }
+        
+        .toc ol {
+            columns: 2;
+            column-gap: 30px;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+            break-inside: avoid;
+        }
+        
+        .toc a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .highlight-box {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .danger-box {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .screen-mockup {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px auto;
+            max-width: 320px;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .screen-mockup .header {
+            background: #3498db;
+            margin: -20px -20px 15px -20px;
+            padding: 15px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .screen-mockup .btn {
+            background: #3498db;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .screen-mockup .btn-success {
+            background: #28a745;
+        }
+        
+        .screen-mockup .card {
+            background: #2d2d44;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .icon {
+            display: inline-block;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .steps li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 45px;
+            margin-bottom: 15px;
+        }
+        
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+        }
+        
+        .faq-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .faq-item h4 {
+            color: #2980b9;
+            margin-top: 0;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        @media print {
+            body {
+                padding: 20px;
+            }
+            
+            h2 {
+                page-break-after: avoid;
+            }
+            
+            .screen-mockup, .highlight-box, .warning-box, table {
+                page-break-inside: avoid;
+            }
+            
+            .toc {
+                page-break-after: always;
+            }
+            
+            .print-btn {
+                display: none !important;
+            }
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+        }
+        
+        .print-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">
+        📄 Télécharger en PDF
+    </button>
+    <h1>📱 Guide Utilisateur<br>Application Usager</h1>
+    <p class="subtitle">Transport Interurbain - Application Mobile Passager</p>
+    
+    <div class="version-info">
+        <strong>Version:</strong> 1.1 | <strong>Dernière mise à jour:</strong> Janvier 2026
+    </div>
+    
+    <div class="toc">
+        <h2>📑 Table des Matières</h2>
+        <ol>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#installation">Installation</a></li>
+            <li><a href="#inscription">Inscription et Connexion</a></li>
+            <li><a href="#recherche">Rechercher un Voyage</a></li>
+            <li><a href="#reservation">Réserver un Ticket</a></li>
+            <li><a href="#tiers">Acheter pour un Tiers</a></li>
+            <li><a href="#tickets">Mes Tickets</a></li>
+            <li><a href="#partage">Partager un Ticket</a></li>
+            <li><a href="#hors-ligne">Mode Hors Ligne</a></li>
+            <li><a href="#profil">Mon Profil</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#support">Support</a></li>
+        </ol>
+    </div>
+    
+    <h2 id="introduction">1. Introduction</h2>
+    
+    <h3>🎯 Objectif de l'Application</h3>
+    <p>L'application <strong>Transport Usager</strong> vous permet de réserver vos billets de transport interurbain directement depuis votre smartphone. Plus besoin de vous déplacer à la gare !</p>
+    
+    <p>Avec cette application, vous pouvez :</p>
+    <ul>
+        <li><strong>Rechercher</strong> des voyages entre différentes villes</li>
+        <li><strong>Réserver</strong> et payer vos billets en ligne</li>
+        <li><strong>Acheter</strong> des billets pour vos proches</li>
+        <li><strong>Partager</strong> vos tickets facilement</li>
+        <li><strong>Accéder</strong> à vos tickets même hors connexion</li>
+    </ul>
+    
+    <h3>📋 Prérequis</h3>
+    <table>
+        <tr>
+            <th>Élément</th>
+            <th>Requis</th>
+        </tr>
+        <tr>
+            <td>Smartphone</td>
+            <td>Android 6.0+ ou iPhone iOS 12+</td>
+        </tr>
+        <tr>
+            <td>Connexion Internet</td>
+            <td>WiFi ou données mobiles</td>
+        </tr>
+        <tr>
+            <td>Numéro de téléphone</td>
+            <td>Numéro sénégalais valide</td>
+        </tr>
+    </table>
+    
+    <h2 id="installation">2. Installation de l'Application</h2>
+    
+    <h3>📲 Sur Android (Google Play Store)</h3>
+    <ol class="steps">
+        <li>Ouvrez le <strong>Google Play Store</strong></li>
+        <li>Recherchez "<strong>Transport Usager</strong>"</li>
+        <li>Sélectionnez l'application avec le logo officiel</li>
+        <li>Appuyez sur <strong>Installer</strong></li>
+        <li>Attendez la fin du téléchargement</li>
+        <li>Appuyez sur <strong>Ouvrir</strong></li>
+    </ol>
+    
+    <h3>📲 Sur iPhone (App Store)</h3>
+    <ol class="steps">
+        <li>Ouvrez l'<strong>App Store</strong></li>
+        <li>Recherchez "<strong>Transport Usager</strong>"</li>
+        <li>Appuyez sur <strong>Obtenir</strong></li>
+        <li>Confirmez avec Face ID, Touch ID ou mot de passe</li>
+        <li>Attendez l'installation</li>
+        <li>Appuyez sur l'icône pour ouvrir</li>
+    </ol>
+    
+    <h2 id="inscription">3. Inscription et Connexion</h2>
+    
+    <h3>📝 Créer un Compte</h3>
+    
+    <div class="screen-mockup">
+        <div class="header">🚌 Transport Usager</div>
+        <div style="text-align: center; margin-bottom: 20px;">Créer un compte</div>
+        <div class="card">👤 Nom complet</div>
+        <div class="card">📱 Numéro de téléphone</div>
+        <div class="card">🔒 Mot de passe</div>
+        <div class="card">🔒 Confirmer mot de passe</div>
+        <div class="btn">S'inscrire</div>
+        <div style="text-align: center; margin-top: 15px; font-size: 12px;">
+            Déjà inscrit ? Se connecter
+        </div>
+    </div>
+    
+    <ol class="steps">
+        <li>Appuyez sur "<strong>Créer un compte</strong>"</li>
+        <li>Entrez votre <strong>nom complet</strong></li>
+        <li>Entrez votre <strong>numéro de téléphone</strong> (format: 77XXXXXXX)</li>
+        <li>Créez un <strong>mot de passe</strong> (minimum 6 caractères)</li>
+        <li>Confirmez votre mot de passe</li>
+        <li>Appuyez sur "<strong>S'inscrire</strong>"</li>
+        <li>Entrez le <strong>code de vérification</strong> reçu par SMS</li>
+    </ol>
+    
+    <div class="highlight-box">
+        <strong>💡 Conseil :</strong> Utilisez un mot de passe que vous pouvez facilement retenir mais difficile à deviner.
+    </div>
+    
+    <h3>🔐 Se Connecter</h3>
+    <ol class="steps">
+        <li>Ouvrez l'application</li>
+        <li>Entrez votre <strong>numéro de téléphone</strong></li>
+        <li>Entrez votre <strong>mot de passe</strong></li>
+        <li>Appuyez sur "<strong>Se connecter</strong>"</li>
+    </ol>
+    
+    <h2 id="recherche">4. Rechercher un Voyage</h2>
+    
+    <h3>🔍 Effectuer une Recherche</h3>
+    
+    <div class="screen-mockup">
+        <div class="header">🔍 Rechercher</div>
+        <div class="card">
+            📍 <strong>Départ:</strong> Dakar<br>
+            📍 <strong>Arrivée:</strong> Thiès<br>
+            📅 <strong>Date:</strong> 16 Jan 2026
+        </div>
+        <div class="btn">Rechercher</div>
+        <div style="margin-top: 15px; font-size: 11px;">Résultats (3 voyages)</div>
+        <div class="card">
+            🚌 Transport Express<br>
+            🕐 08:00 → 09:30<br>
+            💰 3 500 FCFA | 45 places
+        </div>
+        <div class="card">
+            🚌 Sahel Bus<br>
+            🕐 10:00 → 11:30<br>
+            💰 3 000 FCFA | 32 places
+        </div>
+    </div>
+    
+    <ol class="steps">
+        <li>Sur l'écran d'accueil, sélectionnez la <strong>ville de départ</strong></li>
+        <li>Sélectionnez la <strong>ville d'arrivée</strong></li>
+        <li>Choisissez la <strong>date</strong> de voyage</li>
+        <li>Appuyez sur "<strong>Rechercher</strong>"</li>
+    </ol>
+    
+    <h3>📋 Comprendre les Résultats</h3>
+    <table>
+        <tr>
+            <th>Information</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>🚌 Compagnie</td>
+            <td>Nom de la compagnie de transport</td>
+        </tr>
+        <tr>
+            <td>🕐 Horaires</td>
+            <td>Heure de départ → Heure d'arrivée estimée</td>
+        </tr>
+        <tr>
+            <td>💰 Prix</td>
+            <td>Tarif du billet en FCFA</td>
+        </tr>
+        <tr>
+            <td>💺 Places</td>
+            <td>Nombre de places disponibles</td>
+        </tr>
+    </table>
+    
+    <h2 id="reservation">5. Réserver un Ticket</h2>
+    
+    <h3>🎫 Processus de Réservation</h3>
+    
+    <ol class="steps">
+        <li>Sélectionnez un <strong>voyage</strong> dans les résultats</li>
+        <li>Vérifiez les <strong>détails</strong> du voyage</li>
+        <li>Appuyez sur "<strong>Réserver</strong>"</li>
+        <li>Confirmez vos <strong>informations</strong> personnelles</li>
+        <li>Choisissez le <strong>mode de paiement</strong></li>
+        <li>Effectuez le <strong>paiement</strong></li>
+        <li>Recevez votre <strong>ticket</strong> avec QR code</li>
+    </ol>
+    
+    <h3>💳 Modes de Paiement</h3>
+    <table>
+        <tr>
+            <th>Mode</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>📱 Orange Money</td>
+            <td>Paiement via votre compte Orange Money</td>
+        </tr>
+        <tr>
+            <td>📱 Wave</td>
+            <td>Paiement via l'application Wave</td>
+        </tr>
+        <tr>
+            <td>📱 Free Money</td>
+            <td>Paiement via Free Money</td>
+        </tr>
+        <tr>
+            <td>💵 Espèces</td>
+            <td>Paiement au guichet avant le départ</td>
+        </tr>
+    </table>
+    
+    <div class="success-box">
+        <strong>✅ Confirmation :</strong> Après paiement, vous recevrez un SMS de confirmation et votre ticket sera disponible dans "Mes Tickets".
+    </div>
+    
+    <h2 id="tiers">6. Acheter un Ticket pour un Tiers</h2>
+    
+    <p>Vous pouvez acheter un ticket pour une autre personne (famille, ami, collègue).</p>
+    
+    <h3>👥 Procédure</h3>
+    
+    <ol class="steps">
+        <li>Recherchez et sélectionnez un <strong>voyage</strong></li>
+        <li>Cochez "<strong>Acheter pour une autre personne</strong>"</li>
+        <li>Entrez le <strong>nom complet</strong> du bénéficiaire</li>
+        <li>Entrez le <strong>numéro de téléphone</strong> du bénéficiaire</li>
+        <li>Procédez au <strong>paiement</strong></li>
+    </ol>
+    
+    <div class="screen-mockup">
+        <div class="header">👥 Acheter pour un tiers</div>
+        <div class="card">
+            ☑️ Acheter pour une autre personne
+        </div>
+        <div class="card">👤 Nom du bénéficiaire</div>
+        <div class="card">📱 Téléphone du bénéficiaire</div>
+        <div class="btn btn-success">Confirmer l'achat</div>
+    </div>
+    
+    <div class="warning-box">
+        <strong>⚠️ Important :</strong> Le bénéficiaire recevra un SMS avec le lien pour télécharger son ticket. C'est son nom qui apparaîtra sur le ticket.
+    </div>
+    
+    <h2 id="tickets">7. Mes Tickets</h2>
+    
+    <h3>🎫 Accéder à Mes Tickets</h3>
+    <p>Tous vos tickets sont accessibles depuis l'onglet "<strong>Mes Tickets</strong>" en bas de l'écran.</p>
+    
+    <h3>📊 Statuts des Tickets</h3>
+    <table>
+        <tr>
+            <th>Statut</th>
+            <th>Couleur</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Confirmé</td>
+            <td style="color: #28a745;">🟢 Vert</td>
+            <td>Ticket valide, prêt pour le voyage</td>
+        </tr>
+        <tr>
+            <td>En attente</td>
+            <td style="color: #ffc107;">🟡 Jaune</td>
+            <td>Paiement en cours de validation</td>
+        </tr>
+        <tr>
+            <td>Utilisé</td>
+            <td style="color: #6c757d;">⚪ Gris</td>
+            <td>Voyage effectué</td>
+        </tr>
+        <tr>
+            <td>Annulé</td>
+            <td style="color: #dc3545;">🔴 Rouge</td>
+            <td>Ticket annulé</td>
+        </tr>
+    </table>
+    
+    <h3>📱 Le QR Code</h3>
+    <p>Chaque ticket contient un <strong>QR code unique</strong> qui sera scanné par l'agent lors de l'embarquement. Ce QR code contient toutes les informations de votre réservation.</p>
+    
+    <div class="highlight-box">
+        <strong>💡 Conseil :</strong> Augmentez la luminosité de votre écran lors du scan pour une meilleure lecture.
+    </div>
+    
+    <h2 id="partage">8. Partager un Ticket</h2>
+    
+    <h3>📤 Options de Partage</h3>
+    <p>Vous pouvez partager votre ticket de plusieurs façons :</p>
+    
+    <ol class="steps">
+        <li>Ouvrez le ticket à partager</li>
+        <li>Appuyez sur le bouton "<strong>Partager</strong>"</li>
+        <li>Choisissez le mode de partage</li>
+    </ol>
+    
+    <table>
+        <tr>
+            <th>Mode</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>💬 WhatsApp</td>
+            <td>Envoie une image du ticket</td>
+        </tr>
+        <tr>
+            <td>📧 Email</td>
+            <td>Envoie le ticket en pièce jointe</td>
+        </tr>
+        <tr>
+            <td>📱 SMS</td>
+            <td>Envoie un lien vers le ticket</td>
+        </tr>
+        <tr>
+            <td>📋 Copier</td>
+            <td>Copie les informations du ticket</td>
+        </tr>
+    </table>
+    
+    <h2 id="hors-ligne">9. Mode Hors Ligne</h2>
+    
+    <p>L'application fonctionne même <strong>sans connexion internet</strong> !</p>
+    
+    <h3>✅ Disponible Hors Ligne</h3>
+    <ul>
+        <li>Consulter vos tickets confirmés</li>
+        <li>Afficher le QR code</li>
+        <li>Voir les détails de vos voyages</li>
+    </ul>
+    
+    <h3>❌ Nécessite Internet</h3>
+    <ul>
+        <li>Rechercher de nouveaux voyages</li>
+        <li>Effectuer des réservations</li>
+        <li>Procéder aux paiements</li>
+    </ul>
+    
+    <div class="success-box">
+        <strong>✅ Astuce :</strong> Vos tickets sont automatiquement sauvegardés sur votre téléphone. Vous pouvez les présenter même en zone sans réseau !
+    </div>
+    
+    <h2 id="profil">10. Mon Profil</h2>
+    
+    <h3>⚙️ Paramètres Disponibles</h3>
+    <ul>
+        <li><strong>Modifier mes informations</strong> - Nom, email</li>
+        <li><strong>Changer mon mot de passe</strong></li>
+        <li><strong>Notifications</strong> - Activer/désactiver les alertes</li>
+        <li><strong>Langue</strong> - Français (par défaut)</li>
+        <li><strong>Aide</strong> - Accéder à ce guide</li>
+        <li><strong>Se déconnecter</strong></li>
+    </ul>
+    
+    <h2 id="faq">11. FAQ - Questions Fréquentes</h2>
+    
+    <div class="faq-item">
+        <h4>Q: Comment annuler une réservation ?</h4>
+        <p><strong>R:</strong> Allez dans "Mes Tickets", sélectionnez le ticket, puis appuyez sur "Annuler". L'annulation est gratuite jusqu'à 24h avant le départ.</p>
+    </div>
+    
+    <div class="faq-item">
+        <h4>Q: J'ai perdu mon téléphone, comment récupérer mes tickets ?</h4>
+        <p><strong>R:</strong> Installez l'application sur votre nouveau téléphone et connectez-vous avec vos identifiants. Tous vos tickets seront synchronisés automatiquement.</p>
+    </div>
+    
+    <div class="faq-item">
+        <h4>Q: Le paiement a échoué mais j'ai été débité, que faire ?</h4>
+        <p><strong>R:</strong> Contactez le support avec votre référence de paiement. Le remboursement sera effectué sous 48h.</p>
+    </div>
+    
+    <div class="faq-item">
+        <h4>Q: Puis-je modifier la date de mon voyage ?</h4>
+        <p><strong>R:</strong> Oui, depuis "Mes Tickets", sélectionnez "Modifier" et choisissez une nouvelle date (selon disponibilité).</p>
+    </div>
+    
+    <div class="faq-item">
+        <h4>Q: Comment savoir si mon paiement a été accepté ?</h4>
+        <p><strong>R:</strong> Vous recevrez un SMS de confirmation et le ticket passera en statut "Confirmé" dans l'application.</p>
+    </div>
+    
+    <h2 id="support">12. Contact Support</h2>
+    
+    <h3>📞 Assistance</h3>
+    <table>
+        <tr>
+            <th>Canal</th>
+            <th>Contact</th>
+            <th>Horaires</th>
+        </tr>
+        <tr>
+            <td>📱 Téléphone</td>
+            <td>+221 33 XXX XX XX</td>
+            <td>7h - 22h</td>
+        </tr>
+        <tr>
+            <td>💬 WhatsApp</td>
+            <td>+221 77 XXX XX XX</td>
+            <td>7h - 22h</td>
+        </tr>
+        <tr>
+            <td>📧 Email</td>
+            <td>support@transport.sn</td>
+            <td>24h/24</td>
+        </tr>
+    </table>
+    
+    <div class="highlight-box">
+        <strong>📋 Lors d'un contact :</strong> Préparez votre numéro de téléphone, la référence du ticket et une description précise du problème.
+    </div>
+    
+    <div class="footer">
+        <p><strong>Transport Interurbain - Application Usager</strong></p>
+        <p>Guide Utilisateur Version 1.1 - Janvier 2026</p>
+        <p>© 2026 - Tous droits réservés</p>
+    </div>
+</body>
+</html>

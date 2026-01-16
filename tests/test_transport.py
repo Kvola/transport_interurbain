@@ -54,7 +54,7 @@ class TestTransportTrip(TransactionCase):
         
         cls.bus = cls.env['transport.bus'].create({
             'name': 'BUS-TEST-001',
-            'company_id': cls.company.id,
+            'transport_company_id': cls.company.id,
             'immatriculation': 'AA 0000 BB',
             'seat_capacity': 50,
             'state': 'available',
@@ -69,7 +69,7 @@ class TestTransportTrip(TransactionCase):
     def test_trip_creation(self):
         """Test de création d'un voyage"""
         trip = self.env['transport.trip'].create({
-            'company_id': self.company.id,
+            'transport_company_id': self.company.id,
             'route_id': self.route.id,
             'bus_id': self.bus.id,
             'departure_datetime': datetime.now() + timedelta(days=1),
@@ -86,7 +86,7 @@ class TestTransportTrip(TransactionCase):
     def test_trip_schedule(self):
         """Test de programmation d'un voyage"""
         trip = self.env['transport.trip'].create({
-            'company_id': self.company.id,
+            'transport_company_id': self.company.id,
             'route_id': self.route.id,
             'bus_id': self.bus.id,
             'departure_datetime': datetime.now() + timedelta(days=1),
@@ -100,7 +100,7 @@ class TestTransportTrip(TransactionCase):
     def test_trip_cannot_schedule_without_bus(self):
         """Test qu'on ne peut pas programmer sans bus"""
         trip = self.env['transport.trip'].create({
-            'company_id': self.company.id,
+            'transport_company_id': self.company.id,
             'route_id': self.route.id,
             'bus_id': self.bus.id,
             'departure_datetime': datetime.now() + timedelta(days=1),
@@ -116,7 +116,7 @@ class TestTransportTrip(TransactionCase):
         """Test des contraintes de prix"""
         with self.assertRaises(ValidationError):
             self.env['transport.trip'].create({
-                'company_id': self.company.id,
+                'transport_company_id': self.company.id,
                 'route_id': self.route.id,
                 'bus_id': self.bus.id,
                 'departure_datetime': datetime.now() + timedelta(days=1),
@@ -129,7 +129,7 @@ class TestTransportTrip(TransactionCase):
         """Test que le prix enfant ne dépasse pas le prix normal"""
         with self.assertRaises(ValidationError):
             self.env['transport.trip'].create({
-                'company_id': self.company.id,
+                'transport_company_id': self.company.id,
                 'route_id': self.route.id,
                 'bus_id': self.bus.id,
                 'departure_datetime': datetime.now() + timedelta(days=1),
@@ -147,7 +147,7 @@ class TestTransportTrip(TransactionCase):
         
         with self.assertRaises(ValidationError):
             self.env['transport.trip'].create({
-                'company_id': other_company.id,
+                'transport_company_id': other_company.id,
                 'route_id': self.route.id,
                 'bus_id': self.bus.id,  # Bus de self.company
                 'departure_datetime': datetime.now() + timedelta(days=1),
@@ -158,7 +158,7 @@ class TestTransportTrip(TransactionCase):
     def test_trip_available_seats_calculation(self):
         """Test du calcul des places disponibles"""
         trip = self.env['transport.trip'].create({
-            'company_id': self.company.id,
+            'transport_company_id': self.company.id,
             'route_id': self.route.id,
             'bus_id': self.bus.id,
             'departure_datetime': datetime.now() + timedelta(days=1),
@@ -224,14 +224,14 @@ class TestTransportBooking(TransactionCase):
         
         cls.bus = cls.env['transport.bus'].create({
             'name': 'BUS-002',
-            'company_id': cls.company.id,
+            'transport_company_id': cls.company.id,
             'immatriculation': 'CC 1111 DD',
             'seat_capacity': 40,
             'state': 'available',
         })
         
         cls.trip = cls.env['transport.trip'].create({
-            'company_id': cls.company.id,
+            'transport_company_id': cls.company.id,
             'route_id': cls.route.id,
             'bus_id': cls.bus.id,
             'departure_datetime': datetime.now() + timedelta(days=2),
@@ -462,14 +462,14 @@ class TestTransportSeatAvailability(TransactionCase):
         
         cls.bus = cls.env['transport.bus'].create({
             'name': 'BUS-SMALL',
-            'company_id': cls.company.id,
+            'transport_company_id': cls.company.id,
             'immatriculation': 'XX 0000 YY',
             'seat_capacity': 5,  # Petit bus pour le test
             'state': 'available',
         })
         
         cls.trip = cls.env['transport.trip'].create({
-            'company_id': cls.company.id,
+            'transport_company_id': cls.company.id,
             'route_id': cls.route.id,
             'bus_id': cls.bus.id,
             'departure_datetime': datetime.now() + timedelta(days=1),
@@ -571,13 +571,13 @@ class TestTransportPayment(TransactionCase):
         
         cls.bus = cls.env['transport.bus'].create({
             'name': 'BUS-PAY',
-            'company_id': cls.company.id,
+            'transport_company_id': cls.company.id,
             'seat_capacity': 50,
             'state': 'available',
         })
         
         cls.trip = cls.env['transport.trip'].create({
-            'company_id': cls.company.id,
+            'transport_company_id': cls.company.id,
             'route_id': cls.route.id,
             'bus_id': cls.bus.id,
             'departure_datetime': datetime.now() + timedelta(days=1),
@@ -609,7 +609,7 @@ class TestTransportPayment(TransactionCase):
         
         self.assertTrue(payment.name != '/')
         self.assertEqual(payment.state, 'pending')
-        self.assertEqual(payment.company_id, self.company)
+        self.assertEqual(payment.transport_company_id, self.company)
 
     def test_payment_completion(self):
         """Test de complétion d'un paiement"""

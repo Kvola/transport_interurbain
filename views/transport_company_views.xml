@@ -17,7 +17,7 @@
                 <field name="city_id"/>
                 <field name="bus_count"/>
                 <field name="active_trip_count"/>
-                <field name="rating" widget="priority"/>
+                <field name="rating" string="Note"/>
                 <field name="state" widget="badge"
                        decoration-success="state == 'active'"
                        decoration-info="state == 'pending'"
@@ -76,7 +76,7 @@
                             <field name="partner_id"/>
                         </group>
                         <group string="Évaluation">
-                            <field name="rating" widget="priority"/>
+                            <field name="rating" string="Note moyenne"/>
                             <field name="rating_count"/>
                         </group>
                     </group>

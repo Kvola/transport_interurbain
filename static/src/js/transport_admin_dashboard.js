@@ -226,11 +226,13 @@ class TransportAdminDashboard extends Component {
             }
             
             // ============ NOTE MOYENNE ============
-            const companiesWithRating = await this.orm.searchRead(
+            // Note: rating est un champ calculé non stocké, on récupère toutes les compagnies
+            const allCompanies = await this.orm.searchRead(
                 "transport.company",
-                [["rating", ">", 0]],
+                [["state", "=", "active"]],
                 ["rating", "rating_count"]
             );
+            const companiesWithRating = allCompanies.filter(c => c.rating > 0);
             
             if (companiesWithRating.length > 0) {
                 const totalRatingWeight = companiesWithRating.reduce((sum, c) => sum + (c.rating * c.rating_count), 0);
@@ -248,13 +250,16 @@ class TransportAdminDashboard extends Component {
             this.state.topRoutes = routes;
             
             // ============ TOP COMPAGNIES ============
+            // Note: rating est calculé, on trie côté client
             const companies = await this.orm.searchRead(
                 "transport.company",
                 [["state", "=", "active"]],
-                ["name", "rating", "rating_count"],
-                { order: "rating desc, rating_count desc", limit: 5 }
+                ["name", "rating", "rating_count"]
             );
-            this.state.topCompanies = companies;
+            // Tri côté client car rating est un champ calculé non stocké
+            this.state.topCompanies = companies
+                .sort((a, b) => (b.rating - a.rating) || (b.rating_count - a.rating_count))
+                .slice(0, 5);
             
             // ============ RÉSERVATIONS RÉCENTES ============
             const recentBookings = await this.orm.searchRead(

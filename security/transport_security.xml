@@ -81,7 +81,7 @@
         <record id="transport_bus_company_rule" model="ir.rule">
             <field name="name">Bus: Responsable voit sa flotte</field>
             <field name="model_id" ref="model_transport_bus"/>
-            <field name="domain_force">[('company_id.manager_ids', 'in', user.id)]</field>
+            <field name="domain_force">[('transport_company_id.manager_ids', 'in', user.id)]</field>
             <field name="groups" eval="[(4, ref('group_transport_company_manager'))]"/>
         </record>
 
@@ -89,7 +89,7 @@
         <record id="transport_trip_company_rule" model="ir.rule">
             <field name="name">Voyage: Responsable voit ses voyages</field>
             <field name="model_id" ref="model_transport_trip"/>
-            <field name="domain_force">[('company_id.manager_ids', 'in', user.id)]</field>
+            <field name="domain_force">[('transport_company_id.manager_ids', 'in', user.id)]</field>
             <field name="groups" eval="[(4, ref('group_transport_company_manager'))]"/>
         </record>
 
@@ -109,7 +109,7 @@
         <record id="transport_booking_company_rule" model="ir.rule">
             <field name="name">Réservation: Responsable voit ses réservations</field>
             <field name="model_id" ref="model_transport_booking"/>
-            <field name="domain_force">[('company_id.manager_ids', 'in', user.id)]</field>
+            <field name="domain_force">[('transport_company_id.manager_ids', 'in', user.id)]</field>
             <field name="groups" eval="[(4, ref('group_transport_company_manager'))]"/>
         </record>
 
@@ -129,7 +129,7 @@
         <record id="transport_payment_company_rule" model="ir.rule">
             <field name="name">Paiement: Responsable voit ses paiements</field>
             <field name="model_id" ref="model_transport_payment"/>
-            <field name="domain_force">[('company_id.manager_ids', 'in', user.id)]</field>
+            <field name="domain_force">[('transport_company_id.manager_ids', 'in', user.id)]</field>
             <field name="groups" eval="[(4, ref('group_transport_company_manager'))]"/>
         </record>
 

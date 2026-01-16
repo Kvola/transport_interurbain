@@ -14,7 +14,7 @@
                   decoration-info="state == 'in_trip'">
                 <field name="code"/>
                 <field name="name"/>
-                <field name="company_id"/>
+                <field name="transport_company_id"/>
                 <field name="bus_type"/>
                 <field name="seat_capacity"/>
                 <field name="has_ac" widget="boolean"/>
@@ -63,7 +63,7 @@
                     </div>
                     <group>
                         <group string="Informations générales">
-                            <field name="company_id"/>
+                            <field name="transport_company_id"/>
                             <field name="bus_type"/>
                             <field name="make"/>
                             <field name="model"/>
@@ -143,7 +143,7 @@
             <kanban class="o_kanban_mobile">
                 <field name="name"/>
                 <field name="image"/>
-                <field name="company_id"/>
+                <field name="transport_company_id"/>
                 <field name="bus_type"/>
                 <field name="seat_capacity"/>
                 <field name="state"/>
@@ -163,7 +163,7 @@
                                         <field name="state"/>
                                     </span>
                                 </div>
-                                <div><field name="company_id"/></div>
+                                <div><field name="transport_company_id"/></div>
                                 <ul class="list-unstyled mb-0">
                                     <li><i class="fa fa-users me-1"/> <field name="seat_capacity"/> places</li>
                                     <li><field name="bus_type"/></li>
@@ -184,7 +184,7 @@
             <search string="Rechercher un bus">
                 <field name="name"/>
                 <field name="code"/>
-                <field name="company_id"/>
+                <field name="transport_company_id"/>
                 <field name="license_plate"/>
                 <filter string="Disponibles" name="available" domain="[('state', '=', 'available')]"/>
                 <filter string="En voyage" name="in_trip" domain="[('state', '=', 'in_trip')]"/>
@@ -193,7 +193,7 @@
                 <filter string="Avec climatisation" name="with_ac" domain="[('has_ac', '=', True)]"/>
                 <filter string="Avec WiFi" name="with_wifi" domain="[('has_wifi', '=', True)]"/>
                 <group expand="0" string="Grouper par">
-                    <filter string="Compagnie" name="company" context="{'group_by': 'company_id'}"/>
+                    <filter string="Compagnie" name="company" context="{'group_by': 'transport_company_id'}"/>
                     <filter string="Type" name="type" context="{'group_by': 'bus_type'}"/>
                     <filter string="État" name="state" context="{'group_by': 'state'}"/>
                 </group>

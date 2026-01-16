@@ -29,7 +29,7 @@ class TransportTripSchedule(models.Model):
         default='/',
         index=True,
     )
-    company_id = fields.Many2one(
+    transport_company_id = fields.Many2one(
         'transport.company',
         string='Compagnie',
         required=True,
@@ -49,7 +49,7 @@ class TransportTripSchedule(models.Model):
         'transport.bus',
         string='Bus par défaut',
         tracking=True,
-        domain="[('company_id', '=', company_id), ('state', '=', 'available')]",
+        domain="[('transport_company_id', '=', transport_company_id), ('state', '=', 'available')]",
         help="Bus utilisé par défaut pour les voyages générés",
     )
     
@@ -83,7 +83,7 @@ class TransportTripSchedule(models.Model):
         currency_field='currency_id',
     )
     currency_id = fields.Many2one(
-        related='company_id.currency_id',
+        related='transport_company_id.currency_id',
     )
     
     # Période de validité
@@ -335,7 +335,7 @@ class TransportTripSchedule(models.Model):
                     
                     # Créer le voyage
                     trip = Trip.create({
-                        'company_id': self.company_id.id,
+                        'transport_company_id': self.transport_company_id.id,
                         'route_id': self.route_id.id,
                         'bus_id': bus.id,
                         'schedule_id': self.id,
@@ -425,7 +425,7 @@ class TransportTripScheduleLine(models.Model):
     bus_id = fields.Many2one(
         'transport.bus',
         string='Bus spécifique',
-        domain="[('company_id', '=', parent.company_id), ('state', '=', 'available')]",
+        domain="[('transport_company_id', '=', parent.transport_company_id), ('state', '=', 'available')]",
         help="Laisser vide pour utiliser le bus par défaut du programme",
     )
     price = fields.Monetary(

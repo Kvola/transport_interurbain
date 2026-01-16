@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Utilisateur - Application Agent d'Embarquement</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+        
+        h1 {
+            color: #1e8449;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #27ae60;
+        }
+        
+        h2 {
+            color: #1e8449;
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            page-break-after: avoid;
+        }
+        
+        h3 {
+            color: #27ae60;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            page-break-after: avoid;
+        }
+        
+        h4 {
+            color: #34495e;
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .version-info {
+            text-align: center;
+            background: #e8f8f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        
+        .toc {
+            background: #e8f8f5;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            border-bottom: none;
+            text-align: center;
+        }
+        
+        .toc ol {
+            columns: 2;
+            column-gap: 30px;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+            break-inside: avoid;
+        }
+        
+        .toc a {
+            color: #27ae60;
+            text-decoration: none;
+        }
+        
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #1e8449;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .highlight-box {
+            background: #e8f8f5;
+            border-left: 4px solid #27ae60;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box {
+            background: #fef9e7;
+            border-left: 4px solid #f1c40f;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .danger-box {
+            background: #fdedec;
+            border-left: 4px solid #e74c3c;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .success-box {
+            background: #d5f5e3;
+            border-left: 4px solid #27ae60;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .screen-mockup {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 20px;
+            border-radius: 25px;
+            margin: 20px auto;
+            max-width: 320px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 13px;
+            line-height: 1.4;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .screen-mockup .header {
+            background: #1e8449;
+            margin: -20px -20px 15px -20px;
+            padding: 15px;
+            border-radius: 25px 25px 0 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .screen-mockup .btn {
+            background: #27ae60;
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        .screen-mockup .btn-danger {
+            background: #e74c3c;
+        }
+        
+        .screen-mockup .btn-outline {
+            background: transparent;
+            border: 2px solid #27ae60;
+            color: #27ae60;
+        }
+        
+        .screen-mockup .card {
+            background: #2d2d44;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        
+        .screen-mockup .card-success {
+            background: #1e8449;
+        }
+        
+        .screen-mockup .card-danger {
+            background: #922b21;
+        }
+        
+        .screen-mockup .scanner-area {
+            background: #000;
+            height: 200px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            border: 3px dashed #27ae60;
+        }
+        
+        .screen-mockup .progress-bar {
+            background: #444;
+            height: 8px;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .screen-mockup .progress-bar .fill {
+            background: #27ae60;
+            height: 100%;
+            width: 64%;
+        }
+        
+        .screen-mockup .nav-bar {
+            display: flex;
+            justify-content: space-around;
+            background: #2d2d44;
+            margin: 15px -20px -20px -20px;
+            padding: 12px;
+            border-radius: 0 0 25px 25px;
+        }
+        
+        .screen-mockup .nav-item {
+            text-align: center;
+            font-size: 11px;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .steps li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 45px;
+            margin-bottom: 15px;
+        }
+        
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: #27ae60;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+        }
+        
+        .faq-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .faq-item h4 {
+            color: #1e8449;
+            margin-top: 0;
+        }
+        
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .checklist li {
+            padding: 8px 0 8px 35px;
+            position: relative;
+        }
+        
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            font-size: 18px;
+        }
+        
+        .checklist li.checked::before {
+            content: "☑";
+            color: #27ae60;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        @media print {
+            body {
+                padding: 20px;
+            }
+            
+            h2 {
+                page-break-after: avoid;
+            }
+            
+            .screen-mockup, .highlight-box, .warning-box, table, .faq-item {
+                page-break-inside: avoid;
+            }
+            
+            .toc {
+                page-break-after: always;
+            }
+            
+            .print-btn {
+                display: none !important;
+            }
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #1e8449, #27ae60);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.5);
+        }
+        
+        .print-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">
+        📄 Télécharger en PDF
+    </button>
+    <h1>📱 Guide Utilisateur<br>Application Agent d'Embarquement</h1>
+    <p class="subtitle">Transport Interurbain - Application Mobile Agent</p>
+    
+    <div class="version-info">
+        <strong>Version:</strong> 1.1 | <strong>Dernière mise à jour:</strong> Janvier 2026
+    </div>
+    
+    <div class="toc">
+        <h2>📑 Table des Matières</h2>
+        <ol>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#installation">Installation</a></li>
+            <li><a href="#connexion">Connexion</a></li>
+            <li><a href="#interface">Interface Principale</a></li>
+            <li><a href="#scanner">Scanner un Ticket</a></li>
+            <li><a href="#validation">Validation des Tickets</a></li>
+            <li><a href="#voyages">Consultation des Voyages</a></li>
+            <li><a href="#passagers">Gestion des Passagers</a></li>
+            <li><a href="#hors-ligne">Mode Hors Ligne</a></li>
+            <li><a href="#problemes">Résolution des Problèmes</a></li>
+            <li><a href="#bonnes-pratiques">Bonnes Pratiques</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ol>
+    </div>
+    
+    <h2 id="introduction">1. Introduction</h2>
+    
+    <h3>🎯 Objectif de l'Application</h3>
+    <p>L'application <strong>Agent d'Embarquement</strong> est conçue pour faciliter le travail des agents de terrain lors de l'embarquement des passagers. Elle permet de :</p>
+    
+    <ul>
+        <li><strong>Scanner</strong> les tickets des passagers (QR Code)</li>
+        <li><strong>Vérifier</strong> la validité des réservations</li>
+        <li><strong>Valider</strong> l'embarquement en temps réel</li>
+        <li><strong>Consulter</strong> la liste des passagers d'un voyage</li>
+        <li><strong>Travailler</strong> même sans connexion internet</li>
+    </ul>
+    
+    <h3>📋 Prérequis</h3>
+    <table>
+        <tr>
+            <th>Élément</th>
+            <th>Requis</th>
+        </tr>
+        <tr>
+            <td>Smartphone</td>
+            <td>Android 6.0+ ou iPhone iOS 12+</td>
+        </tr>
+        <tr>
+            <td>Caméra</td>
+            <td>Fonctionnelle (pour scan QR)</td>
+        </tr>
+        <tr>
+            <td>Connexion</td>
+            <td>WiFi ou données mobiles (pour sync)</td>
+        </tr>
+        <tr>
+            <td>Compte</td>
+            <td>Créé par votre compagnie</td>
+        </tr>
+    </table>
+    
+    <h2 id="installation">2. Installation de l'Application</h2>
+    
+    <h3>📲 Sur Android</h3>
+    <ol class="steps">
+        <li>Ouvrez le <strong>Google Play Store</strong></li>
+        <li>Recherchez "<strong>Transport Agent</strong>"</li>
+        <li>Sélectionnez l'application officielle</li>
+        <li>Appuyez sur <strong>Installer</strong></li>
+        <li>Attendez le téléchargement</li>
+    </ol>
+    
+    <h3>📲 Sur iPhone</h3>
+    <ol class="steps">
+        <li>Ouvrez l'<strong>App Store</strong></li>
+        <li>Recherchez "<strong>Transport Agent</strong>"</li>
+        <li>Appuyez sur <strong>Obtenir</strong></li>
+        <li>Confirmez avec Face ID / Touch ID</li>
+        <li>Attendez l'installation</li>
+    </ol>
+    
+    <h3>⚙️ Autorisations Requises</h3>
+    <table>
+        <tr>
+            <th>Permission</th>
+            <th>Usage</th>
+            <th>Obligatoire</th>
+        </tr>
+        <tr>
+            <td>📷 Caméra</td>
+            <td>Scanner les QR codes</td>
+            <td>✅ Oui</td>
+        </tr>
+        <tr>
+            <td>📍 Localisation</td>
+            <td>Suivi des embarquements</td>
+            <td>❌ Non</td>
+        </tr>
+        <tr>
+            <td>🔔 Notifications</td>
+            <td>Alertes et rappels</td>
+            <td>❌ Non</td>
+        </tr>
+    </table>
+    
+    <div class="danger-box">
+        <strong>⚠️ Important :</strong> L'accès à la caméra est <strong>obligatoire</strong> pour scanner les tickets. Sans cette permission, l'application ne pourra pas fonctionner correctement.
+    </div>
+    
+    <h2 id="connexion">3. Connexion à l'Application</h2>
+    
+    <h3>🔐 Obtenir vos Identifiants</h3>
+    <p>Vos identifiants sont fournis par votre <strong>responsable</strong> ou le <strong>service RH</strong> :</p>
+    <ul>
+        <li><strong>Téléphone</strong> : Votre numéro professionnel</li>
+        <li><strong>Mot de passe</strong> : Fourni à l'embauche</li>
+    </ul>
+    
+    <div class="screen-mockup">
+        <div class="header">🚌 Transport Agent</div>
+        <div style="text-align: center; margin: 20px 0;">
+            <div style="font-size: 40px; margin-bottom: 20px;">👤</div>
+            <div style="font-size: 16px;">Connexion Agent</div>
+        </div>
+        <div class="card">📱 77 123 45 67</div>
+        <div class="card">🔒 ••••••••</div>
+        <div class="btn">Se connecter</div>
+        <div style="text-align: center; margin-top: 15px; font-size: 12px; color: #888;">
+            Mot de passe oublié ?
+        </div>
+    </div>
+    
+    <h3>📱 Procédure de Connexion</h3>
+    <ol class="steps">
+        <li>Ouvrez l'application <strong>Transport Agent</strong></li>
+        <li>Entrez votre <strong>numéro de téléphone</strong> (format: 77XXXXXXX)</li>
+        <li>Entrez votre <strong>mot de passe</strong></li>
+        <li>Appuyez sur "<strong>Se connecter</strong>"</li>
+    </ol>
+    
+    <div class="highlight-box">
+        <strong>💡 Conseil :</strong> Changez votre mot de passe dès la première connexion pour plus de sécurité.
+    </div>
+    
+    <h2 id="interface">4. Interface Principale</h2>
+    
+    <h3>🏠 Écran d'Accueil</h3>
+    
+    <div class="screen-mockup">
+        <div class="header">🚌 Bonjour, Amadou !</div>
+        <div class="btn" style="font-size: 18px; padding: 20px;">
+            📷 SCANNER UN TICKET
+        </div>
+        <div style="margin-top: 15px; font-size: 12px; color: #888;">Voyage en cours</div>
+        <div class="card">
+            <div style="font-weight: bold;">Dakar → Thiès</div>
+            <div style="font-size: 12px; color: #888; margin: 5px 0;">🕐 14:00 | 🚌 DK-1234</div>
+            <div style="font-size: 14px;">👥 32/50 embarqués</div>
+            <div class="progress-bar"><div class="fill"></div></div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <div class="card" style="flex: 1; text-align: center; padding: 15px;">
+                <div style="font-size: 20px;">📋</div>
+                <div style="font-size: 11px;">Voyages</div>
+            </div>
+            <div class="card" style="flex: 1; text-align: center; padding: 15px;">
+                <div style="font-size: 20px;">📊</div>
+                <div style="font-size: 11px;">Stats</div>
+            </div>
+        </div>
+        <div class="nav-bar">
+            <div class="nav-item">🏠<br>Accueil</div>
+            <div class="nav-item">📷<br>Scanner</div>
+            <div class="nav-item">📋<br>Voyages</div>
+            <div class="nav-item">👤<br>Profil</div>
+        </div>
+    </div>
+    
+    <h3>📌 Éléments de l'Interface</h3>
+    <table>
+        <tr>
+            <th>Élément</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Bouton Scanner</td>
+            <td>Lance le scanner de QR code</td>
+        </tr>
+        <tr>
+            <td>Voyage en cours</td>
+            <td>Affiche le prochain voyage assigné</td>
+        </tr>
+        <tr>
+            <td>Barre de progression</td>
+            <td>Nombre de passagers embarqués</td>
+        </tr>
+        <tr>
+            <td>Menu Voyages</td>
+            <td>Liste de tous vos voyages</td>
+        </tr>
+        <tr>
+            <td>Menu Stats</td>
+            <td>Statistiques d'embarquement</td>
+        </tr>
+    </table>
+    
+    <h2 id="scanner">5. Scanner un Ticket</h2>
+    
+    <h3>📷 Procédure de Scan</h3>
+    
+    <div class="screen-mockup">
+        <div class="header">📷 Scanner le ticket</div>
+        <div class="scanner-area">
+            <div style="text-align: center;">
+                <div style="font-size: 60px; opacity: 0.5;">⬜</div>
+                <div style="font-size: 12px; margin-top: 10px;">QR Code ici</div>
+            </div>
+        </div>
+        <div style="text-align: center; font-size: 13px; color: #888;">
+            💡 Placez le QR code dans le cadre
+        </div>
+        <div class="btn btn-outline" style="margin-top: 15px;">
+            🔦 Activer la lampe
+        </div>
+    </div>
+    
+    <ol class="steps">
+        <li>Appuyez sur le bouton <strong>Scanner</strong></li>
+        <li>Pointez la caméra vers le <strong>QR code</strong> du ticket</li>
+        <li>Maintenez le téléphone <strong>stable</strong></li>
+        <li>Le scan est <strong>automatique</strong> dès détection</li>
+    </ol>
+    
+    <h3>🔦 Options du Scanner</h3>
+    <ul>
+        <li><strong>Lampe torche</strong> : Activez pour scanner dans l'obscurité</li>
+        <li><strong>Zoom</strong> : Pincez l'écran pour zoomer si nécessaire</li>
+        <li><strong>Annuler</strong> : Balayez vers le bas ou appuyez sur retour</li>
+    </ul>
+    
+    <h3>✅ Résultat : Ticket Valide</h3>
+    
+    <div class="screen-mockup">
+        <div class="header" style="background: #27ae60;">✅ TICKET VALIDE</div>
+        <div class="card-success card">
+            <div style="text-align: center; font-size: 30px; margin-bottom: 10px;">✓</div>
+            <div style="text-align: center; font-weight: bold;">Fatou DIALLO</div>
+            <div style="text-align: center; font-size: 12px;">📱 77 234 56 78</div>
+        </div>
+        <div class="card">
+            <div style="font-size: 12px; color: #888;">Détails du voyage</div>
+            <div>📍 Dakar → Thiès</div>
+            <div>📅 16 Jan 2026 | 🕐 14:00</div>
+            <div>💺 Siège N°15</div>
+            <div style="font-size: 11px; color: #888;">🎫 TKT-2026-00456</div>
+        </div>
+        <div class="btn">✅ VALIDER EMBARQUEMENT</div>
+        <div class="btn btn-outline" style="color: #e74c3c; border-color: #e74c3c;">
+            ❌ Refuser
+        </div>
+    </div>
+    
+    <h3>❌ Résultat : Ticket Invalide</h3>
+    
+    <div class="screen-mockup">
+        <div class="header" style="background: #e74c3c;">❌ TICKET INVALIDE</div>
+        <div class="card-danger card">
+            <div style="text-align: center; font-size: 30px; margin-bottom: 10px;">✗</div>
+            <div style="text-align: center; font-weight: bold;">Raison du refus</div>
+            <div style="text-align: center; font-size: 13px; margin-top: 10px;">
+                Ce ticket a déjà été utilisé<br>le 15/01/2026 à 14:05
+            </div>
+        </div>
+        <div style="text-align: center; font-size: 12px; color: #888; margin: 15px 0;">
+            Réf: TKT-2026-00456
+        </div>
+        <div class="btn">📷 Scanner un autre ticket</div>
+        <div class="btn btn-outline">📞 Contacter support</div>
+    </div>
+    
+    <h3>⚠️ Codes d'Erreur</h3>
+    <table>
+        <tr>
+            <th>Code</th>
+            <th>Signification</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>INVALID_TICKET</td>
+            <td>Ticket non reconnu</td>
+            <td>Vérifier le QR code</td>
+        </tr>
+        <tr>
+            <td>ALREADY_VALIDATED</td>
+            <td>Déjà embarqué</td>
+            <td>Refuser l'embarquement</td>
+        </tr>
+        <tr>
+            <td>EXPIRED_TICKET</td>
+            <td>Ticket expiré</td>
+            <td>Orienter vers guichet</td>
+        </tr>
+        <tr>
+            <td>WRONG_TRIP</td>
+            <td>Mauvais voyage</td>
+            <td>Vérifier le voyage</td>
+        </tr>
+        <tr>
+            <td>CANCELLED</td>
+            <td>Ticket annulé</td>
+            <td>Refuser, orienter vers guichet</td>
+        </tr>
+    </table>
+    
+    <h2 id="validation">6. Validation des Tickets</h2>
+    
+    <h3>✅ Valider un Embarquement</h3>
+    <p>Après un scan réussi :</p>
+    <ol class="steps">
+        <li><strong>Vérifiez</strong> les informations affichées</li>
+        <li><strong>Confirmez</strong> visuellement l'identité du passager (si besoin)</li>
+        <li>Appuyez sur "<strong>Valider Embarquement</strong>"</li>
+        <li>Le passager peut maintenant embarquer</li>
+    </ol>
+    
+    <h3>📝 Informations à Vérifier</h3>
+    <table>
+        <tr>
+            <th>Élément</th>
+            <th>Vérification</th>
+        </tr>
+        <tr>
+            <td>Nom</td>
+            <td>Correspond au passager</td>
+        </tr>
+        <tr>
+            <td>Voyage</td>
+            <td>Correspond à votre bus</td>
+        </tr>
+        <tr>
+            <td>Date/Heure</td>
+            <td>Correspond au départ</td>
+        </tr>
+        <tr>
+            <td>Statut</td>
+            <td>Ticket non utilisé</td>
+        </tr>
+    </table>
+    
+    <h3>❓ Cas Particuliers</h3>
+    
+    <h4>Ticket pour un Tiers</h4>
+    <p>Si le ticket a été acheté pour une autre personne :</p>
+    <ul>
+        <li>Le nom affiché est celui du <strong>bénéficiaire</strong> (pas de l'acheteur)</li>
+        <li>Vérifiez l'identité du bénéficiaire</li>
+    </ul>
+    
+    <h4>Ticket Partagé</h4>
+    <ul>
+        <li>Le QR code reste valide</li>
+        <li>Seul le premier scan validé compte</li>
+    </ul>
+    
+    <h2 id="voyages">7. Consultation des Voyages</h2>
+    
+    <h3>📋 Liste des Voyages</h3>
+    
+    <div class="screen-mockup">
+        <div class="header">📋 Mes Voyages</div>
+        <div style="font-size: 12px; color: #888; margin-bottom: 10px;">Aujourd'hui</div>
+        <div class="card" style="border-left: 4px solid #27ae60;">
+            <div style="display: flex; justify-content: space-between;">
+                <span style="font-weight: bold;">Dakar → Thiès</span>
+                <span style="color: #27ae60; font-size: 11px;">EN COURS</span>
+            </div>
+            <div style="font-size: 12px; color: #888;">🕐 14:00 | 🚌 DK-1234</div>
+            <div style="font-size: 13px;">👥 32/50 embarqués</div>
+        </div>
+        <div class="card" style="border-left: 4px solid #3498db;">
+            <div style="display: flex; justify-content: space-between;">
+                <span style="font-weight: bold;">Dakar → Saint-Louis</span>
+                <span style="color: #3498db; font-size: 11px;">PROGRAMMÉ</span>
+            </div>
+            <div style="font-size: 12px; color: #888;">🕐 18:00 | 🚌 DK-5678</div>
+            <div style="font-size: 13px;">👥 45/55 réservés</div>
+        </div>
+        <div style="font-size: 12px; color: #888; margin: 15px 0 10px 0;">Demain</div>
+        <div class="card" style="border-left: 4px solid #3498db;">
+            <div style="display: flex; justify-content: space-between;">
+                <span style="font-weight: bold;">Dakar → Kaolack</span>
+                <span style="color: #3498db; font-size: 11px;">PROGRAMMÉ</span>
+            </div>
+            <div style="font-size: 12px; color: #888;">🕐 08:00 | 🚌 DK-9012</div>
+            <div style="font-size: 13px;">👥 28/50 réservés</div>
+        </div>
+    </div>
+    
+    <h3>📊 Indicateurs de Statut</h3>
+    <table>
+        <tr>
+            <th>Couleur</th>
+            <th>Statut</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td style="color: #27ae60;">🟢 Vert</td>
+            <td>EN COURS</td>
+            <td>Embarquement actif</td>
+        </tr>
+        <tr>
+            <td style="color: #3498db;">🔵 Bleu</td>
+            <td>PROGRAMMÉ</td>
+            <td>Voyage à venir</td>
+        </tr>
+        <tr>
+            <td style="color: #f1c40f;">🟡 Jaune</td>
+            <td>EN ATTENTE</td>
+            <td>Départ imminent</td>
+        </tr>
+        <tr>
+            <td style="color: #95a5a6;">⚪ Gris</td>
+            <td>TERMINÉ</td>
+            <td>Voyage effectué</td>
+        </tr>
+        <tr>
+            <td style="color: #e74c3c;">🔴 Rouge</td>
+            <td>ANNULÉ</td>
+            <td>Voyage annulé</td>
+        </tr>
+    </table>
+    
+    <h2 id="passagers">8. Gestion des Passagers</h2>
+    
+    <h3>👥 Liste des Passagers</h3>
+    
+    <div class="screen-mockup">
+        <div class="header">👥 Passagers - Dakar→Thiès</div>
+        <div style="text-align: center; font-size: 13px; margin-bottom: 10px;">32/50 embarqués</div>
+        <div class="card" style="padding: 8px 12px;">
+            🔍 Rechercher un passager...
+        </div>
+        <div class="card" style="border-left: 4px solid #27ae60;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-weight: bold;">✅ Fatou DIALLO</div>
+                    <div style="font-size: 11px; color: #888;">Siège 15 | Embarqué</div>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="border-left: 4px solid #27ae60;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-weight: bold;">✅ Amadou FALL</div>
+                    <div style="font-size: 11px; color: #888;">Siège 16 | Embarqué</div>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="border-left: 4px solid #f1c40f;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-weight: bold;">⏳ Ibrahima DIOP</div>
+                    <div style="font-size: 11px; color: #888;">Siège 17 | En attente</div>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="border-left: 4px solid #f1c40f;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-weight: bold;">⏳ Marie SECK</div>
+                    <div style="font-size: 11px; color: #888;">Siège 18 | En attente</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <h3>🔍 Recherche de Passager</h3>
+    <p>Vous pouvez rechercher un passager par :</p>
+    <ul>
+        <li><strong>Nom</strong> ou prénom</li>
+        <li><strong>Numéro de téléphone</strong></li>
+        <li><strong>Numéro de ticket</strong></li>
+        <li><strong>Numéro de siège</strong></li>
+    </ul>
+    
+    <h3>📋 Filtres Disponibles</h3>
+    <ul>
+        <li><strong>Tous</strong> : Affiche tous les passagers</li>
+        <li><strong>Embarqués</strong> : Passagers déjà validés</li>
+        <li><strong>En attente</strong> : Passagers pas encore embarqués</li>
+        <li><strong>Non présentés</strong> : Passagers absents après le départ</li>
+    </ul>
+    
+    <h2 id="hors-ligne">9. Mode Hors Ligne</h2>
+    
+    <h3>📴 Fonctionnement Sans Internet</h3>
+    <p>L'application fonctionne même sans connexion !</p>
+    
+    <h4>✅ Disponible Hors Ligne</h4>
+    <ul>
+        <li>Scanner les tickets</li>
+        <li>Valider les embarquements</li>
+        <li>Consulter la liste des passagers (préchargée)</li>
+        <li>Voir les détails des voyages</li>
+    </ul>
+    
+    <h4>❌ Nécessite Internet</h4>
+    <ul>
+        <li>Synchronisation des nouvelles réservations</li>
+        <li>Mise à jour des statistiques globales</li>
+        <li>Réception des alertes en temps réel</li>
+    </ul>
+    
+    <h3>🔄 Synchronisation</h3>
+    <table>
+        <tr>
+            <th>Icône</th>
+            <th>Statut</th>
+        </tr>
+        <tr>
+            <td style="color: #27ae60;">🟢</td>
+            <td>Connecté, synchronisé</td>
+        </tr>
+        <tr>
+            <td style="color: #f1c40f;">🟡</td>
+            <td>Connecté, sync en cours</td>
+        </tr>
+        <tr>
+            <td style="color: #e74c3c;">🔴</td>
+            <td>Hors ligne, données en attente</td>
+        </tr>
+    </table>
+    
+    <div class="warning-box">
+        <strong>⚠️ Important :</strong> Les validations hors ligne sont stockées localement et envoyées automatiquement dès que la connexion est rétablie. <strong>Ne supprimez pas l'application</strong> avant synchronisation complète.
+    </div>
+    
+    <h2 id="problemes">10. Résolution des Problèmes</h2>
+    
+    <h3>🔧 Problèmes Courants</h3>
+    
+    <h4>Le scanner ne fonctionne pas</h4>
+    <ol>
+        <li>Vérifiez que la <strong>caméra est autorisée</strong> dans les paramètres</li>
+        <li><strong>Nettoyez</strong> l'objectif de la caméra</li>
+        <li><strong>Redémarrez</strong> l'application</li>
+        <li>Si le problème persiste, <strong>redémarrez</strong> le téléphone</li>
+    </ol>
+    
+    <h4>QR Code non reconnu</h4>
+    <ol>
+        <li>Assurez-vous que le QR code est <strong>bien visible</strong></li>
+        <li>Activez la <strong>lampe torche</strong> si l'éclairage est faible</li>
+        <li>Essayez de <strong>zoomer</strong> sur le code</li>
+        <li>Demandez au passager de <strong>régler la luminosité</strong> de son écran</li>
+    </ol>
+    
+    <h4>Connexion impossible</h4>
+    <ol>
+        <li>Vérifiez votre <strong>connexion internet</strong></li>
+        <li>Vérifiez que vos <strong>identifiants</strong> sont corrects</li>
+        <li>Essayez de vous connecter en <strong>WiFi</strong></li>
+        <li>Contactez votre responsable si le problème persiste</li>
+    </ol>
+    
+    <h3>🔄 Réinitialisation</h3>
+    <p>Si l'application ne fonctionne plus correctement :</p>
+    <ol class="steps">
+        <li>Allez dans <strong>Paramètres > À propos</strong></li>
+        <li>Appuyez sur "<strong>Réinitialiser l'application</strong>"</li>
+        <li><strong>Reconnectez-vous</strong> avec vos identifiants</li>
+    </ol>
+    
+    <div class="danger-box">
+        <strong>⚠️ Attention :</strong> La réinitialisation supprime les données locales. Assurez-vous d'avoir synchronisé avant.
+    </div>
+    
+    <h2 id="bonnes-pratiques">11. Bonnes Pratiques</h2>
+    
+    <h3>✅ Avant l'Embarquement</h3>
+    <ul class="checklist">
+        <li class="checked">Connectez-vous 30 min avant le départ</li>
+        <li class="checked">Vérifiez que votre voyage est bien affiché</li>
+        <li class="checked">Synchronisez les données</li>
+        <li class="checked">Testez le scanner avec un ticket existant</li>
+    </ul>
+    
+    <h3>✅ Pendant l'Embarquement</h3>
+    <ul class="checklist">
+        <li class="checked">Scannez chaque ticket individuellement</li>
+        <li class="checked">Vérifiez les informations avant validation</li>
+        <li class="checked">Validez rapidement pour fluidifier l'embarquement</li>
+        <li class="checked">En cas de doute, consultez la liste des passagers</li>
+    </ul>
+    
+    <h3>✅ Après l'Embarquement</h3>
+    <ul class="checklist">
+        <li class="checked">Vérifiez le nombre de passagers embarqués</li>
+        <li class="checked">Synchronisez les dernières validations</li>
+        <li class="checked">Signalez les passagers non présentés</li>
+        <li class="checked">Clôturez le voyage si demandé</li>
+    </ul>
+    
+    <h3>🚫 À Éviter</h3>
+    <ul>
+        <li>❌ Ne validez <strong>jamais</strong> sans scanner</li>
+        <li>❌ Ne laissez pas embarquer un <strong>ticket invalide</strong></li>
+        <li>❌ Ne partagez <strong>jamais</strong> vos identifiants</li>
+        <li>❌ Ne supprimez pas l'application <strong>sans synchroniser</strong></li>
+    </ul>
+    
+    <h2 id="faq">12. FAQ</h2>
+    
+    <div class="faq-item">
+        <h4>Q: Puis-je utiliser l'application sur plusieurs téléphones ?</h4>
+        <p><strong>R:</strong> Non, votre compte est lié à un seul appareil pour des raisons de sécurité. Contactez votre responsable pour changer d'appareil.</p>
+    </div>
+    
+    <div class="faq-item">
+        <h4>Q: Que faire si le passager a perdu son ticket ?</h4>
+        <p><strong>R:</strong> Demandez son nom complet et numéro de téléphone, recherchez-le dans la liste des passagers. Si trouvé, vous pouvez valider manuellement depuis sa fiche. Sinon, orientez-le vers le guichet.</p>
+    </div>
+    
+    <div class="faq-item">
+        <h4>Q: Le ticket est valide mais le voyage est différent ?</h4>
+        <p><strong>R:</strong> Le passager s'est trompé de bus. Orientez-le vers le bon bus ou le guichet pour modifier sa réservation.</p>
+    </div>
+    
+    <div class="faq-item">
+        <h4>Q: Comment gérer un ticket déjà validé ?</h4>
+        <p><strong>R:</strong> Vérifiez l'heure de validation précédente. Si c'est une erreur, contactez votre responsable. Le passager ne peut pas embarquer deux fois.</p>
+    </div>
+    
+    <div class="faq-item">
+        <h4>Q: Puis-je valider après le départ du bus ?</h4>
+        <p><strong>R:</strong> Non, les validations sont bloquées après le départ. Les passagers non embarqués seront marqués comme "non présentés".</p>
+    </div>
+    
+    <div class="faq-item">
+        <h4>Q: L'application consomme-t-elle beaucoup de batterie ?</h4>
+        <p><strong>R:</strong> L'application est optimisée pour économiser la batterie. Le scanner ne s'active que pendant l'utilisation. Pour les longues sessions, prévoyez une batterie externe.</p>
+    </div>
+    
+    <h2>13. Contact Support</h2>
+    
+    <h3>📞 Assistance Technique</h3>
+    <table>
+        <tr>
+            <th>Canal</th>
+            <th>Contact</th>
+            <th>Horaires</th>
+        </tr>
+        <tr>
+            <td>📱 Téléphone</td>
+            <td>+221 33 XXX XX XX</td>
+            <td>7h - 22h</td>
+        </tr>
+        <tr>
+            <td>📧 Email</td>
+            <td>support-agent@transport.sn</td>
+            <td>24h/24</td>
+        </tr>
+        <tr>
+            <td>💬 WhatsApp</td>
+            <td>+221 77 XXX XX XX</td>
+            <td>7h - 22h</td>
+        </tr>
+    </table>
+    
+    <h3>🆘 Urgences</h3>
+    <p>Pour les urgences pendant un embarquement :</p>
+    <ul>
+        <li>Contactez votre <strong>responsable direct</strong></li>
+        <li>Ligne d'urgence : <strong>+221 70 XXX XX XX</strong> (24h/24)</li>
+    </ul>
+    
+    <div class="highlight-box">
+        <strong>📋 Lors d'un signalement :</strong> Précisez votre nom, numéro d'agent, le voyage concerné (trajet, date, heure), et décrivez le problème avec des captures d'écran si possible.
+    </div>
+    
+    <div class="footer">
+        <p><strong>Transport Interurbain - Application Agent</strong></p>
+        <p>Guide Utilisateur Version 1.1 - Janvier 2026</p>
+        <p>© 2026 - Tous droits réservés</p>
+    </div>
+</body>
+</html>

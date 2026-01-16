@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Administrateur - Transport Interurbain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+        
+        h1 {
+            color: #6c3483;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #8e44ad;
+        }
+        
+        h2 {
+            color: #6c3483;
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            page-break-after: avoid;
+        }
+        
+        h3 {
+            color: #8e44ad;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            page-break-after: avoid;
+        }
+        
+        h4 {
+            color: #34495e;
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .version-info {
+            text-align: center;
+            background: #f5eef8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        
+        .toc {
+            background: #f5eef8;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            border-bottom: none;
+            text-align: center;
+        }
+        
+        .toc ol {
+            columns: 2;
+            column-gap: 30px;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+            break-inside: avoid;
+        }
+        
+        .toc a {
+            color: #8e44ad;
+            text-decoration: none;
+        }
+        
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #6c3483;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .highlight-box {
+            background: #f5eef8;
+            border-left: 4px solid #8e44ad;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box {
+            background: #fef9e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .danger-box {
+            background: #fdedec;
+            border-left: 4px solid #e74c3c;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .success-box {
+            background: #d5f5e3;
+            border-left: 4px solid #27ae60;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .code-block .comment {
+            color: #6272a4;
+        }
+        
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+        
+        .code-block .string {
+            color: #f1fa8c;
+        }
+        
+        .code-block .function {
+            color: #50fa7b;
+        }
+        
+        .api-endpoint {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .api-endpoint .method {
+            display: inline-block;
+            padding: 5px 12px;
+            font-weight: bold;
+            font-size: 12px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        
+        .api-endpoint .method-post {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .api-endpoint .method-get {
+            background: #3498db;
+            color: white;
+        }
+        
+        .api-endpoint .header {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            font-family: monospace;
+        }
+        
+        .api-endpoint .body {
+            padding: 15px;
+        }
+        
+        .permission-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 11px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+        
+        .permission-admin {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .permission-manager {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .permission-user {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .steps li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 45px;
+            margin-bottom: 15px;
+        }
+        
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: #8e44ad;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+        }
+        
+        .config-table td:first-child {
+            font-family: monospace;
+            background: #f5f5f5;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        @media print {
+            body {
+                padding: 20px;
+            }
+            
+            h2 {
+                page-break-after: avoid;
+            }
+            
+            .code-block, .api-endpoint, .highlight-box, .warning-box, table {
+                page-break-inside: avoid;
+            }
+            
+            .toc {
+                page-break-after: always;
+            }
+            
+            .print-btn {
+                display: none !important;
+            }
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #6c3483, #8e44ad);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(142, 68, 173, 0.5);
+        }
+        
+        .print-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">
+        📄 Télécharger en PDF
+    </button>
+    
+    <h1>⚙️ Guide Administrateur<br>Transport Interurbain</h1>
+    <p class="subtitle">Documentation Technique et Administration Système</p>
+    
+    <div class="version-info">
+        <strong>Version:</strong> 1.1 | <strong>Module Odoo:</strong> transport_interurbain | <strong>Mise à jour:</strong> Janvier 2026
+    </div>
+    
+    <div class="toc">
+        <h2>📑 Table des Matières</h2>
+        <ol>
+            <li><a href="#architecture">Architecture du Module</a></li>
+            <li><a href="#installation">Installation et Configuration</a></li>
+            <li><a href="#securite">Sécurité et Permissions</a></li>
+            <li><a href="#api">API REST Documentation</a></li>
+            <li><a href="#modeles">Modèles de Données</a></li>
+            <li><a href="#configuration">Configuration Avancée</a></li>
+            <li><a href="#maintenance">Maintenance et Sauvegarde</a></li>
+            <li><a href="#monitoring">Monitoring et Logs</a></li>
+            <li><a href="#integration">Intégrations Externes</a></li>
+            <li><a href="#troubleshooting">Dépannage</a></li>
+            <li><a href="#mise-a-jour">Mise à Jour du Module</a></li>
+            <li><a href="#annexes">Annexes Techniques</a></li>
+        </ol>
+    </div>
+    
+    <h2 id="architecture">1. Architecture du Module</h2>
+    
+    <h3>🏗️ Vue d'Ensemble</h3>
+    <p>Le module <strong>transport_interurbain</strong> est construit sur une architecture modulaire comprenant :</p>
+    
+    <table>
+        <tr>
+            <th>Composant</th>
+            <th>Description</th>
+            <th>Technologies</th>
+        </tr>
+        <tr>
+            <td>Backend Odoo</td>
+            <td>Logique métier, modèles, vues</td>
+            <td>Python 3.10+, PostgreSQL</td>
+        </tr>
+        <tr>
+            <td>API REST</td>
+            <td>Endpoints pour applications mobiles</td>
+            <td>Odoo HTTP Controllers</td>
+        </tr>
+        <tr>
+            <td>App Usager</td>
+            <td>Application mobile passagers</td>
+            <td>Flutter, Dart, Hive</td>
+        </tr>
+        <tr>
+            <td>App Agent</td>
+            <td>Application mobile embarquement</td>
+            <td>Flutter, Dart, Hive</td>
+        </tr>
+    </table>
+    
+    <h3>📁 Structure des Fichiers</h3>
+    <div class="code-block">
+transport_interurbain/
+├── __manifest__.py          <span class="comment"># Manifest du module</span>
+├── __init__.py
+├── models/                   <span class="comment"># Modèles Python</span>
+│   ├── transport_city.py
+│   ├── transport_route.py
+│   ├── transport_bus.py
+│   ├── transport_trip.py
+│   ├── transport_booking.py
+│   └── transport_usager.py
+├── controllers/              <span class="comment"># API REST</span>
+│   ├── api_usager.py
+│   ├── api_agent.py
+│   └── api_utils.py
+├── views/                    <span class="comment"># Vues XML</span>
+├── security/                 <span class="comment"># Droits d'accès</span>
+│   ├── security.xml
+│   └── ir.model.access.csv
+├── data/                     <span class="comment"># Données initiales</span>
+├── tests/                    <span class="comment"># Tests unitaires</span>
+└── mobile_app/               <span class="comment"># Applications Flutter</span>
+    ├── usager/
+    └── agent/
+    </div>
+    
+    <h3>🔄 Flux de Données</h3>
+    <table>
+        <tr>
+            <th>Flux</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Protocole</th>
+        </tr>
+        <tr>
+            <td>Réservation</td>
+            <td>App Usager</td>
+            <td>Backend Odoo</td>
+            <td>HTTPS POST /api/v1/</td>
+        </tr>
+        <tr>
+            <td>Validation</td>
+            <td>App Agent</td>
+            <td>Backend Odoo</td>
+            <td>HTTPS POST /api/v1/</td>
+        </tr>
+        <tr>
+            <td>Synchronisation</td>
+            <td>Apps Mobiles</td>
+            <td>Hive Local DB</td>
+            <td>Local Storage</td>
+        </tr>
+    </table>
+    
+    <h2 id="installation">2. Installation et Configuration</h2>
+    
+    <h3>📋 Prérequis Système</h3>
+    <table>
+        <tr>
+            <th>Composant</th>
+            <th>Version Minimale</th>
+            <th>Recommandé</th>
+        </tr>
+        <tr>
+            <td>Odoo</td>
+            <td>17.0</td>
+            <td>17.0 LTS</td>
+        </tr>
+        <tr>
+            <td>Python</td>
+            <td>3.10</td>
+            <td>3.11</td>
+        </tr>
+        <tr>
+            <td>PostgreSQL</td>
+            <td>14</td>
+            <td>15+</td>
+        </tr>
+        <tr>
+            <td>RAM Serveur</td>
+            <td>4 GB</td>
+            <td>8 GB+</td>
+        </tr>
+        <tr>
+            <td>Stockage</td>
+            <td>20 GB</td>
+            <td>50 GB+ SSD</td>
+        </tr>
+    </table>
+    
+    <h3>🚀 Procédure d'Installation</h3>
+    
+    <ol class="steps">
+        <li>
+            <strong>Copier le module</strong> dans le dossier addons :
+            <div class="code-block">
+cp -r transport_interurbain /opt/odoo/addons/
+            </div>
+        </li>
+        <li>
+            <strong>Mettre à jour la liste</strong> des modules :
+            <div class="code-block">
+./odoo.sh update base
+            </div>
+        </li>
+        <li>
+            <strong>Installer le module</strong> :
+            <div class="code-block">
+./odoo.sh install transport_interurbain
+            </div>
+        </li>
+        <li>
+            <strong>Vérifier l'installation</strong> dans Apps > Transport Interurbain
+        </li>
+    </ol>
+    
+    <h3>⚙️ Configuration Post-Installation</h3>
+    
+    <ol class="steps">
+        <li><strong>Créer les villes</strong> : Transport → Configuration → Villes</li>
+        <li><strong>Définir les trajets</strong> : Transport → Configuration → Trajets</li>
+        <li><strong>Ajouter les bus</strong> : Transport → Bus</li>
+        <li><strong>Configurer les groupes</strong> de sécurité</li>
+        <li><strong>Créer les comptes</strong> agents</li>
+    </ol>
+    
+    <h2 id="securite">3. Sécurité et Permissions</h2>
+    
+    <h3>👥 Groupes de Sécurité</h3>
+    <table>
+        <tr>
+            <th>Groupe</th>
+            <th>XML ID</th>
+            <th>Permissions</th>
+        </tr>
+        <tr>
+            <td><span class="permission-badge permission-user">Utilisateur</span></td>
+            <td><code>group_transport_user</code></td>
+            <td>Lecture seule sur toutes les données</td>
+        </tr>
+        <tr>
+            <td><span class="permission-badge permission-manager">Manager</span></td>
+            <td><code>group_transport_company_manager</code></td>
+            <td>CRUD complet, validation, rapports</td>
+        </tr>
+        <tr>
+            <td><span class="permission-badge permission-admin">Admin</span></td>
+            <td><code>group_transport_admin</code></td>
+            <td>Configuration système, suppression</td>
+        </tr>
+    </table>
+    
+    <h3>🔐 Règles d'Accès (ir.model.access.csv)</h3>
+    <div class="code-block">
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_transport_city_user,transport.city.user,model_transport_city,group_transport_user,1,0,0,0
+access_transport_city_manager,transport.city.manager,model_transport_city,group_transport_company_manager,1,1,1,0
+access_transport_city_admin,transport.city.admin,model_transport_city,group_transport_admin,1,1,1,1
+    </div>
+    
+    <h3>🛡️ Règles de Domaine (Record Rules)</h3>
+    <div class="code-block">
+<span class="comment">&lt;!-- Exemple : Managers voient uniquement leur compagnie --&gt;</span>
+&lt;record id="transport_trip_company_rule" model="ir.rule"&gt;
+    &lt;field name="name"&gt;Trip multi-company&lt;/field&gt;
+    &lt;field name="model_id" ref="model_transport_trip"/&gt;
+    &lt;field name="domain_force"&gt;
+        ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+    &lt;/field&gt;
+&lt;/record&gt;
+    </div>
+    
+    <h3>🔑 Sécurité API</h3>
+    <table>
+        <tr>
+            <th>Mécanisme</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Token JWT</td>
+            <td>Authentification des requêtes API</td>
+        </tr>
+        <tr>
+            <td>HTTPS</td>
+            <td>Chiffrement des communications</td>
+        </tr>
+        <tr>
+            <td>Rate Limiting</td>
+            <td>Protection contre les attaques DDoS</td>
+        </tr>
+        <tr>
+            <td>CORS</td>
+            <td>Contrôle des origines autorisées</td>
+        </tr>
+    </table>
+    
+    <div class="warning-box">
+        <strong>⚠️ Important :</strong> En production, configurez toujours HTTPS et définissez des origines CORS spécifiques au lieu de '*'.
+    </div>
+    
+    <h2 id="api">4. API REST Documentation</h2>
+    
+    <h3>🔗 Base URL</h3>
+    <div class="code-block">
+Production : https://votre-domaine.com/api/v1/transport/
+Développement : http://localhost:8069/api/v1/transport/
+    </div>
+    
+    <h3>📱 Endpoints Usager</h3>
+    
+    <div class="api-endpoint">
+        <div class="header">
+            <span class="method method-post">POST</span>
+            <code>/api/v1/transport/usager/register</code>
+        </div>
+        <div class="body">
+            <strong>Description :</strong> Inscription d'un nouvel usager<br>
+            <strong>Auth :</strong> Non requise<br><br>
+            <strong>Body :</strong>
+            <div class="code-block">
+{
+    "name": "Fatou Diallo",
+    "phone": "771234567",
+    "password": "secret123"
+}
+            </div>
+            <strong>Response 200 :</strong>
+            <div class="code-block">
+{
+    "success": true,
+    "data": {
+        "id": 42,
+        "token": "eyJhbGciOiJIUzI1NiIs..."
+    }
+}
+            </div>
+        </div>
+    </div>
+    
+    <div class="api-endpoint">
+        <div class="header">
+            <span class="method method-post">POST</span>
+            <code>/api/v1/transport/usager/login</code>
+        </div>
+        <div class="body">
+            <strong>Description :</strong> Connexion d'un usager<br>
+            <strong>Auth :</strong> Non requise<br><br>
+            <strong>Body :</strong>
+            <div class="code-block">
+{
+    "phone": "771234567",
+    "password": "secret123"
+}
+            </div>
+        </div>
+    </div>
+    
+    <div class="api-endpoint">
+        <div class="header">
+            <span class="method method-get">GET</span>
+            <code>/api/v1/transport/cities</code>
+        </div>
+        <div class="body">
+            <strong>Description :</strong> Liste des villes disponibles<br>
+            <strong>Auth :</strong> Non requise<br><br>
+            <strong>Response 200 :</strong>
+            <div class="code-block">
+{
+    "success": true,
+    "data": [
+        {"id": 1, "name": "Dakar", "code": "DKR"},
+        {"id": 2, "name": "Thiès", "code": "THS"}
+    ]
+}
+            </div>
+        </div>
+    </div>
+    
+    <div class="api-endpoint">
+        <div class="header">
+            <span class="method method-post">POST</span>
+            <code>/api/v1/transport/trips/search</code>
+        </div>
+        <div class="body">
+            <strong>Description :</strong> Recherche de voyages<br>
+            <strong>Auth :</strong> Token requis<br><br>
+            <strong>Body :</strong>
+            <div class="code-block">
+{
+    "departure_city_id": 1,
+    "arrival_city_id": 2,
+    "date": "2026-01-20"
+}
+            </div>
+        </div>
+    </div>
+    
+    <div class="api-endpoint">
+        <div class="header">
+            <span class="method method-post">POST</span>
+            <code>/api/v1/transport/booking/create</code>
+        </div>
+        <div class="body">
+            <strong>Description :</strong> Créer une réservation<br>
+            <strong>Auth :</strong> Token requis<br><br>
+            <strong>Body :</strong>
+            <div class="code-block">
+{
+    "trip_id": 15,
+    "for_another": false,
+    "beneficiary_name": null,
+    "beneficiary_phone": null
+}
+            </div>
+        </div>
+    </div>
+    
+    <h3>👤 Endpoints Agent</h3>
+    
+    <div class="api-endpoint">
+        <div class="header">
+            <span class="method method-post">POST</span>
+            <code>/api/v1/transport/agent/login</code>
+        </div>
+        <div class="body">
+            <strong>Description :</strong> Connexion agent d'embarquement<br>
+            <strong>Auth :</strong> Non requise
+        </div>
+    </div>
+    
+    <div class="api-endpoint">
+        <div class="header">
+            <span class="method method-post">POST</span>
+            <code>/api/v1/transport/agent/scan</code>
+        </div>
+        <div class="body">
+            <strong>Description :</strong> Scanner et vérifier un ticket<br>
+            <strong>Auth :</strong> Token Agent requis<br><br>
+            <strong>Body :</strong>
+            <div class="code-block">
+{
+    "qr_code": "TKT-2026-00456-ABC123"
+}
+            </div>
+        </div>
+    </div>
+    
+    <div class="api-endpoint">
+        <div class="header">
+            <span class="method method-post">POST</span>
+            <code>/api/v1/transport/agent/validate</code>
+        </div>
+        <div class="body">
+            <strong>Description :</strong> Valider l'embarquement<br>
+            <strong>Auth :</strong> Token Agent requis<br><br>
+            <strong>Body :</strong>
+            <div class="code-block">
+{
+    "booking_id": 456
+}
+            </div>
+        </div>
+    </div>
+    
+    <h3>⚠️ Codes d'Erreur API</h3>
+    <table>
+        <tr>
+            <th>Code</th>
+            <th>Message</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>400</td>
+            <td>Bad Request</td>
+            <td>Paramètres manquants ou invalides</td>
+        </tr>
+        <tr>
+            <td>401</td>
+            <td>Unauthorized</td>
+            <td>Token manquant ou expiré</td>
+        </tr>
+        <tr>
+            <td>403</td>
+            <td>Forbidden</td>
+            <td>Permissions insuffisantes</td>
+        </tr>
+        <tr>
+            <td>404</td>
+            <td>Not Found</td>
+            <td>Ressource non trouvée</td>
+        </tr>
+        <tr>
+            <td>409</td>
+            <td>Conflict</td>
+            <td>Conflit (ex: ticket déjà validé)</td>
+        </tr>
+        <tr>
+            <td>500</td>
+            <td>Server Error</td>
+            <td>Erreur interne du serveur</td>
+        </tr>
+    </table>
+    
+    <h2 id="modeles">5. Modèles de Données</h2>
+    
+    <h3>📊 Diagramme des Relations</h3>
+    <div class="code-block">
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   City      │     │   Route     │     │    Bus      │
+├─────────────┤     ├─────────────┤     ├─────────────┤
+│ id          │◄────│ departure_id│     │ id          │
+│ name        │     │ arrival_id  │────►│ plate       │
+│ code        │     │ duration    │     │ capacity    │
+└─────────────┘     │ base_price  │     │ status      │
+                    └─────────────┘     └─────────────┘
+                           │                   │
+                           ▼                   ▼
+                    ┌─────────────┐     ┌─────────────┐
+                    │    Trip     │     │   Usager    │
+                    ├─────────────┤     ├─────────────┤
+                    │ route_id    │     │ id          │
+                    │ bus_id      │     │ name        │
+                    │ departure   │     │ phone       │
+                    │ price       │     │ password    │
+                    │ state       │     └─────────────┘
+                    └─────────────┘            │
+                           │                   │
+                           ▼                   ▼
+                    ┌─────────────────────────────┐
+                    │         Booking             │
+                    ├─────────────────────────────┤
+                    │ trip_id                     │
+                    │ usager_id                   │
+                    │ beneficiary_name            │
+                    │ beneficiary_phone           │
+                    │ qr_code                     │
+                    │ state                       │
+                    │ validated_at                │
+                    └─────────────────────────────┘
+    </div>
+    
+    <h3>📋 Détail des Modèles</h3>
+    
+    <h4>transport.city</h4>
+    <table class="config-table">
+        <tr>
+            <th>Champ</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>Char</td>
+            <td>Nom de la ville</td>
+        </tr>
+        <tr>
+            <td>code</td>
+            <td>Char</td>
+            <td>Code court (3 lettres)</td>
+        </tr>
+        <tr>
+            <td>active</td>
+            <td>Boolean</td>
+            <td>Ville active ou non</td>
+        </tr>
+    </table>
+    
+    <h4>transport.trip</h4>
+    <table class="config-table">
+        <tr>
+            <th>Champ</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>route_id</td>
+            <td>Many2one</td>
+            <td>Trajet associé</td>
+        </tr>
+        <tr>
+            <td>bus_id</td>
+            <td>Many2one</td>
+            <td>Bus assigné</td>
+        </tr>
+        <tr>
+            <td>departure_datetime</td>
+            <td>Datetime</td>
+            <td>Date et heure de départ</td>
+        </tr>
+        <tr>
+            <td>price</td>
+            <td>Monetary</td>
+            <td>Prix du ticket (FCFA)</td>
+        </tr>
+        <tr>
+            <td>state</td>
+            <td>Selection</td>
+            <td>draft, confirmed, ongoing, done, cancelled</td>
+        </tr>
+        <tr>
+            <td>available_seats</td>
+            <td>Integer (computed)</td>
+            <td>Places disponibles</td>
+        </tr>
+    </table>
+    
+    <h4>transport.booking</h4>
+    <table class="config-table">
+        <tr>
+            <th>Champ</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>reference</td>
+            <td>Char</td>
+            <td>Référence unique (TKT-YYYY-XXXXX)</td>
+        </tr>
+        <tr>
+            <td>trip_id</td>
+            <td>Many2one</td>
+            <td>Voyage réservé</td>
+        </tr>
+        <tr>
+            <td>usager_id</td>
+            <td>Many2one</td>
+            <td>Acheteur du ticket</td>
+        </tr>
+        <tr>
+            <td>beneficiary_name</td>
+            <td>Char</td>
+            <td>Nom du bénéficiaire (si tiers)</td>
+        </tr>
+        <tr>
+            <td>qr_code</td>
+            <td>Char</td>
+            <td>Code QR unique</td>
+        </tr>
+        <tr>
+            <td>share_token</td>
+            <td>Char</td>
+            <td>Token de partage</td>
+        </tr>
+        <tr>
+            <td>state</td>
+            <td>Selection</td>
+            <td>draft, confirmed, validated, cancelled</td>
+        </tr>
+        <tr>
+            <td>validated_at</td>
+            <td>Datetime</td>
+            <td>Date/heure de validation</td>
+        </tr>
+    </table>
+    
+    <h2 id="configuration">6. Configuration Avancée</h2>
+    
+    <h3>⚙️ Paramètres Système</h3>
+    
+    <table class="config-table">
+        <tr>
+            <th>Paramètre</th>
+            <th>Valeur par défaut</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>transport.cancellation_hours</td>
+            <td>24</td>
+            <td>Heures avant départ pour annuler</td>
+        </tr>
+        <tr>
+            <td>transport.refund_percentage</td>
+            <td>80</td>
+            <td>% de remboursement</td>
+        </tr>
+        <tr>
+            <td>transport.allow_overbooking</td>
+            <td>False</td>
+            <td>Autoriser la surréservation</td>
+        </tr>
+        <tr>
+            <td>transport.sms_enabled</td>
+            <td>True</td>
+            <td>Activer les SMS</td>
+        </tr>
+        <tr>
+            <td>transport.token_expiry_hours</td>
+            <td>720</td>
+            <td>Durée de validité du token (heures)</td>
+        </tr>
+    </table>
+    
+    <h3>🔧 Configuration via XML</h3>
+    <div class="code-block">
+&lt;record id="transport_config_cancellation" model="ir.config_parameter"&gt;
+    &lt;field name="key"&gt;transport.cancellation_hours&lt;/field&gt;
+    &lt;field name="value"&gt;24&lt;/field&gt;
+&lt;/record&gt;
+    </div>
+    
+    <h3>📧 Configuration SMS (BNG Gateway)</h3>
+    <div class="code-block">
+<span class="comment"># Dans ir.config_parameter</span>
+transport.sms_api_url = https://sms-gateway.example.com/api/send
+transport.sms_api_key = your_api_key_here
+transport.sms_sender = TRANSPORT
+    </div>
+    
+    <h2 id="maintenance">7. Maintenance et Sauvegarde</h2>
+    
+    <h3>💾 Sauvegarde Base de Données</h3>
+    
+    <h4>Sauvegarde Manuelle</h4>
+    <div class="code-block">
+<span class="comment"># Sauvegarde complète</span>
+pg_dump -U odoo -h localhost -F c -b -v -f backup_$(date +%Y%m%d).dump icp_dev_db
+
+<span class="comment"># Sauvegarde des données uniquement</span>
+pg_dump -U odoo -h localhost --data-only -t transport_% icp_dev_db > transport_data.sql
+    </div>
+    
+    <h4>Sauvegarde Automatique (Cron)</h4>
+    <div class="code-block">
+<span class="comment"># Ajouter dans crontab -e</span>
+0 2 * * * /opt/odoo/scripts/backup.sh >> /var/log/odoo_backup.log 2>&1
+    </div>
+    
+    <h3>🔄 Restauration</h3>
+    <div class="code-block">
+<span class="comment"># Restaurer une sauvegarde</span>
+pg_restore -U odoo -h localhost -d icp_dev_db -v backup_20260115.dump
+    </div>
+    
+    <h3>🧹 Nettoyage des Données</h3>
+    <div class="code-block">
+<span class="comment"># Supprimer les voyages terminés de plus de 1 an</span>
+DELETE FROM transport_trip 
+WHERE state = 'done' 
+AND departure_datetime < NOW() - INTERVAL '1 year';
+
+<span class="comment"># Archiver les réservations anciennes</span>
+UPDATE transport_booking SET active = false 
+WHERE state IN ('validated', 'cancelled') 
+AND create_date < NOW() - INTERVAL '6 months';
+    </div>
+    
+    <div class="warning-box">
+        <strong>⚠️ Attention :</strong> Toujours faire une sauvegarde avant toute opération de nettoyage.
+    </div>
+    
+    <h2 id="monitoring">8. Monitoring et Logs</h2>
+    
+    <h3>📊 Logs Odoo</h3>
+    <div class="code-block">
+<span class="comment"># Consulter les logs en temps réel</span>
+./odoo.sh logs
+
+<span class="comment"># Ou directement</span>
+tail -f /var/log/odoo/odoo.log
+
+<span class="comment"># Filtrer les erreurs</span>
+grep -i "error\|warning" /var/log/odoo/odoo.log | tail -100
+    </div>
+    
+    <h3>📈 Métriques à Surveiller</h3>
+    <table>
+        <tr>
+            <th>Métrique</th>
+            <th>Seuil d'Alerte</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>CPU Serveur</td>
+            <td>&gt; 80%</td>
+            <td>Optimiser requêtes / Scaler</td>
+        </tr>
+        <tr>
+            <td>RAM Utilisée</td>
+            <td>&gt; 85%</td>
+            <td>Redémarrer workers / Augmenter RAM</td>
+        </tr>
+        <tr>
+            <td>Connexions DB</td>
+            <td>&gt; 90</td>
+            <td>Augmenter pool / Optimiser</td>
+        </tr>
+        <tr>
+            <td>Temps Réponse API</td>
+            <td>&gt; 2s</td>
+            <td>Optimiser code / Cache</td>
+        </tr>
+        <tr>
+            <td>Erreurs 500/heure</td>
+            <td>&gt; 10</td>
+            <td>Investiguer logs</td>
+        </tr>
+    </table>
+    
+    <h3>🔍 Requêtes SQL de Monitoring</h3>
+    <div class="code-block">
+<span class="comment">-- Nombre de réservations aujourd'hui</span>
+SELECT COUNT(*) FROM transport_booking 
+WHERE create_date::date = CURRENT_DATE;
+
+<span class="comment">-- Voyages avec taux de remplissage > 90%</span>
+SELECT t.id, t.departure_datetime,
+       (SELECT COUNT(*) FROM transport_booking WHERE trip_id = t.id) as bookings,
+       b.capacity
+FROM transport_trip t
+JOIN transport_bus b ON t.bus_id = b.id
+WHERE t.state = 'confirmed'
+HAVING (SELECT COUNT(*) FROM transport_booking WHERE trip_id = t.id)::float / b.capacity > 0.9;
+
+<span class="comment">-- Revenus du mois</span>
+SELECT SUM(amount) as total_revenue
+FROM transport_booking
+WHERE state = 'validated'
+AND validated_at >= DATE_TRUNC('month', CURRENT_DATE);
+    </div>
+    
+    <h2 id="integration">9. Intégrations Externes</h2>
+    
+    <h3>💳 Intégration Paiement (Wave, Orange Money)</h3>
+    
+    <div class="code-block">
+<span class="comment"># Configuration dans ir.config_parameter</span>
+transport.payment_wave_api_key = wave_live_xxx
+transport.payment_wave_merchant_id = MERCHANT123
+transport.payment_om_api_key = om_live_xxx
+transport.payment_callback_url = https://domain.com/api/v1/transport/payment/callback
+    </div>
+    
+    <h4>Flux de Paiement</h4>
+    <ol class="steps">
+        <li>L'usager sélectionne le mode de paiement</li>
+        <li>L'API crée une intention de paiement chez le provider</li>
+        <li>L'usager est redirigé vers le provider</li>
+        <li>Le provider envoie un callback au serveur</li>
+        <li>Le serveur confirme la réservation</li>
+    </ol>
+    
+    <h3>📱 Intégration Firebase (Push Notifications)</h3>
+    <div class="code-block">
+<span class="comment"># Configuration Firebase</span>
+transport.firebase_server_key = AAAAxxxx...
+transport.firebase_project_id = transport-app-12345
+    </div>
+    
+    <h3>📨 Intégration SMS Gateway</h3>
+    <table>
+        <tr>
+            <th>Événement</th>
+            <th>Template SMS</th>
+        </tr>
+        <tr>
+            <td>Confirmation réservation</td>
+            <td>Votre ticket {ref} pour {trajet} le {date} est confirmé.</td>
+        </tr>
+        <tr>
+            <td>Rappel J-1</td>
+            <td>Rappel: Voyage {trajet} demain à {heure}. Ref: {ref}</td>
+        </tr>
+        <tr>
+            <td>Annulation</td>
+            <td>Votre réservation {ref} a été annulée. Remboursement en cours.</td>
+        </tr>
+    </table>
+    
+    <h2 id="troubleshooting">10. Dépannage</h2>
+    
+    <h3>🔧 Problèmes Courants</h3>
+    
+    <h4>Erreur: "Module not found"</h4>
+    <div class="code-block">
+<span class="comment"># Vérifier que le module est dans le path</span>
+./odoo.sh shell
+>>> from odoo import modules
+>>> modules.module.get_module_path('transport_interurbain')
+
+<span class="comment"># Si None, ajouter au addons_path dans odoo.conf</span>
+    </div>
+    
+    <h4>Erreur: "Access Denied" sur l'API</h4>
+    <div class="code-block">
+<span class="comment"># Vérifier le token</span>
+SELECT * FROM transport_usager WHERE token = 'xxx';
+
+<span class="comment"># Vérifier l'expiration</span>
+SELECT token_expiry > NOW() as valid FROM transport_usager WHERE id = xxx;
+    </div>
+    
+    <h4>QR Code non reconnu</h4>
+    <div class="code-block">
+<span class="comment"># Vérifier que le booking existe</span>
+SELECT * FROM transport_booking WHERE qr_code = 'xxx';
+
+<span class="comment"># Vérifier l'état</span>
+SELECT state FROM transport_booking WHERE qr_code = 'xxx';
+<span class="comment">-- Doit être 'confirmed' pour être validé</span>
+    </div>
+    
+    <h4>Synchronisation Mobile échouée</h4>
+    <ol>
+        <li>Vérifier la connectivité réseau</li>
+        <li>Vérifier que l'API répond : <code>curl https://domain.com/api/v1/transport/health</code></li>
+        <li>Vérifier les logs du serveur</li>
+        <li>Vider le cache de l'app mobile</li>
+    </ol>
+    
+    <h3>📞 Escalade</h3>
+    <table>
+        <tr>
+            <th>Niveau</th>
+            <th>Responsable</th>
+            <th>Délai</th>
+        </tr>
+        <tr>
+            <td>N1 - Support</td>
+            <td>Équipe support</td>
+            <td>30 min</td>
+        </tr>
+        <tr>
+            <td>N2 - Technique</td>
+            <td>DevOps</td>
+            <td>2h</td>
+        </tr>
+        <tr>
+            <td>N3 - Critique</td>
+            <td>Lead Developer</td>
+            <td>4h</td>
+        </tr>
+    </table>
+    
+    <h2 id="mise-a-jour">11. Mise à Jour du Module</h2>
+    
+    <h3>📦 Procédure de Mise à Jour</h3>
+    
+    <ol class="steps">
+        <li>
+            <strong>Sauvegarder</strong> la base de données :
+            <div class="code-block">
+pg_dump -U odoo icp_dev_db > backup_before_update.sql
+            </div>
+        </li>
+        <li>
+            <strong>Copier</strong> la nouvelle version du module
+        </li>
+        <li>
+            <strong>Mettre à jour</strong> le module :
+            <div class="code-block">
+./odoo.sh update transport_interurbain
+            </div>
+        </li>
+        <li>
+            <strong>Vérifier</strong> les logs pour les erreurs
+        </li>
+        <li>
+            <strong>Tester</strong> les fonctionnalités critiques
+        </li>
+    </ol>
+    
+    <h3>🔄 Migrations de Données</h3>
+    <p>Les scripts de migration se trouvent dans <code>migrations/</code> :</p>
+    <div class="code-block">
+migrations/
+├── 1.0.1/
+│   └── pre-migrate.py
+├── 1.1.0/
+│   ├── pre-migrate.py
+│   └── post-migrate.py
+    </div>
+    
+    <div class="danger-box">
+        <strong>⚠️ Important :</strong> Ne jamais mettre à jour en production sans avoir testé sur un environnement de staging.
+    </div>
+    
+    <h2 id="annexes">12. Annexes Techniques</h2>
+    
+    <h3>📋 Checklist de Déploiement</h3>
+    <table>
+        <tr>
+            <th>Étape</th>
+            <th>Vérifié</th>
+        </tr>
+        <tr>
+            <td>Sauvegarde effectuée</td>
+            <td>☐</td>
+        </tr>
+        <tr>
+            <td>Module copié sur le serveur</td>
+            <td>☐</td>
+        </tr>
+        <tr>
+            <td>Mise à jour exécutée sans erreur</td>
+            <td>☐</td>
+        </tr>
+        <tr>
+            <td>Tests fonctionnels passés</td>
+            <td>☐</td>
+        </tr>
+        <tr>
+            <td>API accessible</td>
+            <td>☐</td>
+        </tr>
+        <tr>
+            <td>Apps mobiles connectées</td>
+            <td>☐</td>
+        </tr>
+        <tr>
+            <td>Monitoring actif</td>
+            <td>☐</td>
+        </tr>
+    </table>
+    
+    <h3>🔐 Commandes Utiles</h3>
+    <div class="code-block">
+<span class="comment"># Mise à jour du module</span>
+./odoo.sh update transport_interurbain
+
+<span class="comment"># Installation du module</span>
+./odoo.sh install transport_interurbain
+
+<span class="comment"># Lancer les tests</span>
+./odoo.sh test transport_interurbain
+
+<span class="comment"># Voir les logs</span>
+./odoo.sh logs
+
+<span class="comment"># Redémarrer les services</span>
+./down.sh && ./up.sh
+
+<span class="comment"># Shell Odoo</span>
+./odoo.sh shell
+    </div>
+    
+    <h3>📚 Ressources</h3>
+    <table>
+        <tr>
+            <th>Ressource</th>
+            <th>URL</th>
+        </tr>
+        <tr>
+            <td>Documentation Odoo 17</td>
+            <td>https://www.odoo.com/documentation/17.0/</td>
+        </tr>
+        <tr>
+            <td>Flutter Documentation</td>
+            <td>https://docs.flutter.dev/</td>
+        </tr>
+        <tr>
+            <td>PostgreSQL Manual</td>
+            <td>https://www.postgresql.org/docs/</td>
+        </tr>
+    </table>
+    
+    <h3>📞 Contacts</h3>
+    <table>
+        <tr>
+            <th>Rôle</th>
+            <th>Contact</th>
+        </tr>
+        <tr>
+            <td>Lead Developer</td>
+            <td>dev@transport.sn</td>
+        </tr>
+        <tr>
+            <td>DevOps</td>
+            <td>ops@transport.sn</td>
+        </tr>
+        <tr>
+            <td>Support N3</td>
+            <td>+221 77 XXX XX XX</td>
+        </tr>
+    </table>
+    
+    <div class="footer">
+        <p><strong>Transport Interurbain - Guide Administrateur</strong></p>
+        <p>Documentation Technique Version 1.1 - Janvier 2026</p>
+        <p>© 2026 - Document confidentiel - Usage interne uniquement</p>
+    </div>
+</body>
+</html>

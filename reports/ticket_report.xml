@@ -141,7 +141,7 @@
                         <div class="ticket-container">
                             <!-- En-tête -->
                             <div class="ticket-header">
-                                <div class="company-name" t-esc="booking.company_id.name"/>
+                                <div class="company-name" t-esc="booking.transport_company_id.name"/>
                                 <h1>TICKET DE VOYAGE</h1>
                                 <div class="ticket-reference" t-esc="booking.name"/>
                             </div>
@@ -243,8 +243,8 @@
                                     </div>
                                     <div style="text-align: right;">
                                         <strong>Contact :</strong><br/>
-                                        <t t-esc="booking.company_id.phone"/><br/>
-                                        <t t-esc="booking.company_id.email"/>
+                                        <t t-esc="booking.transport_company_id.phone"/><br/>
+                                        <t t-esc="booking.transport_company_id.email"/>
                                     </div>
                                 </div>
                                 <div style="text-align: center; margin-top: 15px;">
@@ -323,7 +323,7 @@
                             </tr>
                             <tr>
                                 <td><strong>Compagnie :</strong></td>
-                                <td t-esc="trip.company_id.name"/>
+                                <td t-esc="trip.transport_company_id.name"/>
                                 <td><strong>Chauffeur :</strong></td>
                                 <td t-esc="trip.driver_id.name or '-'"/>
                             </tr>

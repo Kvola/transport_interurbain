@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Transport Interurbain',
-    'version': '17.0.1.0.0',
+    'version': '17.0.1.0.1',
     'category': 'Transportation',
     'summary': 'Gestion des transports interurbains - Côte d\'Ivoire',
     'description': """
@@ -49,6 +49,7 @@ Module complet de gestion des transports interurbains avec les fonctionnalités 
         'contacts',
         'web',
         'web_responsive',
+        'website',
     ],
     'post_init_hook': 'post_init_hook',
     'uninstall_hook': 'uninstall_hook',
@@ -87,6 +88,9 @@ Module complet de gestion des transports interurbains avec les fonctionnalités 
         
         # Portal
         'views/portal_templates.xml',
+        
+        # Ticket Share Templates
+        'views/ticket_share_templates.xml',
         
         # Reports
         'reports/ticket_report.xml',

@@ -69,7 +69,7 @@ class TransportPaymentController(http.Controller):
         if not payment.exists():
             return False
         
-        api_key = payment.company_id.wave_api_key
+        api_key = payment.transport_company_id.wave_api_key
         if not api_key:
             return False
         
@@ -117,7 +117,7 @@ class TransportPaymentController(http.Controller):
             'ticket_type': ticket_type,
             'ticket_price': price,
             'booking_type': booking_type,
-            'reservation_fee': trip.company_id.reservation_fee if booking_type == 'reservation' else 0,
+            'reservation_fee': trip.transport_company_id.reservation_fee if booking_type == 'reservation' else 0,
             'boarding_stop_id': trip.route_id.departure_city_id.id,
             'alighting_stop_id': trip.route_id.arrival_city_id.id,
         })

@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Utilisateur - Interface Compagnie de Transport</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+        
+        h1 {
+            color: #1a5276;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2980b9;
+        }
+        
+        h2 {
+            color: #1a5276;
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            page-break-after: avoid;
+        }
+        
+        h3 {
+            color: #2980b9;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            page-break-after: avoid;
+        }
+        
+        h4 {
+            color: #34495e;
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .version-info {
+            text-align: center;
+            background: #eaf2f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        
+        .toc {
+            background: #eaf2f8;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            border-bottom: none;
+            text-align: center;
+        }
+        
+        .toc ol {
+            columns: 2;
+            column-gap: 30px;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+            break-inside: avoid;
+        }
+        
+        .toc a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #1a5276;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .highlight-box {
+            background: #eaf2f8;
+            border-left: 4px solid #2980b9;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #f39c12;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .danger-box {
+            background: #fadbd8;
+            border-left: 4px solid #e74c3c;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .success-box {
+            background: #d5f5e3;
+            border-left: 4px solid #27ae60;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .interface-mockup {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .interface-mockup .toolbar {
+            background: #1a5276;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+        }
+        
+        .interface-mockup .content {
+            padding: 15px;
+        }
+        
+        .interface-mockup .menu-item {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .interface-mockup .menu-item .icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .interface-mockup .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .interface-mockup .btn {
+            background: #2980b9;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;
+            display: inline-block;
+            margin: 5px 5px 5px 0;
+        }
+        
+        .interface-mockup .btn-success {
+            background: #27ae60;
+        }
+        
+        .interface-mockup .btn-danger {
+            background: #e74c3c;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a5276;
+        }
+        
+        .stat-card .label {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .steps li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 45px;
+            margin-bottom: 15px;
+        }
+        
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: #1a5276;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+        }
+        
+        .permission-table td:first-child {
+            font-weight: bold;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        @media print {
+            body {
+                padding: 20px;
+            }
+            
+            h2 {
+                page-break-after: avoid;
+            }
+            
+            .interface-mockup, .highlight-box, .warning-box, table, .stats-grid {
+                page-break-inside: avoid;
+            }
+            
+            .toc {
+                page-break-after: always;
+            }
+            
+            .print-btn {
+                display: none !important;
+            }
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #1a5276, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(26, 82, 118, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 82, 118, 0.5);
+        }
+        
+        .print-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">
+        📄 Télécharger en PDF
+    </button>
+    <h1>🏢 Guide Utilisateur<br>Interface Compagnie de Transport</h1>
+    <p class="subtitle">Transport Interurbain - Backend Odoo</p>
+    
+    <div class="version-info">
+        <strong>Version:</strong> 1.1 | <strong>Dernière mise à jour:</strong> Janvier 2026
+    </div>
+    
+    <div class="toc">
+        <h2>📑 Table des Matières</h2>
+        <ol>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#connexion">Connexion au Système</a></li>
+            <li><a href="#dashboard">Tableau de Bord</a></li>
+            <li><a href="#villes">Gestion des Villes</a></li>
+            <li><a href="#trajets">Gestion des Trajets</a></li>
+            <li><a href="#bus">Gestion des Bus</a></li>
+            <li><a href="#voyages">Gestion des Voyages</a></li>
+            <li><a href="#reservations">Gestion des Réservations</a></li>
+            <li><a href="#agents">Gestion des Agents</a></li>
+            <li><a href="#rapports">Rapports et Statistiques</a></li>
+            <li><a href="#parametres">Paramètres</a></li>
+            <li><a href="#support">Support Technique</a></li>
+        </ol>
+    </div>
+    
+    <h2 id="introduction">1. Introduction</h2>
+    
+    <h3>🎯 Objectif du Module</h3>
+    <p>Le module <strong>Transport Interurbain</strong> est une solution complète de gestion pour les compagnies de transport. Il permet de :</p>
+    
+    <ul>
+        <li><strong>Gérer</strong> les trajets, bus et voyages</li>
+        <li><strong>Suivre</strong> les réservations en temps réel</li>
+        <li><strong>Administrer</strong> les agents d'embarquement</li>
+        <li><strong>Analyser</strong> les performances via des rapports</li>
+        <li><strong>Connecter</strong> les applications mobiles (usagers et agents)</li>
+    </ul>
+    
+    <h3>👥 Rôles et Permissions</h3>
+    <table>
+        <tr>
+            <th>Rôle</th>
+            <th>Description</th>
+            <th>Permissions</th>
+        </tr>
+        <tr>
+            <td>Utilisateur</td>
+            <td>Personnel standard</td>
+            <td>Consultation des données</td>
+        </tr>
+        <tr>
+            <td>Manager</td>
+            <td>Responsable de compagnie</td>
+            <td>Création, modification, validation</td>
+        </tr>
+        <tr>
+            <td>Administrateur</td>
+            <td>Admin système</td>
+            <td>Toutes les permissions + configuration</td>
+        </tr>
+    </table>
+    
+    <h2 id="connexion">2. Connexion au Système</h2>
+    
+    <h3>🔐 Accéder à l'Interface</h3>
+    
+    <ol class="steps">
+        <li>Ouvrez votre navigateur web (Chrome, Firefox, Safari)</li>
+        <li>Accédez à l'URL fournie par votre administrateur</li>
+        <li>Entrez votre <strong>adresse email</strong></li>
+        <li>Entrez votre <strong>mot de passe</strong></li>
+        <li>Cliquez sur "<strong>Se connecter</strong>"</li>
+    </ol>
+    
+    <div class="interface-mockup">
+        <div class="toolbar">Connexion - Transport Interurbain</div>
+        <div class="content" style="text-align: center; padding: 30px;">
+            <div style="margin-bottom: 15px;">
+                <input type="text" placeholder="Email" style="padding: 10px; width: 250px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <input type="password" placeholder="Mot de passe" style="padding: 10px; width: 250px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div class="btn">Se connecter</div>
+        </div>
+    </div>
+    
+    <div class="highlight-box">
+        <strong>💡 Conseil :</strong> Utilisez le navigateur Chrome pour une meilleure expérience. Ajoutez l'URL en favori pour un accès rapide.
+    </div>
+    
+    <h2 id="dashboard">3. Tableau de Bord</h2>
+    
+    <h3>📊 Vue d'Ensemble</h3>
+    <p>Le tableau de bord présente un aperçu complet de l'activité de transport :</p>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="number">156</div>
+            <div class="label">Voyages ce mois</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">4,523</div>
+            <div class="label">Réservations</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">87%</div>
+            <div class="label">Taux de remplissage</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">15.8M</div>
+            <div class="label">Chiffre d'affaires (FCFA)</div>
+        </div>
+    </div>
+    
+    <h3>📈 Graphiques Disponibles</h3>
+    <table>
+        <tr>
+            <th>Graphique</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Réservations par jour</td>
+            <td>Courbe d'évolution des réservations</td>
+        </tr>
+        <tr>
+            <td>Revenus par trajet</td>
+            <td>Histogramme des trajets les plus rentables</td>
+        </tr>
+        <tr>
+            <td>Taux de remplissage</td>
+            <td>Jauge du taux moyen de remplissage</td>
+        </tr>
+        <tr>
+            <td>Répartition par statut</td>
+            <td>Camembert des statuts de réservation</td>
+        </tr>
+    </table>
+    
+    <h2 id="villes">4. Gestion des Villes</h2>
+    
+    <h3>🏙️ Ajouter une Ville</h3>
+    
+    <ol class="steps">
+        <li>Menu <strong>Transport → Configuration → Villes</strong></li>
+        <li>Cliquez sur "<strong>Créer</strong>"</li>
+        <li>Remplissez les informations :
+            <ul>
+                <li><strong>Nom</strong> : Nom de la ville</li>
+                <li><strong>Code</strong> : Code court (ex: DKR)</li>
+                <li><strong>Région</strong> : Région administrative</li>
+            </ul>
+        </li>
+        <li>Cliquez sur "<strong>Enregistrer</strong>"</li>
+    </ol>
+    
+    <div class="interface-mockup">
+        <div class="toolbar">Villes / Nouveau</div>
+        <div class="content">
+            <div class="card">
+                <table style="border: none; margin: 0;">
+                    <tr style="background: none;">
+                        <td style="border: none; width: 150px;"><strong>Nom:</strong></td>
+                        <td style="border: none;">Dakar</td>
+                    </tr>
+                    <tr style="background: none;">
+                        <td style="border: none;"><strong>Code:</strong></td>
+                        <td style="border: none;">DKR</td>
+                    </tr>
+                    <tr style="background: none;">
+                        <td style="border: none;"><strong>Région:</strong></td>
+                        <td style="border: none;">Dakar</td>
+                    </tr>
+                    <tr style="background: none;">
+                        <td style="border: none;"><strong>Active:</strong></td>
+                        <td style="border: none;">☑️ Oui</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="btn btn-success">Enregistrer</div>
+            <div class="btn">Annuler</div>
+        </div>
+    </div>
+    
+    <h2 id="trajets">5. Gestion des Trajets</h2>
+    
+    <h3>🛤️ Créer un Trajet</h3>
+    <p>Un trajet définit une liaison entre deux villes avec sa durée et son prix.</p>
+    
+    <ol class="steps">
+        <li>Menu <strong>Transport → Configuration → Trajets</strong></li>
+        <li>Cliquez sur "<strong>Créer</strong>"</li>
+        <li>Sélectionnez la <strong>ville de départ</strong></li>
+        <li>Sélectionnez la <strong>ville d'arrivée</strong></li>
+        <li>Définissez la <strong>durée estimée</strong> (en heures)</li>
+        <li>Définissez le <strong>prix de base</strong> (FCFA)</li>
+        <li>Cliquez sur "<strong>Enregistrer</strong>"</li>
+    </ol>
+    
+    <table>
+        <tr>
+            <th>Champ</th>
+            <th>Description</th>
+            <th>Exemple</th>
+        </tr>
+        <tr>
+            <td>Départ</td>
+            <td>Ville de départ</td>
+            <td>Dakar</td>
+        </tr>
+        <tr>
+            <td>Arrivée</td>
+            <td>Ville d'arrivée</td>
+            <td>Thiès</td>
+        </tr>
+        <tr>
+            <td>Durée</td>
+            <td>Temps de trajet estimé</td>
+            <td>1h30</td>
+        </tr>
+        <tr>
+            <td>Prix</td>
+            <td>Tarif standard</td>
+            <td>3 500 FCFA</td>
+        </tr>
+        <tr>
+            <td>Distance</td>
+            <td>Distance en km</td>
+            <td>70 km</td>
+        </tr>
+    </table>
+    
+    <h2 id="bus">6. Gestion des Bus</h2>
+    
+    <h3>🚌 Ajouter un Bus</h3>
+    
+    <ol class="steps">
+        <li>Menu <strong>Transport → Bus</strong></li>
+        <li>Cliquez sur "<strong>Créer</strong>"</li>
+        <li>Remplissez les informations du véhicule</li>
+        <li>Définissez la <strong>capacité</strong> (nombre de places)</li>
+        <li>Enregistrez</li>
+    </ol>
+    
+    <table>
+        <tr>
+            <th>Champ</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Immatriculation</td>
+            <td>Numéro de plaque du véhicule</td>
+        </tr>
+        <tr>
+            <td>Marque/Modèle</td>
+            <td>Type de véhicule</td>
+        </tr>
+        <tr>
+            <td>Capacité</td>
+            <td>Nombre de places assises</td>
+        </tr>
+        <tr>
+            <td>Chauffeur</td>
+            <td>Chauffeur assigné</td>
+        </tr>
+        <tr>
+            <td>Statut</td>
+            <td>Disponible / En maintenance / Hors service</td>
+        </tr>
+    </table>
+    
+    <h3>🔧 Statuts des Bus</h3>
+    <table>
+        <tr>
+            <th>Statut</th>
+            <th>Couleur</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Disponible</td>
+            <td style="color: #27ae60;">🟢 Vert</td>
+            <td>Bus prêt pour les voyages</td>
+        </tr>
+        <tr>
+            <td>En maintenance</td>
+            <td style="color: #f39c12;">🟡 Jaune</td>
+            <td>Bus en réparation</td>
+        </tr>
+        <tr>
+            <td>Hors service</td>
+            <td style="color: #e74c3c;">🔴 Rouge</td>
+            <td>Bus non utilisable</td>
+        </tr>
+    </table>
+    
+    <h2 id="voyages">7. Gestion des Voyages</h2>
+    
+    <h3>📅 Programmer un Voyage</h3>
+    
+    <ol class="steps">
+        <li>Menu <strong>Transport → Voyages</strong></li>
+        <li>Cliquez sur "<strong>Créer</strong>"</li>
+        <li>Sélectionnez le <strong>trajet</strong></li>
+        <li>Sélectionnez le <strong>bus</strong></li>
+        <li>Définissez la <strong>date et heure</strong> de départ</li>
+        <li>Ajustez le <strong>prix</strong> si nécessaire</li>
+        <li>Cliquez sur "<strong>Confirmer</strong>"</li>
+    </ol>
+    
+    <div class="interface-mockup">
+        <div class="toolbar">Voyages / Nouveau</div>
+        <div class="content">
+            <div class="card">
+                <table style="border: none; margin: 0;">
+                    <tr style="background: none;">
+                        <td style="border: none; width: 150px;"><strong>Trajet:</strong></td>
+                        <td style="border: none;">Dakar → Thiès</td>
+                    </tr>
+                    <tr style="background: none;">
+                        <td style="border: none;"><strong>Bus:</strong></td>
+                        <td style="border: none;">DK-1234-AB (50 places)</td>
+                    </tr>
+                    <tr style="background: none;">
+                        <td style="border: none;"><strong>Date départ:</strong></td>
+                        <td style="border: none;">16/01/2026 14:00</td>
+                    </tr>
+                    <tr style="background: none;">
+                        <td style="border: none;"><strong>Prix:</strong></td>
+                        <td style="border: none;">3 500 FCFA</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="btn btn-success">Confirmer</div>
+            <div class="btn">Enregistrer brouillon</div>
+        </div>
+    </div>
+    
+    <h3>📊 Cycle de Vie d'un Voyage</h3>
+    <table>
+        <tr>
+            <th>Statut</th>
+            <th>Description</th>
+            <th>Actions possibles</th>
+        </tr>
+        <tr>
+            <td>Brouillon</td>
+            <td>Voyage en préparation</td>
+            <td>Modifier, Confirmer, Supprimer</td>
+        </tr>
+        <tr>
+            <td>Confirmé</td>
+            <td>Ouvert aux réservations</td>
+            <td>Voir réservations, Annuler</td>
+        </tr>
+        <tr>
+            <td>En cours</td>
+            <td>Voyage démarré</td>
+            <td>Suivi en temps réel</td>
+        </tr>
+        <tr>
+            <td>Terminé</td>
+            <td>Voyage effectué</td>
+            <td>Consulter statistiques</td>
+        </tr>
+        <tr>
+            <td>Annulé</td>
+            <td>Voyage annulé</td>
+            <td>Voir raison</td>
+        </tr>
+    </table>
+    
+    <h2 id="reservations">8. Gestion des Réservations</h2>
+    
+    <h3>🎫 Consulter les Réservations</h3>
+    <p>Menu <strong>Transport → Réservations</strong></p>
+    
+    <h4>Filtres disponibles :</h4>
+    <ul>
+        <li><strong>Par voyage</strong> : Sélectionnez un voyage spécifique</li>
+        <li><strong>Par statut</strong> : Confirmé, En attente, Annulé, Validé</li>
+        <li><strong>Par date</strong> : Période de réservation</li>
+        <li><strong>Par passager</strong> : Recherche par nom ou téléphone</li>
+    </ul>
+    
+    <h3>📋 Détail d'une Réservation</h3>
+    <table>
+        <tr>
+            <th>Information</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Référence</td>
+            <td>Code unique de la réservation</td>
+        </tr>
+        <tr>
+            <td>Passager</td>
+            <td>Nom et téléphone du passager</td>
+        </tr>
+        <tr>
+            <td>Voyage</td>
+            <td>Trajet, date et heure</td>
+        </tr>
+        <tr>
+            <td>Montant</td>
+            <td>Prix payé</td>
+        </tr>
+        <tr>
+            <td>Paiement</td>
+            <td>Mode et statut du paiement</td>
+        </tr>
+        <tr>
+            <td>QR Code</td>
+            <td>Code pour validation</td>
+        </tr>
+        <tr>
+            <td>Embarquement</td>
+            <td>Statut (validé ou non)</td>
+        </tr>
+    </table>
+    
+    <h3>🔄 Actions sur les Réservations</h3>
+    <table>
+        <tr>
+            <th>Action</th>
+            <th>Condition</th>
+            <th>Effet</th>
+        </tr>
+        <tr>
+            <td>Confirmer</td>
+            <td>Paiement reçu</td>
+            <td>Active le ticket</td>
+        </tr>
+        <tr>
+            <td>Annuler</td>
+            <td>Avant le départ</td>
+            <td>Libère la place, remboursement possible</td>
+        </tr>
+        <tr>
+            <td>Rembourser</td>
+            <td>Ticket annulé</td>
+            <td>Lance le remboursement</td>
+        </tr>
+        <tr>
+            <td>Imprimer</td>
+            <td>Ticket confirmé</td>
+            <td>Génère PDF du ticket</td>
+        </tr>
+    </table>
+    
+    <h2 id="agents">9. Gestion des Agents</h2>
+    
+    <h3>👤 Créer un Compte Agent</h3>
+    
+    <ol class="steps">
+        <li>Menu <strong>Transport → Agents</strong></li>
+        <li>Cliquez sur "<strong>Créer</strong>"</li>
+        <li>Entrez le <strong>nom</strong> de l'agent</li>
+        <li>Entrez le <strong>numéro de téléphone</strong></li>
+        <li>Définissez un <strong>mot de passe</strong> temporaire</li>
+        <li>Activez le compte</li>
+    </ol>
+    
+    <div class="warning-box">
+        <strong>⚠️ Sécurité :</strong> L'agent devra changer son mot de passe à la première connexion sur l'application mobile.
+    </div>
+    
+    <h3>📊 Suivi des Performances</h3>
+    <p>Pour chaque agent, vous pouvez consulter :</p>
+    <ul>
+        <li>Nombre de validations effectuées</li>
+        <li>Voyages assignés</li>
+        <li>Temps moyen de validation</li>
+        <li>Historique des actions</li>
+    </ul>
+    
+    <h2 id="rapports">10. Rapports et Statistiques</h2>
+    
+    <h3>📈 Rapports Disponibles</h3>
+    
+    <table>
+        <tr>
+            <th>Rapport</th>
+            <th>Description</th>
+            <th>Fréquence</th>
+        </tr>
+        <tr>
+            <td>Revenus</td>
+            <td>Chiffre d'affaires par période</td>
+            <td>Quotidien / Mensuel</td>
+        </tr>
+        <tr>
+            <td>Remplissage</td>
+            <td>Taux d'occupation des bus</td>
+            <td>Par voyage</td>
+        </tr>
+        <tr>
+            <td>Trajets populaires</td>
+            <td>Classement des trajets</td>
+            <td>Mensuel</td>
+        </tr>
+        <tr>
+            <td>Annulations</td>
+            <td>Taux et raisons d'annulation</td>
+            <td>Hebdomadaire</td>
+        </tr>
+        <tr>
+            <td>Agents</td>
+            <td>Performance des agents</td>
+            <td>Mensuel</td>
+        </tr>
+    </table>
+    
+    <h3>📤 Exporter les Données</h3>
+    <p>Tous les rapports peuvent être exportés en :</p>
+    <ul>
+        <li><strong>Excel</strong> (.xlsx) - Pour analyse</li>
+        <li><strong>PDF</strong> - Pour impression</li>
+        <li><strong>CSV</strong> - Pour intégration</li>
+    </ul>
+    
+    <h2 id="parametres">11. Paramètres</h2>
+    
+    <h3>⚙️ Configuration Générale</h3>
+    <p>Menu <strong>Transport → Configuration → Paramètres</strong></p>
+    
+    <table>
+        <tr>
+            <th>Paramètre</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Délai d'annulation</td>
+            <td>Heures avant départ pour annuler</td>
+        </tr>
+        <tr>
+            <td>Politique de remboursement</td>
+            <td>Pourcentage de remboursement</td>
+        </tr>
+        <tr>
+            <td>Notifications SMS</td>
+            <td>Activer/désactiver les SMS</td>
+        </tr>
+        <tr>
+            <td>Surréservation</td>
+            <td>Autoriser ou non</td>
+        </tr>
+    </table>
+    
+    <h2 id="support">12. Support Technique</h2>
+    
+    <h3>📞 Contact</h3>
+    <table>
+        <tr>
+            <th>Type</th>
+            <th>Contact</th>
+            <th>Horaires</th>
+        </tr>
+        <tr>
+            <td>Support technique</td>
+            <td>support@transport.sn</td>
+            <td>Lun-Ven 8h-18h</td>
+        </tr>
+        <tr>
+            <td>Urgences</td>
+            <td>+221 77 XXX XX XX</td>
+            <td>24h/24</td>
+        </tr>
+        <tr>
+            <td>Formation</td>
+            <td>formation@transport.sn</td>
+            <td>Sur rendez-vous</td>
+        </tr>
+    </table>
+    
+    <div class="highlight-box">
+        <strong>📋 Pour toute demande :</strong> Précisez votre nom, votre compagnie, et décrivez le problème avec des captures d'écran si possible.
+    </div>
+    
+    <div class="footer">
+        <p><strong>Transport Interurbain - Interface Compagnie</strong></p>
+        <p>Guide Utilisateur Version 1.1 - Janvier 2026</p>
+        <p>© 2026 - Tous droits réservés</p>
+    </div>
+</body>
+</html>
