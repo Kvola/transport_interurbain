@@ -292,15 +292,15 @@ class TransportTrip(models.Model):
                     "Le prix enfant (%s) ne peut pas être supérieur au prix normal (%s)!"
                 ) % (trip.child_price, trip.price))
 
-    @api.constrains('route_id', 'transport_company_id')
-    def _check_route_company(self):
-        """Vérifier que la compagnie peut opérer sur cet itinéraire"""
+    @api.constrains('bus_id', 'transport_company_id')
+    def _check_bus_company(self):
+        """Vérifier que le bus appartient à la compagnie"""
         for trip in self:
-            if trip.route_id and trip.route_id.company_ids:
-                if trip.transport_company_id not in trip.route_id.company_ids:
+            if trip.bus_id and trip.transport_company_id:
+                if trip.bus_id.transport_company_id != trip.transport_company_id:
                     raise ValidationError(_(
-                        "La compagnie '%s' n'est pas autorisée à opérer sur l'itinéraire '%s'!"
-                    ) % (trip.transport_company_id.name, trip.route_id.name))
+                        "Le bus '%s' n'appartient pas à la compagnie '%s'!"
+                    ) % (trip.bus_id.name, trip.transport_company_id.name))
 
     @api.model_create_multi
     def create(self, vals_list):

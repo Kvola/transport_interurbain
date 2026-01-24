@@ -391,5 +391,757 @@
             <field name="state">available</field>
         </record>
 
+        <!-- ============================================ -->
+        <!-- BUS SUPPLÉMENTAIRES - UTB -->
+        <!-- ============================================ -->
+
+        <record id="bus_utb_004" model="transport.bus">
+            <field name="name">UTB-004 Express</field>
+            <field name="code">UTB-004</field>
+            <field name="transport_company_id" ref="company_utb"/>
+            <field name="bus_type">coach</field>
+            <field name="seat_capacity">52</field>
+            <field name="seat_layout">2+2</field>
+            <field name="has_vip_seats" eval="True"/>
+            <field name="vip_seat_count">12</field>
+            <field name="vip_seat_numbers">1-12</field>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">1100</field>
+            <field name="luggage_per_passenger_kg">30</field>
+            <field name="extra_luggage_price_kg">200</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="True"/>
+            <field name="has_toilet" eval="True"/>
+            <field name="has_tv" eval="True"/>
+            <field name="has_usb" eval="True"/>
+            <field name="has_reclining_seats" eval="True"/>
+            <field name="make">MAN</field>
+            <field name="model">Lion's Coach</field>
+            <field name="year">2024</field>
+            <field name="license_plate">4567 LM 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <record id="bus_utb_005" model="transport.bus">
+            <field name="name">UTB-005 Économique</field>
+            <field name="code">UTB-005</field>
+            <field name="transport_company_id" ref="company_utb"/>
+            <field name="bus_type">standard</field>
+            <field name="seat_capacity">55</field>
+            <field name="seat_layout">2+2</field>
+            <field name="has_vip_seats" eval="False"/>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">1000</field>
+            <field name="luggage_per_passenger_kg">20</field>
+            <field name="extra_luggage_price_kg">150</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="False"/>
+            <field name="has_toilet" eval="False"/>
+            <field name="has_tv" eval="True"/>
+            <field name="has_usb" eval="False"/>
+            <field name="has_reclining_seats" eval="False"/>
+            <field name="make">Yutong</field>
+            <field name="model">ZK6128</field>
+            <field name="year">2022</field>
+            <field name="license_plate">5678 NO 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- BUS SUPPLÉMENTAIRES - ATT -->
+        <!-- ============================================ -->
+
+        <record id="bus_att_003" model="transport.bus">
+            <field name="name">ATT-003 Premium</field>
+            <field name="code">ATT-003</field>
+            <field name="transport_company_id" ref="company_att"/>
+            <field name="bus_type">coach</field>
+            <field name="seat_capacity">45</field>
+            <field name="seat_layout">2+1</field>
+            <field name="has_vip_seats" eval="True"/>
+            <field name="vip_seat_count">15</field>
+            <field name="vip_seat_numbers">1-15</field>
+            <field name="manage_luggage" eval="True"/>
+            <field name="luggage_capacity_kg">900</field>
+            <field name="luggage_per_passenger_kg">30</field>
+            <field name="extra_luggage_price_kg">200</field>
+            <field name="has_ac" eval="True"/>
+            <field name="has_wifi" eval="True"/>
+            <field name="has_toilet" eval="True"/>
+            <field name="has_tv" eval="True"/>
+            <field name="has_usb" eval="True"/>
+            <field name="has_reclining_seats" eval="True"/>
+            <field name="make">Mercedes-Benz</field>
+            <field name="model">Setra S 517 HDH</field>
+            <field name="year">2025</field>
+            <field name="license_plate">6789 PQ 01</field>
+            <field name="state">available</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- PASSAGERS DÉMO -->
+        <!-- ============================================ -->
+
+        <record id="passenger_kouame_jean" model="transport.passenger">
+            <field name="name">KOUAMÉ Jean-Baptiste</field>
+            <field name="phone">+225 07 08 09 10 11</field>
+            <field name="email">jean.kouame@email.ci</field>
+            <field name="id_type">cni</field>
+            <field name="id_number">CI0012345678</field>
+            <field name="date_of_birth">1985-03-15</field>
+            <field name="gender">male</field>
+            <field name="preferred_seat_position">window</field>
+            <field name="loyalty_points">150</field>
+        </record>
+
+        <record id="passenger_traore_fatou" model="transport.passenger">
+            <field name="name">TRAORÉ Fatou</field>
+            <field name="phone">+225 05 06 07 08 09</field>
+            <field name="email">fatou.traore@email.ci</field>
+            <field name="id_type">cni</field>
+            <field name="id_number">CI0098765432</field>
+            <field name="date_of_birth">1992-07-22</field>
+            <field name="gender">female</field>
+            <field name="preferred_seat_position">aisle</field>
+            <field name="loyalty_points">320</field>
+        </record>
+
+        <record id="passenger_yao_marc" model="transport.passenger">
+            <field name="name">YAO Marc-Antoine</field>
+            <field name="phone">+225 01 02 03 04 05</field>
+            <field name="email">marc.yao@email.ci</field>
+            <field name="id_type">passport</field>
+            <field name="id_number">P01234567</field>
+            <field name="date_of_birth">1978-11-08</field>
+            <field name="gender">male</field>
+            <field name="preferred_seat_position">window</field>
+            <field name="loyalty_points">850</field>
+        </record>
+
+        <record id="passenger_kone_aminata" model="transport.passenger">
+            <field name="name">KONÉ Aminata</field>
+            <field name="phone">+225 07 77 88 99 00</field>
+            <field name="email">aminata.kone@email.ci</field>
+            <field name="id_type">cni</field>
+            <field name="id_number">CI0011223344</field>
+            <field name="date_of_birth">1995-04-30</field>
+            <field name="gender">female</field>
+            <field name="preferred_seat_position">any</field>
+            <field name="loyalty_points">180</field>
+        </record>
+
+        <record id="passenger_diallo_mamadou" model="transport.passenger">
+            <field name="name">DIALLO Mamadou</field>
+            <field name="phone">+225 05 55 66 77 88</field>
+            <field name="email">mamadou.diallo@email.ci</field>
+            <field name="id_type">permis</field>
+            <field name="id_number">D2024-123456</field>
+            <field name="date_of_birth">1988-09-12</field>
+            <field name="gender">male</field>
+            <field name="preferred_seat_position">aisle</field>
+            <field name="loyalty_points">420</field>
+        </record>
+
+        <record id="passenger_bamba_seydou" model="transport.passenger">
+            <field name="name">BAMBA Seydou</field>
+            <field name="phone">+225 01 11 22 33 44</field>
+            <field name="email">seydou.bamba@email.ci</field>
+            <field name="id_type">cni</field>
+            <field name="id_number">CI0055667788</field>
+            <field name="date_of_birth">1982-12-25</field>
+            <field name="gender">male</field>
+            <field name="preferred_seat_position">window</field>
+            <field name="loyalty_points">95</field>
+        </record>
+
+        <record id="passenger_coulibaly_mariam" model="transport.passenger">
+            <field name="name">COULIBALY Mariam</field>
+            <field name="phone">+225 07 99 88 77 66</field>
+            <field name="email">mariam.coulibaly@email.ci</field>
+            <field name="id_type">cni</field>
+            <field name="id_number">CI0099887766</field>
+            <field name="date_of_birth">1990-06-18</field>
+            <field name="gender">female</field>
+            <field name="preferred_seat_position">window</field>
+            <field name="loyalty_points">275</field>
+        </record>
+
+        <record id="passenger_ouattara_ibrahim" model="transport.passenger">
+            <field name="name">OUATTARA Ibrahim</field>
+            <field name="phone">+225 05 44 33 22 11</field>
+            <field name="email">ibrahim.ouattara@email.ci</field>
+            <field name="id_type">cni</field>
+            <field name="id_number">CI0044332211</field>
+            <field name="date_of_birth">1975-02-14</field>
+            <field name="gender">male</field>
+            <field name="preferred_seat_position">aisle</field>
+            <field name="loyalty_points">1200</field>
+        </record>
+
+        <record id="passenger_esso_marie" model="transport.passenger">
+            <field name="name">ESSO Marie-Claire</field>
+            <field name="phone">+225 07 12 34 56 78</field>
+            <field name="email">marie.esso@email.ci</field>
+            <field name="id_type">passport</field>
+            <field name="id_number">P98765432</field>
+            <field name="date_of_birth">1998-08-05</field>
+            <field name="gender">female</field>
+            <field name="preferred_seat_position">any</field>
+            <field name="loyalty_points">60</field>
+        </record>
+
+        <record id="passenger_gnagne_paul" model="transport.passenger">
+            <field name="name">GNAGNÉ Paul</field>
+            <field name="phone">+225 01 98 76 54 32</field>
+            <field name="email">paul.gnagne@email.ci</field>
+            <field name="id_type">cni</field>
+            <field name="id_number">CI0077889900</field>
+            <field name="date_of_birth">1970-01-20</field>
+            <field name="gender">male</field>
+            <field name="preferred_seat_position">window</field>
+            <field name="special_needs">Mobilité réduite - assistance nécessaire</field>
+            <field name="loyalty_points">1580</field>
+        </record>
+
+        <!-- Mineur avec tuteur -->
+        <record id="passenger_konan_junior" model="transport.passenger">
+            <field name="name">KONAN Junior</field>
+            <field name="phone">+225 07 11 11 11 11</field>
+            <field name="id_type">birth_cert</field>
+            <field name="id_number">AN-2012-00123</field>
+            <field name="date_of_birth">2012-05-10</field>
+            <field name="gender">male</field>
+            <field name="guardian_name">KONAN Serge</field>
+            <field name="guardian_phone">+225 05 22 22 22 22</field>
+            <field name="loyalty_points">25</field>
+        </record>
+
+        <record id="passenger_soro_aissatou" model="transport.passenger">
+            <field name="name">SORO Aïssatou</field>
+            <field name="phone">+225 05 33 44 55 66</field>
+            <field name="email">aissatou.soro@email.ci</field>
+            <field name="id_type">cni</field>
+            <field name="id_number">CI0033445566</field>
+            <field name="date_of_birth">1993-10-28</field>
+            <field name="gender">female</field>
+            <field name="preferred_seat_position">window</field>
+            <field name="loyalty_points">340</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- PROGRAMMES DE VOYAGES -->
+        <!-- ============================================ -->
+
+        <!-- UTB - Ligne Express Abidjan-Bouaké -->
+        <record id="schedule_utb_abj_bke_matin" model="transport.trip.schedule">
+            <field name="name">UTB Express Abidjan-Bouaké (Matin)</field>
+            <field name="transport_company_id" ref="company_utb"/>
+            <field name="route_id" ref="route_abidjan_bouake"/>
+            <field name="default_bus_id" ref="bus_utb_001"/>
+            <field name="meeting_point">Gare Routière UTB Adjamé</field>
+            <field name="meeting_point_address">Avenue 7, Adjamé, à côté du marché Gouro</field>
+            <field name="meeting_time_before">45</field>
+            <field name="default_price">6500</field>
+            <field name="default_vip_price">8500</field>
+            <field name="default_child_price">4000</field>
+            <field name="date_start">2026-01-01</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="schedule_utb_abj_bke_soir" model="transport.trip.schedule">
+            <field name="name">UTB Express Abidjan-Bouaké (Soir)</field>
+            <field name="transport_company_id" ref="company_utb"/>
+            <field name="route_id" ref="route_abidjan_bouake"/>
+            <field name="default_bus_id" ref="bus_utb_002"/>
+            <field name="meeting_point">Gare Routière UTB Adjamé</field>
+            <field name="meeting_point_address">Avenue 7, Adjamé, à côté du marché Gouro</field>
+            <field name="meeting_time_before">30</field>
+            <field name="default_price">6000</field>
+            <field name="default_vip_price">8000</field>
+            <field name="default_child_price">3500</field>
+            <field name="date_start">2026-01-01</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- UTB - Ligne Abidjan-Korhogo -->
+        <record id="schedule_utb_abj_krh" model="transport.trip.schedule">
+            <field name="name">UTB Grand Nord - Abidjan-Korhogo</field>
+            <field name="transport_company_id" ref="company_utb"/>
+            <field name="route_id" ref="route_abidjan_korhogo"/>
+            <field name="default_bus_id" ref="bus_utb_004"/>
+            <field name="meeting_point">Gare Routière UTB Adjamé - Zone Nord</field>
+            <field name="meeting_point_address">Avenue 7, Adjamé, Terminal Nord</field>
+            <field name="meeting_time_before">60</field>
+            <field name="default_price">12000</field>
+            <field name="default_vip_price">15000</field>
+            <field name="default_child_price">7500</field>
+            <field name="date_start">2026-01-01</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- ATT - Ligne Abidjan-Yamoussoukro -->
+        <record id="schedule_att_abj_yam" model="transport.trip.schedule">
+            <field name="name">ATT Navette Capitale - Abidjan-Yamoussoukro</field>
+            <field name="transport_company_id" ref="company_att"/>
+            <field name="route_id" ref="route_abidjan_yamoussoukro"/>
+            <field name="default_bus_id" ref="bus_att_001"/>
+            <field name="meeting_point">Gare ATT Adjamé Zone B</field>
+            <field name="meeting_point_address">Adjamé, Zone B, face à la station Total</field>
+            <field name="meeting_time_before">30</field>
+            <field name="default_price">5000</field>
+            <field name="default_vip_price">6500</field>
+            <field name="default_child_price">3000</field>
+            <field name="date_start">2026-01-01</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- ATT - Ligne Abidjan-San Pedro -->
+        <record id="schedule_att_abj_spd" model="transport.trip.schedule">
+            <field name="name">ATT Côte Sud - Abidjan-San Pedro</field>
+            <field name="transport_company_id" ref="company_att"/>
+            <field name="route_id" ref="route_abidjan_san_pedro"/>
+            <field name="default_bus_id" ref="bus_att_003"/>
+            <field name="meeting_point">Gare ATT Treichville</field>
+            <field name="meeting_point_address">Boulevard de Marseille, Treichville</field>
+            <field name="meeting_time_before">45</field>
+            <field name="default_price">8000</field>
+            <field name="default_vip_price">10000</field>
+            <field name="default_child_price">5000</field>
+            <field name="date_start">2026-01-01</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- CTV - Ligne Économique Abidjan-Daloa -->
+        <record id="schedule_ctv_abj_dlo" model="transport.trip.schedule">
+            <field name="name">CTV Économique - Abidjan-Daloa</field>
+            <field name="transport_company_id" ref="company_ctv"/>
+            <field name="route_id" ref="route_abidjan_daloa"/>
+            <field name="default_bus_id" ref="bus_ctv_001"/>
+            <field name="meeting_point">Gare Yopougon Siporex</field>
+            <field name="meeting_point_address">Yopougon Siporex, face au supermarché</field>
+            <field name="meeting_time_before">30</field>
+            <field name="default_price">5500</field>
+            <field name="default_child_price">3500</field>
+            <field name="date_start">2026-01-01</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- TCV Express - Abidjan-Bouaké Express -->
+        <record id="schedule_tcv_abj_bke" model="transport.trip.schedule">
+            <field name="name">TCV Express - Abidjan-Bouaké Sans Arrêt</field>
+            <field name="transport_company_id" ref="company_tcv"/>
+            <field name="route_id" ref="route_abidjan_bouake"/>
+            <field name="default_bus_id" ref="bus_tcv_001"/>
+            <field name="meeting_point">Gare TCV Marcory Zone 4</field>
+            <field name="meeting_point_address">Boulevard VGE, Zone 4, Marcory</field>
+            <field name="meeting_time_before">30</field>
+            <field name="default_price">7500</field>
+            <field name="default_vip_price">10000</field>
+            <field name="default_child_price">4500</field>
+            <field name="date_start">2026-01-01</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- STS - Ligne Man -->
+        <record id="schedule_sts_abj_man" model="transport.trip.schedule">
+            <field name="name">STS Montagnes - Abidjan-Man</field>
+            <field name="transport_company_id" ref="company_sts"/>
+            <field name="route_id" ref="route_abidjan_man"/>
+            <field name="default_bus_id" ref="bus_sts_001"/>
+            <field name="meeting_point">Gare STS Treichville</field>
+            <field name="meeting_point_address">Rue du Commerce, Treichville</field>
+            <field name="meeting_time_before">45</field>
+            <field name="default_price">10000</field>
+            <field name="default_vip_price">13000</field>
+            <field name="default_child_price">6500</field>
+            <field name="date_start">2026-01-01</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- VOYAGES PROGRAMMÉS (TRIPS) -->
+        <!-- ============================================ -->
+
+        <!-- UTB - Voyages Abidjan-Bouaké -->
+        <record id="trip_utb_abj_bke_001" model="transport.trip">
+            <field name="transport_company_id" ref="company_utb"/>
+            <field name="schedule_id" ref="schedule_utb_abj_bke_matin"/>
+            <field name="route_id" ref="route_abidjan_bouake"/>
+            <field name="bus_id" ref="bus_utb_001"/>
+            <field name="driver_name">KONÉ Lacina</field>
+            <field name="driver_phone">+225 07 00 11 22 33</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=1, hour=6, minute=0, second=0)"/>
+            <field name="meeting_point">Gare Routière UTB Adjamé</field>
+            <field name="meeting_point_address">Avenue 7, Adjamé, à côté du marché Gouro</field>
+            <field name="meeting_time_before">45</field>
+            <field name="price">6500</field>
+            <field name="vip_price">8500</field>
+            <field name="child_price">4000</field>
+            <field name="luggage_included_kg">25</field>
+            <field name="extra_luggage_price">200</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+            <field name="passenger_info"><![CDATA[
+                <p><strong>Informations importantes:</strong></p>
+                <ul>
+                    <li>Arrivée obligatoire 45 min avant le départ</li>
+                    <li>Pièce d'identité obligatoire</li>
+                    <li>Collation offerte à bord</li>
+                </ul>
+            ]]></field>
+        </record>
+
+        <record id="trip_utb_abj_bke_002" model="transport.trip">
+            <field name="transport_company_id" ref="company_utb"/>
+            <field name="schedule_id" ref="schedule_utb_abj_bke_matin"/>
+            <field name="route_id" ref="route_abidjan_bouake"/>
+            <field name="bus_id" ref="bus_utb_002"/>
+            <field name="driver_name">YAPI Christophe</field>
+            <field name="driver_phone">+225 05 44 55 66 77</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=1, hour=10, minute=30, second=0)"/>
+            <field name="meeting_point">Gare Routière UTB Adjamé</field>
+            <field name="meeting_time_before">30</field>
+            <field name="price">6000</field>
+            <field name="child_price">3500</field>
+            <field name="luggage_included_kg">25</field>
+            <field name="extra_luggage_price">200</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <record id="trip_utb_abj_bke_003" model="transport.trip">
+            <field name="transport_company_id" ref="company_utb"/>
+            <field name="schedule_id" ref="schedule_utb_abj_bke_soir"/>
+            <field name="route_id" ref="route_abidjan_bouake"/>
+            <field name="bus_id" ref="bus_utb_003"/>
+            <field name="driver_name">DIOMANDÉ Soumaïla</field>
+            <field name="driver_phone">+225 01 88 99 00 11</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=1, hour=17, minute=0, second=0)"/>
+            <field name="meeting_point">Gare Routière UTB Adjamé</field>
+            <field name="meeting_time_before">30</field>
+            <field name="price">6000</field>
+            <field name="child_price">3500</field>
+            <field name="luggage_included_kg">25</field>
+            <field name="extra_luggage_price">150</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <record id="trip_utb_abj_bke_004" model="transport.trip">
+            <field name="transport_company_id" ref="company_utb"/>
+            <field name="route_id" ref="route_abidjan_bouake"/>
+            <field name="bus_id" ref="bus_utb_004"/>
+            <field name="driver_name">BROU Aimé</field>
+            <field name="driver_phone">+225 07 22 33 44 55</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=2, hour=6, minute=0, second=0)"/>
+            <field name="meeting_point">Gare Routière UTB Adjamé</field>
+            <field name="meeting_time_before">45</field>
+            <field name="price">6500</field>
+            <field name="vip_price">8500</field>
+            <field name="child_price">4000</field>
+            <field name="luggage_included_kg">30</field>
+            <field name="extra_luggage_price">200</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <!-- UTB - Voyage Abidjan-Korhogo -->
+        <record id="trip_utb_abj_krh_001" model="transport.trip">
+            <field name="transport_company_id" ref="company_utb"/>
+            <field name="schedule_id" ref="schedule_utb_abj_krh"/>
+            <field name="route_id" ref="route_abidjan_korhogo"/>
+            <field name="bus_id" ref="bus_utb_001"/>
+            <field name="driver_name">SORO Drissa</field>
+            <field name="driver_phone">+225 05 66 77 88 99</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=2, hour=5, minute=0, second=0)"/>
+            <field name="meeting_point">Gare Routière UTB Adjamé - Zone Nord</field>
+            <field name="meeting_point_address">Avenue 7, Adjamé, Terminal Nord</field>
+            <field name="meeting_time_before">60</field>
+            <field name="price">12000</field>
+            <field name="vip_price">15000</field>
+            <field name="child_price">7500</field>
+            <field name="luggage_included_kg">30</field>
+            <field name="extra_luggage_price">200</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+            <field name="passenger_info"><![CDATA[
+                <p><strong>Voyage longue distance - Informations:</strong></p>
+                <ul>
+                    <li>Durée approximative: 8 heures</li>
+                    <li>Pause déjeuner prévue à Bouaké</li>
+                    <li>Arrivée obligatoire 1 heure avant le départ</li>
+                </ul>
+            ]]></field>
+        </record>
+
+        <!-- ATT - Voyages Abidjan-Yamoussoukro -->
+        <record id="trip_att_abj_yam_001" model="transport.trip">
+            <field name="transport_company_id" ref="company_att"/>
+            <field name="schedule_id" ref="schedule_att_abj_yam"/>
+            <field name="route_id" ref="route_abidjan_yamoussoukro"/>
+            <field name="bus_id" ref="bus_att_001"/>
+            <field name="driver_name">ASSOUMOU Franck</field>
+            <field name="driver_phone">+225 07 33 44 55 66</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=1, hour=7, minute=0, second=0)"/>
+            <field name="meeting_point">Gare ATT Adjamé Zone B</field>
+            <field name="meeting_time_before">30</field>
+            <field name="price">5000</field>
+            <field name="vip_price">6500</field>
+            <field name="child_price">3000</field>
+            <field name="luggage_included_kg">28</field>
+            <field name="extra_luggage_price">180</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <record id="trip_att_abj_yam_002" model="transport.trip">
+            <field name="transport_company_id" ref="company_att"/>
+            <field name="schedule_id" ref="schedule_att_abj_yam"/>
+            <field name="route_id" ref="route_abidjan_yamoussoukro"/>
+            <field name="bus_id" ref="bus_att_002"/>
+            <field name="driver_name">N'GUESSAN Olivier</field>
+            <field name="driver_phone">+225 05 77 88 99 00</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=1, hour=14, minute=0, second=0)"/>
+            <field name="meeting_point">Gare ATT Adjamé Zone B</field>
+            <field name="meeting_time_before">30</field>
+            <field name="price">5000</field>
+            <field name="child_price">3000</field>
+            <field name="luggage_included_kg">25</field>
+            <field name="extra_luggage_price">150</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <record id="trip_att_abj_yam_003" model="transport.trip">
+            <field name="transport_company_id" ref="company_att"/>
+            <field name="route_id" ref="route_abidjan_yamoussoukro"/>
+            <field name="bus_id" ref="bus_att_003"/>
+            <field name="driver_name">KOUADIO Ernest</field>
+            <field name="driver_phone">+225 01 22 33 44 55</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=2, hour=8, minute=0, second=0)"/>
+            <field name="meeting_point">Gare ATT Adjamé Zone B</field>
+            <field name="meeting_time_before">30</field>
+            <field name="price">5500</field>
+            <field name="vip_price">7000</field>
+            <field name="child_price">3500</field>
+            <field name="luggage_included_kg">30</field>
+            <field name="extra_luggage_price">200</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <!-- ATT - Voyage San Pedro -->
+        <record id="trip_att_abj_spd_001" model="transport.trip">
+            <field name="transport_company_id" ref="company_att"/>
+            <field name="schedule_id" ref="schedule_att_abj_spd"/>
+            <field name="route_id" ref="route_abidjan_san_pedro"/>
+            <field name="bus_id" ref="bus_att_003"/>
+            <field name="driver_name">DAKOURI Marcel</field>
+            <field name="driver_phone">+225 07 55 66 77 88</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=3, hour=6, minute=30, second=0)"/>
+            <field name="meeting_point">Gare ATT Treichville</field>
+            <field name="meeting_point_address">Boulevard de Marseille, Treichville</field>
+            <field name="meeting_time_before">45</field>
+            <field name="price">8000</field>
+            <field name="vip_price">10000</field>
+            <field name="child_price">5000</field>
+            <field name="luggage_included_kg">30</field>
+            <field name="extra_luggage_price">200</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <!-- CTV - Voyages Abidjan-Daloa -->
+        <record id="trip_ctv_abj_dlo_001" model="transport.trip">
+            <field name="transport_company_id" ref="company_ctv"/>
+            <field name="schedule_id" ref="schedule_ctv_abj_dlo"/>
+            <field name="route_id" ref="route_abidjan_daloa"/>
+            <field name="bus_id" ref="bus_ctv_001"/>
+            <field name="driver_name">GUÉI Bernard</field>
+            <field name="driver_phone">+225 05 99 00 11 22</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=1, hour=8, minute=0, second=0)"/>
+            <field name="meeting_point">Gare Yopougon Siporex</field>
+            <field name="meeting_time_before">30</field>
+            <field name="price">5500</field>
+            <field name="child_price">3500</field>
+            <field name="luggage_included_kg">25</field>
+            <field name="extra_luggage_price">100</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <record id="trip_ctv_abj_dlo_002" model="transport.trip">
+            <field name="transport_company_id" ref="company_ctv"/>
+            <field name="route_id" ref="route_abidjan_daloa"/>
+            <field name="bus_id" ref="bus_ctv_002"/>
+            <field name="driver_name">AHOUA Landry</field>
+            <field name="driver_phone">+225 07 11 22 33 44</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=1, hour=15, minute=30, second=0)"/>
+            <field name="meeting_point">Gare Yopougon Siporex</field>
+            <field name="meeting_time_before">30</field>
+            <field name="price">5000</field>
+            <field name="child_price">3000</field>
+            <field name="luggage_included_kg">20</field>
+            <field name="extra_luggage_price">100</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <!-- TCV Express - Voyage Abidjan-Bouaké -->
+        <record id="trip_tcv_abj_bke_001" model="transport.trip">
+            <field name="transport_company_id" ref="company_tcv"/>
+            <field name="schedule_id" ref="schedule_tcv_abj_bke"/>
+            <field name="route_id" ref="route_abidjan_bouake"/>
+            <field name="bus_id" ref="bus_tcv_001"/>
+            <field name="driver_name">SERI Patrick</field>
+            <field name="driver_phone">+225 01 33 44 55 66</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=1, hour=9, minute=0, second=0)"/>
+            <field name="meeting_point">Gare TCV Marcory Zone 4</field>
+            <field name="meeting_point_address">Boulevard VGE, Zone 4, Marcory</field>
+            <field name="meeting_time_before">30</field>
+            <field name="price">7500</field>
+            <field name="vip_price">10000</field>
+            <field name="child_price">4500</field>
+            <field name="luggage_included_kg">30</field>
+            <field name="extra_luggage_price">250</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+            <field name="passenger_info"><![CDATA[
+                <p><strong>Service Express Premium:</strong></p>
+                <ul>
+                    <li>Trajet direct sans arrêt</li>
+                    <li>WiFi haut débit gratuit</li>
+                    <li>Prises USB individuelles</li>
+                    <li>Rafraîchissements offerts</li>
+                </ul>
+            ]]></field>
+        </record>
+
+        <!-- STS - Voyage Abidjan-Man -->
+        <record id="trip_sts_abj_man_001" model="transport.trip">
+            <field name="transport_company_id" ref="company_sts"/>
+            <field name="schedule_id" ref="schedule_sts_abj_man"/>
+            <field name="route_id" ref="route_abidjan_man"/>
+            <field name="bus_id" ref="bus_sts_001"/>
+            <field name="driver_name">TOH Augustin</field>
+            <field name="driver_phone">+225 05 11 22 33 44</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=2, hour=6, minute=0, second=0)"/>
+            <field name="meeting_point">Gare STS Treichville</field>
+            <field name="meeting_point_address">Rue du Commerce, Treichville</field>
+            <field name="meeting_time_before">45</field>
+            <field name="price">10000</field>
+            <field name="vip_price">13000</field>
+            <field name="child_price">6500</field>
+            <field name="luggage_included_kg">25</field>
+            <field name="extra_luggage_price">200</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <record id="trip_sts_abj_man_002" model="transport.trip">
+            <field name="transport_company_id" ref="company_sts"/>
+            <field name="route_id" ref="route_abidjan_man"/>
+            <field name="bus_id" ref="bus_sts_002"/>
+            <field name="driver_name">ZOGBO Firmin</field>
+            <field name="driver_phone">+225 07 44 55 66 77</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=3, hour=5, minute=30, second=0)"/>
+            <field name="meeting_point">Gare STS Treichville</field>
+            <field name="meeting_time_before">45</field>
+            <field name="price">9500</field>
+            <field name="child_price">6000</field>
+            <field name="luggage_included_kg">25</field>
+            <field name="extra_luggage_price">150</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <!-- Voyages supplémentaires pour semaine suivante -->
+        <record id="trip_utb_abj_bke_week2_001" model="transport.trip">
+            <field name="transport_company_id" ref="company_utb"/>
+            <field name="route_id" ref="route_abidjan_bouake"/>
+            <field name="bus_id" ref="bus_utb_005"/>
+            <field name="driver_name">KONAN Martial</field>
+            <field name="driver_phone">+225 01 55 66 77 88</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=7, hour=6, minute=0, second=0)"/>
+            <field name="meeting_point">Gare Routière UTB Adjamé</field>
+            <field name="meeting_time_before">30</field>
+            <field name="price">5500</field>
+            <field name="child_price">3500</field>
+            <field name="luggage_included_kg">20</field>
+            <field name="extra_luggage_price">150</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <record id="trip_att_abj_spd_week2_001" model="transport.trip">
+            <field name="transport_company_id" ref="company_att"/>
+            <field name="route_id" ref="route_abidjan_san_pedro"/>
+            <field name="bus_id" ref="bus_att_001"/>
+            <field name="driver_name">ZAHOUI Denis</field>
+            <field name="driver_phone">+225 05 88 99 00 11</field>
+            <field name="departure_datetime" eval="DateTime.now() + relativedelta(days=8, hour=7, minute=0, second=0)"/>
+            <field name="meeting_point">Gare ATT Treichville</field>
+            <field name="meeting_time_before">45</field>
+            <field name="price">8500</field>
+            <field name="vip_price">11000</field>
+            <field name="child_price">5500</field>
+            <field name="luggage_included_kg">28</field>
+            <field name="extra_luggage_price">180</field>
+            <field name="state">scheduled</field>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <!-- ============================================ -->
+        <!-- CONTACTS PARTENAIRES (pour réservations) -->
+        <!-- ============================================ -->
+
+        <record id="partner_kouame_jean" model="res.partner">
+            <field name="name">KOUAMÉ Jean-Baptiste</field>
+            <field name="phone">+225 07 08 09 10 11</field>
+            <field name="email">jean.kouame@email.ci</field>
+            <field name="street">Cocody Riviera 2</field>
+            <field name="city">Abidjan</field>
+        </record>
+
+        <record id="partner_traore_fatou" model="res.partner">
+            <field name="name">TRAORÉ Fatou</field>
+            <field name="phone">+225 05 06 07 08 09</field>
+            <field name="email">fatou.traore@email.ci</field>
+            <field name="street">Yopougon Maroc</field>
+            <field name="city">Abidjan</field>
+        </record>
+
+        <record id="partner_yao_marc" model="res.partner">
+            <field name="name">YAO Marc-Antoine</field>
+            <field name="phone">+225 01 02 03 04 05</field>
+            <field name="email">marc.yao@email.ci</field>
+            <field name="street">Plateau, Avenue Terrasson</field>
+            <field name="city">Abidjan</field>
+        </record>
+
+        <record id="partner_kone_aminata" model="res.partner">
+            <field name="name">KONÉ Aminata</field>
+            <field name="phone">+225 07 77 88 99 00</field>
+            <field name="email">aminata.kone@email.ci</field>
+            <field name="street">Adjamé 220 Logements</field>
+            <field name="city">Abidjan</field>
+        </record>
+
+        <record id="partner_diallo_mamadou" model="res.partner">
+            <field name="name">DIALLO Mamadou</field>
+            <field name="phone">+225 05 55 66 77 88</field>
+            <field name="email">mamadou.diallo@email.ci</field>
+            <field name="street">Treichville Av 12</field>
+            <field name="city">Abidjan</field>
+        </record>
+
+        <record id="partner_bamba_seydou" model="res.partner">
+            <field name="name">BAMBA Seydou</field>
+            <field name="phone">+225 01 11 22 33 44</field>
+            <field name="email">seydou.bamba@email.ci</field>
+            <field name="street">Marcory Zone 3</field>
+            <field name="city">Abidjan</field>
+        </record>
+
     </data>
 </odoo>
